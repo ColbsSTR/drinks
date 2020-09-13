@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Button } from 'react-native';
 import { Icon, Overlay, colors } from 'react-native-elements'
 import { Container, Content, Card, CardItem, Body, Left } from 'native-base';
 
@@ -71,7 +71,7 @@ export default class TopDeals extends Component {
 
     itemCard(item) {
         return (
-            <TouchableOpacity onPress={() => {this.setState({modalVisible: true})}}>
+            <TouchableOpacity onPress={() => {this.props.navigation.navigate('DetailView', {item})}}>
                 <Content style={{ padding: 5 }}>
                     <Card>
                         <CardItem header bordered style={styles.card}>
