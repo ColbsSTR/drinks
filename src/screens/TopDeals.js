@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Button } from 'react-native';
-import { Icon, Overlay, colors } from 'react-native-elements'
+import { Text, StyleSheet, FlatList, TouchableOpacity, Button } from 'react-native';
+import { Icon, colors } from 'react-native-elements'
 import { Container, Content, Card, CardItem, Body, Left } from 'native-base';
 
 const TabIcon = (props) => (
@@ -24,24 +24,32 @@ export default class TopDeals extends Component {
             //Placeholder data until the database is setup
             items:  [
                 {
-                  name: 'Item 1',
+                  name: 'Cosmopolitan',
                   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
                   price: '10',
+                  venue: 'Georges',
+                  open: true
                 },
                 {
-                  name: 'Item 2',
+                  name: 'Crowne and Coke',
                   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
                   price: '5',
+                  venue: 'Mojitos',
+                  open: true,
                 },
                 {
-                    name: 'Item 3',
+                    name: 'Moscow Mule',
                     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
                     price: '50',
+                    venue: 'Appleby',
+                    open: false,
                   },
                   {
-                    name: 'Item 4',
+                    name: 'Margarhettia',
                     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
                     price: '25',
+                    venue: 'Mojitos',
+                    open: true,
                   },
               ],
               modalVisible: false
@@ -50,23 +58,6 @@ export default class TopDeals extends Component {
 
     componentDidMount() {
 
-    }
-
-    detailView() {
-        return (
-            <Overlay
-                    isVisible={this.state.modalVisible}
-                    onBackdropPress={() => this.setState({ modalVisible: false })}
-                    width="90%"
-                    height="90%"
-                >
-                    <View style={{marginTop: 22}}>
-                    <View>
-                        <Text>Detail view!</Text>
-                    </View>
-                    </View>
-            </Overlay>
-        );
     }
 
     itemCard(item) {
@@ -106,7 +97,6 @@ export default class TopDeals extends Component {
                         renderItem={({item}) => this.itemCard(item)}
                     />
                 </Content>
-                {this.detailView()}
             </Container>
         );
     }
@@ -114,7 +104,7 @@ export default class TopDeals extends Component {
 
 const styles = StyleSheet.create({
    background: {
-       backgroundColor: colors.grey5
+       backgroundColor: '#EFEFEF'
    },
    card: {
        backgroundColor: colors.white

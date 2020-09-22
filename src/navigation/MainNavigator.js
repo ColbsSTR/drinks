@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { Icon } from 'react-native-elements';
 import TopDeals from '../screens/TopDeals';
 import DetailView from '../screens/DetailView';
 
@@ -20,8 +21,31 @@ function HomeStackScreen() {
 export const RootNav = () => {
     return (
       <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="HomeStack" component={HomeStackScreen} />
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+  
+              if (route.name === 'TopDeals') {
+                iconName = focused
+                  ? 'fire'
+                  : 'fire';
+              }
+
+              return <Icon
+                name={iconName}
+                type='font-awesome-5'
+                size={25}
+                color={color}
+              />;
+            },
+          })}
+          tabBarOptions={{
+            activeTintColor: 'tomato',
+            inactiveTintColor: 'gray',
+          }}
+        >
+          <Tab.Screen name="TopDeals" component={HomeStackScreen} />
         </Tab.Navigator>
       </NavigationContainer>
     );
