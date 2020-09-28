@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import appStore from './src/state/Reducers/index';
 
 export default function App() {
+
   return (
     <Provider store={appStore}>
       <RootNav />

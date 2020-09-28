@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, FlatList, TouchableOpacity, Button } from 'react-native';
+import { Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Icon, colors } from 'react-native-elements'
 import { Container, Content, Card, CardItem, Body, Left } from 'native-base';
+import firestore from '@react-native-firebase/firestore';
 
 const TabIcon = (props) => (
     <Icon
@@ -22,42 +23,23 @@ export default class TopDeals extends Component {
 
         this.state = {
             //Placeholder data until the database is setup
-            items:  [
-                {
-                  name: 'Cosmopolitan',
-                  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
-                  price: '10',
-                  venue: 'Georges',
-                  open: true
-                },
-                {
-                  name: 'Crowne and Coke',
-                  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
-                  price: '5',
-                  venue: 'Mojitos',
-                  open: true,
-                },
-                {
-                    name: 'Moscow Mule',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
-                    price: '50',
-                    venue: 'Appleby',
-                    open: false,
-                  },
-                  {
-                    name: 'Margarhettia',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
-                    price: '25',
-                    venue: 'Mojitos',
-                    open: true,
-                  },
-              ],
-              modalVisible: false
+            items: [],
+            modalVisible: false
         };
     }
 
     componentDidMount() {
+        let itemsArray = this.state.items;
 
+        firestore().collection('Drinks').where('TopDeal', '==', 'true').get().then(snap => {
+            snap.forEach(doc => {
+                itemsArray.push(doc.data());
+            });
+
+            this.setState({
+                items: itemsArray
+            })
+        });
     }
 
     itemCard(item) {
@@ -72,14 +54,14 @@ export default class TopDeals extends Component {
                                     type='font-awesome'
                                 />
                                 <Body>
-                                    <Text style={{ color: 'darkblue', paddingBottom: 5}}>{item.name}</Text>
-                                    <Text>${item.price}</Text>
+                                    <Text style={{ color: 'darkblue', paddingBottom: 5}}>{item.Name}</Text>
+                                    <Text>${item.Price}</Text>
                                 </Body>
                             </Left>
                         </CardItem>
                         <CardItem style={styles.card}>
                             <Body>
-                                <Text>{item.description}</Text>
+                                <Text>{item.Description}</Text>
                             </Body>
                         </CardItem>
                     </Card>
