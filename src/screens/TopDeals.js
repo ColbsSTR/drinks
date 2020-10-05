@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Icon, colors } from 'react-native-elements'
 import { Container, Content, Card, CardItem, Body, Left } from 'native-base';
-import firestore from '@react-native-firebase/firestore';
+import { getTopDeals } from '../state/Actions/topDeals';
+import { connect } from 'react-redux';
 
 const TabIcon = (props) => (
     <Icon
@@ -13,7 +14,7 @@ const TabIcon = (props) => (
     />
 )
 
-export default class TopDeals extends Component {
+class TopDeals extends Component {
     static navigationOptions = {
         tabBarIcon: TabIcon
     };
@@ -22,24 +23,13 @@ export default class TopDeals extends Component {
         super(props);
 
         this.state = {
-            //Placeholder data until the database is setup
-            items: [],
+            deals: [],
             modalVisible: false
         };
     }
 
     componentDidMount() {
-        let itemsArray = this.state.items;
-
-        firestore().collection('Drinks').where('TopDeal', '==', 'true').get().then(snap => {
-            snap.forEach(doc => {
-                itemsArray.push(doc.data());
-            });
-
-            this.setState({
-                items: itemsArray
-            })
-        });
+        this.props.getTopDeals();
     }
 
     itemCard(item) {
@@ -75,7 +65,7 @@ export default class TopDeals extends Component {
             <Container style={styles.background}> 
                 <Content>
                     <FlatList
-                        data={this.state.items}
+                        data={this.props.topDeals}
                         renderItem={({item}) => this.itemCard(item)}
                     />
                 </Content>
@@ -85,10 +75,23 @@ export default class TopDeals extends Component {
 }
 
 const styles = StyleSheet.create({
-   background: {
-       backgroundColor: '#EFEFEF'
-   },
-   card: {
-       backgroundColor: colors.white
-   }
+    background: {
+        backgroundColor: '#EFEFEF'
+    },
+    card: {
+        backgroundColor: colors.white
+    }
 });
+
+const mapStateToProps = (state) => {
+    return {
+        isWaiting: state.topDeals.isWaiting,
+        topDeals: state.topDeals.deals,
+    }
+}
+
+const mapDispatchToProps = {
+    getTopDeals
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopDeals);

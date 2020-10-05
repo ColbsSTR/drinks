@@ -29,7 +29,8 @@
     "react-native-stars": "^1.2.2",
     "react-native-vector-icons": "^7.1.0",
     "react-redux": "^7.2.1",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "redux-saga": "^1.1.3"
   },
   "devDependencies": {
     "@babel/core": "7.11.4",
