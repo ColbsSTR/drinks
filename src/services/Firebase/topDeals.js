@@ -6,7 +6,8 @@ export const getTopDeals = async () => {
     try {
         const snap = await firestore().collection('Drinks').where('TopDeal', '==', 'true').get();
         snap.forEach(doc => {
-            itemsArray.push(doc.data());
+            const deal = {...doc.data(), ...{ docId: doc.id} }
+            itemsArray.push(deal);
         });
         return itemsArray;
     }

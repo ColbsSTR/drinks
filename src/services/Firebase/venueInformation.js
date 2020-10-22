@@ -1,13 +1,15 @@
 import firestore from '@react-native-firebase/firestore';
 
 export const getVenue = async (docId) => {
-    try {
+  let venueInfo;
+  try {
         const docRef = await firestore().collection('Drinks').doc(docId);
         const snap = await firestore().collection('Venues').where('Drinks', 'array-contains', docRef).get();
         snap.forEach(doc => {
-            console.log(doc);
+            venueInfo = doc.data();
         });
+        return venueInfo;
     } catch (err) {
-        console.log('error occured', err);
+        return err;
     }
 }

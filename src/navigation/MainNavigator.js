@@ -5,9 +5,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
 import TopDeals from '../screens/TopDeals';
 import DetailView from '../screens/DetailView';
+import Login from '../screens/Login';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
+const AuthStack = createStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -19,8 +21,11 @@ function HomeStackScreen() {
 }
 
 export const RootNav = () => {
+    const isSignedIn = true;
+  
     return (
       <NavigationContainer>
+        {isSignedIn ? (
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
@@ -47,6 +52,14 @@ export const RootNav = () => {
         >
           <Tab.Screen name="TopDeals" component={HomeStackScreen} />
         </Tab.Navigator>
+        ) : (
+          <AuthStack.Navigator>
+            <AuthStack.Screen
+              name="Login"
+              component={Login}
+            />
+          </AuthStack.Navigator>
+        )}
       </NavigationContainer>
     );
 }
