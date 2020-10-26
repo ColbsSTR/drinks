@@ -1,5 +1,9 @@
+// Modals
 export const SHOW_MODAL = 'SHOW_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
+
+// Login
+export const LOGIN_AS_GUEST = 'LOGIN_AS_GUEST';
 
 //**********************//
 //ASYNC OPERATIONS TYPES//

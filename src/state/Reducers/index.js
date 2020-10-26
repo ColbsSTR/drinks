@@ -3,6 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 import modals from './modals.reducer';
 import topDeals from './topDeals.reducer';
 import venueInformation from './venueInformation.reducer';
+import authentication from './authentication.reducer';
 import { rootSaga } from '../Sagas/index';
 
 const AppReducers = combineReducers({
@@ -10,6 +11,7 @@ const AppReducers = combineReducers({
     modals,
     topDeals,
     venueInformation,
+    authentication,
 });
 
 const sagaMiddleware = createSagaMiddleware();

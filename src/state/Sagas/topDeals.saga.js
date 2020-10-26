@@ -14,6 +14,6 @@ export function* topDealsWorker() {
         const response = yield call(getTopDeals);
         yield put(succeed(response));
     } catch (err) {
-        yield put(fail(response));
+        yield put(fail(err));
     }
 }

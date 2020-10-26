@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { useSelector } from "react-redux";
 import { Icon } from 'react-native-elements';
 import TopDeals from '../screens/TopDeals';
 import DetailView from '../screens/DetailView';
@@ -21,7 +22,7 @@ function HomeStackScreen() {
 }
 
 export const RootNav = () => {
-    const isSignedIn = true;
+    const isSignedIn = useSelector(state => state.authentication.guest);
   
     return (
       <NavigationContainer>

@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {View, Text, Image} from 'react-native';
 import {Button} from 'native-base';
-
+import {connect} from 'react-redux';
+import { loginAsGuest } from '../state/Actions/authentication';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +43,7 @@ class Login extends Component {
         <View style={{flex: 1, padding: 20}}>
           <Text
             onPress={() => {
-              this.props.navigation.navigate('TopDeals');
+              this.props.loginAsGuest();
             }}
             style={{color: 'blue'}}>
             Continue As Guest
@@ -53,4 +54,8 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = {
+  loginAsGuest,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
