@@ -22,8 +22,6 @@ class Detailview extends Component {
 
   render() {
     const {item} = this.props.route.params;
-    console.log('detail view', this.props);
-  
     return (
       <ScrollView style={styles.container}>
         <DrinkDetailCard drink={item} />
@@ -44,7 +42,7 @@ class Detailview extends Component {
             </Text>
           </TouchableOpacity>
         </View>
-        <ReviewModal />
+        <ReviewModal docID={item.docId}/>
       </ScrollView>
     );
   }

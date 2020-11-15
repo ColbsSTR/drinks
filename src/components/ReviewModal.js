@@ -1,17 +1,21 @@
-import React from 'react';
-import {
-    Modal,
-    StyleSheet,
-    View
-  } from "react-native";
+import React, { useState } from 'react';
+import { Modal, StyleSheet, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from '../state/Actions/modal';
-import Stars from 'react-native-stars';
-import { Icon, Button, Text } from "native-base";
+import { writeReview } from '../state/Actions/reviews';
+import { AirbnbRating } from "react-native-elements";
+import { Button, Text } from "native-base";
 
-export default ReviewModal = () => {
+export default ReviewModal = props => {
     const modalShown = useSelector(state => state.modals.showModal);
     const dispatch = useDispatch();
+    const [rating, setRating] = useState(4);
+
+    const submitReview = () => {
+      const { docID } = props;
+      dispatch(closeModal());
+      dispatch(writeReview({ docID, rating }));
+    }
 
     return(
     <View style={styles.centeredView}>
@@ -25,21 +29,26 @@ export default ReviewModal = () => {
             <View style={{ paddingBottom: 15}}>
                 <Text>How was this drink?</Text>
             </View>
-            <Stars
-                half={false}
-                default={2.5}
-                update={(val)=>{console.log(val)}}
-                spacing={4}
-                starSize={40}
-                count={5}
-                fullStar= {<Icon type="FontAwesome" name={'star'} style={[styles.myStarStyle]}/>}
-                emptyStar= {<Icon type="FontAwesome" name={'star'} style={[styles.myEmptyStarStyle]}/>}
+            <AirbnbRating
+              count={5}
+              defaultRating={4}
+              reviews={[
+                "Terrible",
+                "Ehhh",
+                "Okay",
+                "Good!",
+                "WOW"
+              ]}
+              onFinishRating={(val) =>
+                setRating(val)
+              }
+              showRating
             />
             <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 15, flexDirection: 'row' }}>
                 <Button bordered onPress={() => dispatch(closeModal())} style={{ margin: 5}}>
                     <Text>Cancel</Text>
                 </Button>
-                <Button bordered onPress={() => console.log('button pressed')} style={{ margin: 5}}>
+                <Button bordered onPress={() => submitReview(rating)} style={{ margin: 5}}>
                     <Text>Submit</Text>
                 </Button>
             </View>

@@ -14,7 +14,16 @@ const AuthStack = createStackNavigator();
 
 function HomeStackScreen() {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#38a3a5',
+        },
+        headerTitleStyle: {
+          color: '#cbf3f0',
+        },
+      }}
+    >
       <HomeStack.Screen name="TopDeals" component={TopDeals} />
       <HomeStack.Screen name="DetailView" component={DetailView} />
     </HomeStack.Navigator>
@@ -47,7 +56,7 @@ export const RootNav = () => {
             },
           })}
           tabBarOptions={{
-            activeTintColor: 'tomato',
+            activeTintColor: '#fca311',
             inactiveTintColor: 'gray',
           }}
         >

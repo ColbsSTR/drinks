@@ -1,9 +1,11 @@
-import React, {Component} from 'react';
-import {Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
-import {Icon, colors} from 'react-native-elements';
-import {Container, Content, Card, CardItem, Body, Left} from 'native-base';
-import {getTopDeals} from '../state/Actions/topDeals';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Text, StyleSheet, FlatList, TouchableOpacity, View, Platform, ScrollView } from 'react-native';
+import { colors } from 'react-native-elements';
+import { Container, Content, Card, CardItem, Body, Left, Icon } from 'native-base';
+import RNPickerSelect from 'react-native-picker-select';
+import { getTopDeals } from '../state/Actions/topDeals';
+import filter from '../utilities/filter';
 
 const TabIcon = (props) => (
   <Icon
@@ -25,11 +27,20 @@ class TopDeals extends Component {
     this.state = {
       deals: [],
       modalVisible: false,
+      filterByType: null,
+      filterByPrice: null,
+      filterByDistance: null,
     };
   }
 
   componentDidMount() {
     this.props.getTopDeals();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.topDeals.length === 0 && this.props.topDeals.length > 0) {
+      this.setState({ deals: this.props.topDeals });
+    }
   }
 
   itemCard(item) {
@@ -38,13 +49,13 @@ class TopDeals extends Component {
         onPress={() => {
           this.props.navigation.navigate('DetailView', {item});
         }}>
-        <Content style={{padding: 5, height: 150}}>
-          <Card>
+        <Content style={{paddingHorizontal: 5 }}>
+          <Card style={{ elevation: 15 }}>
             <CardItem header bordered style={styles.card}>
               <Left>
-                <Icon name="glass" type="font-awesome" />
+                <Icon name='wine-outline' />
                 <Body>
-                  <Text style={{color: 'darkblue', paddingBottom: 5}}>
+                  <Text style={{color: 'black', paddingBottom: 5}}>
                     {item.Name}
                   </Text>
                   <Text>${item.Price}</Text>
@@ -62,12 +73,100 @@ class TopDeals extends Component {
     );
   }
 
+  filterDrinks(filterObject) {
+    const { filterByPrice, filterByType, filterByRating } = this.state;
+    let filteredDrinks = [];
+
+    switch(filterObject.type) {
+      case 'filterByType':
+        filteredDrinks = filter(this.props.topDeals, {drinkType: filterObject.value, drinkPrice: filterByPrice, drinkRating: filterByRating});
+        this.setState({
+          filterByType: filterObject.value,
+          deals: filteredDrinks
+        });
+        break;
+      case 'filterByPrice':
+        filteredDrinks = filter(this.props.topDeals, {drinkType: filterByType, drinkPrice: filterObject.value, drinkRating: filterByRating});
+        this.setState({
+          filterByPrice: filterObject.value,
+          deals: filteredDrinks
+        });
+        break;
+      case 'filterByDistance':
+        filteredDrinks = filter(this.props.topDeals, {drinkType: filterByType, drinkPrice: filterByPrice, drinkDistance: filterObject.value});
+        this.setState({
+          filterByDistance: filterObject.value,
+          deals: filteredDrinks
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
+  DropDownIcon = () => (
+    <Icon
+      name="arrow-down"
+      type="font-awesome"
+      size={15}
+    />
+  );
+
   render() {
     return (
-      <Container style={styles.background}>
+      <Container style={styles.container}>
         <Content>
-          <FlatList
-            data={this.props.topDeals}
+          <Content>
+            <ScrollView
+                horizontal={true}
+                decelerationRate="fast"
+            >
+              <Card style={{ flex: 1, flexDirection: 'row' }}>
+                <Icon name='filter-outline' style={{ padding: 8}} />
+                <View style={{ flexDirection: 'row', padding: 5 }}>
+                  <Icon name='beer' />
+                  <RNPickerSelect
+                      onValueChange={(type) => this.filterDrinks({type: 'filterByType' , value: type})}
+                      placeholder={ { label: 'All Types', value: null } }
+                      style={ Platform.OS === 'ios' ? { inputIOS: { paddingTop: 8, paddingHorizontal: 5 }}: {}}
+                      items={[
+                          { label: 'Beer', value: 'Beer' },
+                          { label: 'Cocktail', value: 'Cocktail' },
+                          { label: 'Wine', value: 'Wine' },
+                      ]}
+                  />
+                </View>
+                <View style={{ flexDirection: 'row', padding: 5 }}>
+                  <Icon name='cash-outline' />
+                  <RNPickerSelect
+                      onValueChange={(price) => this.filterDrinks({type: 'filterByPrice' , value: price})}
+                      placeholder={ { label: 'All Prices', value: null } }
+                      style={ Platform.OS === 'ios' ? { inputIOS: { paddingTop: 8, paddingHorizontal: 5 }}: {}}
+                      items={[
+                          { label: '$1', value: 1 },
+                          { label: '$3 or less', value: 3 },
+                          { label: '$5 or less', value: 5 },
+                      ]}
+                  />
+                </View>
+                <View style={{ flexDirection: 'row', padding: 5 }}>
+                  <Icon name='navigate-outline' />
+                  <RNPickerSelect
+                      onValueChange={(distance) => this.filterDrinks({type: 'filterByDistance' , value: distance})}
+                      placeholder={ { label: 'Any Distance', value: null } }
+                      style={ Platform.OS === 'ios' ? { inputIOS: { paddingTop: 8 }}: {}}
+                      items={[
+                          { label: '< 5 miles', value: 5 },
+                          { label: '< 10 miles', value: 10 },
+                          { label: '< 20 miles', value: 20 },
+                      ]}
+                  />
+                </View>
+              </Card>
+            </ScrollView>
+          </Content> 
+           <FlatList
+            data={this.state.deals}
             renderItem={({item}) => this.itemCard(item)}
           />
         </Content>
@@ -77,12 +176,25 @@ class TopDeals extends Component {
 }
 
 const styles = StyleSheet.create({
-  background: {
-    backgroundColor: '#EFEFEF',
+  container: {
+    flex: 1,
+    backgroundColor: '#FCFCFC',
+    alignItems: 'center', 
+    justifyContent: 'center'
   },
   card: {
     backgroundColor: colors.white,
   },
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  }
 });
 
 const mapStateToProps = (state) => {
