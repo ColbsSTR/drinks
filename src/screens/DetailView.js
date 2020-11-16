@@ -3,13 +3,13 @@ import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from 'native-base';
 import MapView from 'react-native-maps';
 import {ScrollView} from 'react-native-gesture-handler';
-import {StarRating} from '../components/StarRating';
+import { Rating } from "react-native-elements";
 import {showModal} from '../state/Actions/modal';
 import {getVenueInformation} from '../state/Actions/venueInformation';
 import ReviewModal from '../components/ReviewModal';
 import DrinkDetailCard from '../components/DrinkDetailCard';
 import {connect} from 'react-redux';
-
+import { formatRating } from '../utilities/formatRating';
 class Detailview extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +22,8 @@ class Detailview extends Component {
 
   render() {
     const {item} = this.props.route.params;
+    const rating = formatRating(item.Rating);
+
     return (
       <ScrollView style={styles.container}>
         <DrinkDetailCard drink={item} />
@@ -35,7 +37,7 @@ class Detailview extends Component {
           }}
         />
         <View style={{paddingTop: 30}}>
-          <StarRating value={5} size={40} />
+          <Rating imageSize={30} readonly startingValue={rating} style={{ backgroundColor: '#FCFCFC'}}/>
           <TouchableOpacity onPress={() => this.props.showModal()}>
             <Text style={{textAlign: 'center', paddingTop: 20, color: 'blue'}}>
               Add a review
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
+    backgroundColor: '#FCFCFC'
   },
   map: {
     flex: 1,
