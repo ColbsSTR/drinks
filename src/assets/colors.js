@@ -6,7 +6,8 @@ const COLORS = {
     beige: '#F0F7D4',
     slateGrey: '#708090',
     darkGrey: '#345769',
-    cyan: '#23E3CE'
+    cyan: '#23E3CE',
+    orange: '#ef8921',
 };
 
 export default COLORS;

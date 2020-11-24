@@ -12,11 +12,8 @@ import {
 } from 'native-base';
 import {StyleSheet} from 'react-native';
 
-export default DrinkDetailCard = (item) => {
-  //***TODO*****//
-  // FIX THE PROPS ISSUE
-  //************//
-  const drink = item.drink;
+export default DrinkDetailCard = (props) => {
+  const drink = props.drink;
   return (
     <Card style={styles.card1}>
       <CardItem header bordered style={styles.center}>

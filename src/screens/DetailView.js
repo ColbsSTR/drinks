@@ -16,17 +16,17 @@ class Detailview extends Component {
   }
 
   componentDidMount() {
-    const { docId } = this.props.route.params.item;
+    const { docId } = this.props.route.params.drink;
     this.props.getVenueInformation(docId);
   }
 
   render() {
-    const {item} = this.props.route.params;
-    const rating = formatRating(item.Rating);
+    const {drink} = this.props.route.params;
+    const rating = formatRating(drink.Rating);
 
     return (
       <ScrollView style={styles.container}>
-        <DrinkDetailCard drink={item} />
+        <DrinkDetailCard drink={drink} />
         <MapView
           style={styles.map}
           initialRegion={{
@@ -44,7 +44,7 @@ class Detailview extends Component {
             </Text>
           </TouchableOpacity>
         </View>
-        <ReviewModal docID={item.docId}/>
+        <ReviewModal docID={drink.docId}/>
       </ScrollView>
     );
   }

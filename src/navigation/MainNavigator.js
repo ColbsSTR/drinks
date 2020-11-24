@@ -17,10 +17,10 @@ function HomeStackScreen() {
     <HomeStack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#38a3a5',
+          backgroundColor: '#ef8921',
         },
         headerTitleStyle: {
-          color: '#cbf3f0',
+          color: 'white',
         },
       }}
     >
@@ -63,7 +63,9 @@ export const RootNav = () => {
           <Tab.Screen name="TopDeals" component={HomeStackScreen} />
         </Tab.Navigator>
         ) : (
-          <AuthStack.Navigator>
+          <AuthStack.Navigator
+            screenOptions={{headerShown: false}}
+          >
             <AuthStack.Screen
               name="Login"
               component={Login}

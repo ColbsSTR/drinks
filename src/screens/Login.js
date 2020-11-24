@@ -4,6 +4,7 @@ import { SocialIcon } from 'react-native-elements'
 import {connect} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import { loginAsGuest } from '../state/Actions/authentication';
+import { LOGO } from '../assets/images/index';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -17,15 +18,15 @@ class Login extends Component {
     let deviceHeight = Dimensions.get('window').height
 
     return (
-      <LinearGradient colors={['#dd5e89', '#f7bb97']} style={{ flex: 1 }}>
+      <LinearGradient colors={['#ef8921', '#fbe1c6']} style={{ flex: 1 }}>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <View style={{flex: 1, paddingTop: deviceHeight * .1}}>
-          <Image
-            style={{height: 100, width: 100}}
-            source={{
-              uri: 'https://reactnative.dev/img/tiny_logo.png',
-            }}
-          />
+        <View style={{flex: 1, paddingTop: deviceHeight * .1 }}>
+          <View style={{ backgroundColor: 'white', height: '50%' }}>
+            <Image
+              style={{ height: 100, width: 350, top: 10 }}
+              source={ LOGO }
+            />
+          </View>
         </View>
         <View style={{flex: 1, width: '100%' }}>
           <View style={{padding: 5}}>
@@ -50,12 +51,12 @@ class Login extends Component {
             />
           </View>
         </View>
-        <View style={{flex: 1, padding: 20}}>
+        <View style={{flex: 1, paddingTop: 20 }}>
           <Text
             onPress={() => {
               this.props.loginAsGuest();
             }}
-            style={{color: 'black'}}>
+            style={{ color: 'black' }}>
             Continue As Guest
           </Text>
         </View>

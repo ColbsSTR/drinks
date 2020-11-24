@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, StyleSheet, FlatList, TouchableOpacity, View, Platform, ScrollView } from 'react-native';
-import { colors } from 'react-native-elements';
-import { Container, Content, Card, CardItem, Body, Left, Icon } from 'native-base';
+import { StyleSheet, FlatList, TouchableOpacity, View, Platform, ScrollView } from 'react-native';
+import { Card, Icon } from 'native-base';
 import RNPickerSelect from 'react-native-picker-select';
 import { getTopDeals } from '../state/Actions/topDeals';
+import DrinkCard from '../components/DrinkCard';
 import filter from '../utilities/filter';
 
 const TabIcon = (props) => (
@@ -43,32 +43,13 @@ class TopDeals extends Component {
     }
   }
 
-  itemCard(item) {
+  renderDrinkCards(drink) {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.props.navigation.navigate('DetailView', {item});
+          this.props.navigation.navigate('DetailView', {drink});
         }}>
-        <Content style={{paddingHorizontal: 5 }}>
-          <Card style={{ elevation: 15 }}>
-            <CardItem header bordered style={styles.card}>
-              <Left>
-                <Icon name='wine-outline' />
-                <Body>
-                  <Text style={{color: 'black', paddingBottom: 5}}>
-                    {item.Name}
-                  </Text>
-                  <Text>${item.Price}</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem style={styles.card}>
-              <Body>
-                <Text>{item.Description}</Text>
-              </Body>
-            </CardItem>
-          </Card>
-        </Content>
+        <DrinkCard drink={drink} />
       </TouchableOpacity>
     );
   }
@@ -114,63 +95,61 @@ class TopDeals extends Component {
 
   render() {
     return (
-      <Container style={styles.container}>
-        <Content>
-          <Content>
-            <ScrollView
-                horizontal={true}
-                decelerationRate="fast"
-            >
-              <Card style={{ flex: 1, flexDirection: 'row' }}>
-                <Icon name='filter-outline' style={{ padding: 8}} />
-                <View style={{ flexDirection: 'row', padding: 5 }}>
-                  <Icon name='beer' />
-                  <RNPickerSelect
-                      onValueChange={(type) => this.filterDrinks({type: 'filterByType' , value: type})}
-                      placeholder={ { label: 'All Types', value: null } }
-                      style={ Platform.OS === 'ios' ? { inputIOS: { paddingTop: 8, paddingHorizontal: 5 }}: {}}
-                      items={[
-                          { label: 'Beer', value: 'Beer' },
-                          { label: 'Cocktail', value: 'Cocktail' },
-                          { label: 'Wine', value: 'Wine' },
-                      ]}
-                  />
-                </View>
-                <View style={{ flexDirection: 'row', padding: 5 }}>
-                  <Icon name='cash-outline' />
-                  <RNPickerSelect
-                      onValueChange={(price) => this.filterDrinks({type: 'filterByPrice' , value: price})}
-                      placeholder={ { label: 'All Prices', value: null } }
-                      style={ Platform.OS === 'ios' ? { inputIOS: { paddingTop: 8, paddingHorizontal: 5 }}: {}}
-                      items={[
-                          { label: '$1', value: 1 },
-                          { label: '$3 or less', value: 3 },
-                          { label: '$5 or less', value: 5 },
-                      ]}
-                  />
-                </View>
-                <View style={{ flexDirection: 'row', padding: 5 }}>
-                  <Icon name='navigate-outline' />
-                  <RNPickerSelect
-                      onValueChange={(distance) => this.filterDrinks({type: 'filterByDistance' , value: distance})}
-                      placeholder={ { label: 'Any Distance', value: null } }
-                      style={ Platform.OS === 'ios' ? { inputIOS: { paddingTop: 8 }}: {}}
-                      items={[
-                          { label: '< 5 miles', value: 5 },
-                          { label: '< 10 miles', value: 10 },
-                          { label: '< 20 miles', value: 20 },
-                      ]}
-                  />
-                </View>
-              </Card>
-            </ScrollView>
-          </Content> 
-           <FlatList
-            data={this.state.deals}
-            renderItem={({item}) => this.itemCard(item)}
-          />
-        </Content>
-      </Container>
+      <View style={styles.container}>
+        <View>
+          <ScrollView
+            horizontal={true}
+            decelerationRate="fast"
+          >
+            <Card style={{ flex: 1, flexDirection: 'row' }}>
+              <Icon name='filter-outline' style={{ padding: 8}} />
+              <View style={{ flexDirection: 'row', padding: 5 }}>
+                <Icon name='beer' />
+                <RNPickerSelect
+                  onValueChange={(type) => this.filterDrinks({type: 'filterByType' , value: type})}
+                  placeholder={ { label: 'All Types', value: null } }
+                  style={ Platform.OS === 'ios' ? { inputIOS: { paddingTop: 8, paddingHorizontal: 5 }}: {}}
+                  items={[
+                    { label: 'Beer', value: 'Beer' },
+                    { label: 'Cocktail', value: 'Cocktail' },
+                    { label: 'Wine', value: 'Wine' },
+                  ]}
+                />
+              </View>
+              <View style={{ flexDirection: 'row', padding: 5 }}>
+                <Icon name='cash-outline' />
+                <RNPickerSelect
+                  onValueChange={(price) => this.filterDrinks({type: 'filterByPrice' , value: price})}
+                  placeholder={ { label: 'All Prices', value: null } }
+                  style={ Platform.OS === 'ios' ? { inputIOS: { paddingTop: 8, paddingHorizontal: 5 }}: {}}
+                  items={[
+                    { label: '$1', value: 1 },
+                    { label: '$3 or less', value: 3 },
+                    { label: '$5 or less', value: 5 },
+                  ]}
+                />
+              </View>
+              <View style={{ flexDirection: 'row', padding: 5 }}>
+                <Icon name='navigate-outline' />
+                <RNPickerSelect
+                  onValueChange={(distance) => this.filterDrinks({type: 'filterByDistance' , value: distance})}
+                  placeholder={ { label: 'Any Distance', value: null } }
+                  style={ Platform.OS === 'ios' ? { inputIOS: { paddingTop: 8 }}: {}}
+                  items={[
+                    { label: '< 5 miles', value: 5 },
+                    { label: '< 10 miles', value: 10 },
+                    { label: '< 20 miles', value: 20 },
+                  ]}
+                />
+              </View>
+            </Card>
+          </ScrollView>
+        </View>
+        <FlatList
+          data={this.state.deals}
+          renderItem={({item}) => this.renderDrinkCards(item)}
+        />
+      </View>
     );
   }
 }
@@ -179,11 +158,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FCFCFC',
-    alignItems: 'center', 
-    justifyContent: 'center'
-  },
-  card: {
-    backgroundColor: colors.white,
   },
   inputIOS: {
     fontSize: 16,
@@ -193,8 +167,8 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: 4,
     color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
-  }
+    paddingRight: 30,
+  },
 });
 
 const mapStateToProps = (state) => {
