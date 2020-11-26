@@ -11,13 +11,14 @@ import {
   Icon,
 } from 'native-base';
 import {StyleSheet} from 'react-native';
+import COLORS from '../assets/colors';
 
 export default DrinkDetailCard = (props) => {
   const drink = props.drink;
   return (
     <Card style={styles.card1}>
       <CardItem header bordered style={styles.center}>
-        <Text>{drink.Name}</Text>
+        <Text style={ styles.headerText }>{drink.Name}</Text>
       </CardItem>
       <ListItem icon>
         <Left>
@@ -57,7 +58,7 @@ export default DrinkDetailCard = (props) => {
       </ListItem>
       <CardItem>
         <Body>
-          <Text>{drink.Description}</Text>
+          <Text style={ styles.descriptionText }>{drink.Description}</Text>
         </Body>
       </CardItem>
     </Card>
@@ -72,4 +73,10 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
   },
+  headerText: {
+    color: COLORS.blue,
+  },
+  descriptionText: {
+    color: COLORS.darkGrey,
+  }
 });

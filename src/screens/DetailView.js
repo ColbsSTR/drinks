@@ -10,6 +10,8 @@ import ReviewModal from '../components/ReviewModal';
 import DrinkDetailCard from '../components/DrinkDetailCard';
 import {connect} from 'react-redux';
 import { formatRating } from '../utilities/formatRating';
+import COLORS from '../assets/colors';
+
 class Detailview extends Component {
   constructor(props) {
     super(props);
@@ -37,9 +39,9 @@ class Detailview extends Component {
           }}
         />
         <View style={{paddingTop: 30}}>
-          <Rating imageSize={30} readonly startingValue={rating} style={{ backgroundColor: '#FCFCFC'}}/>
+          <Rating imageSize={30} readonly startingValue={rating} style={ styles.rating }/>
           <TouchableOpacity onPress={() => this.props.showModal()}>
-            <Text style={{textAlign: 'center', paddingTop: 20, color: 'blue'}}>
+            <Text style={ styles.reviewText}>
               Add a review
             </Text>
           </TouchableOpacity>
@@ -64,12 +66,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
-    backgroundColor: '#FCFCFC'
+    backgroundColor: COLORS.backgroundWhite,
   },
   map: {
     flex: 1,
     aspectRatio: 2 / 1,
   },
+  rating: {
+    backgroundColor: COLORS.backgroundWhite,
+  },
+  reviewText: {
+    textAlign: 'center', 
+    paddingTop: 20, 
+    color: COLORS.blue,
+  }
 });
 
 const mapStateToProps = (state) => {

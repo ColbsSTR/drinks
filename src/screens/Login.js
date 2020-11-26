@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import { loginAsGuest } from '../state/Actions/authentication';
 import { LOGO } from '../assets/images/index';
+import COLORS from '../assets/colors';
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -16,12 +18,12 @@ class Login extends Component {
 
   render() {
     let deviceHeight = Dimensions.get('window').height
-
+    const { mediumGrey, lightGrey, white, red } = COLORS;
     return (
-      <LinearGradient colors={['#ef8921', '#fbe1c6']} style={{ flex: 1 }}>
+      <LinearGradient colors={[mediumGrey, lightGrey]} style={{ flex: 1 }}>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <View style={{flex: 1, paddingTop: deviceHeight * .1 }}>
-          <View style={{ backgroundColor: 'white', height: '50%' }}>
+          <View style={{ height: '50%' }}>
             <Image
               style={{ height: 100, width: 350, top: 10 }}
               source={ LOGO }
@@ -48,6 +50,7 @@ class Login extends Component {
               title='Sign In With Google'
               button
               type='google'
+              style={{ backgroundColor: red }}
             />
           </View>
         </View>
@@ -56,7 +59,7 @@ class Login extends Component {
             onPress={() => {
               this.props.loginAsGuest();
             }}
-            style={{ color: 'black' }}>
+            style={{ color: white }}>
             Continue As Guest
           </Text>
         </View>

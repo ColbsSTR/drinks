@@ -6,6 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { getTopDeals } from '../state/Actions/topDeals';
 import DrinkCard from '../components/DrinkCard';
 import filter from '../utilities/filter';
+import COLORS from '../assets/colors';
 
 const TabIcon = (props) => (
   <Icon
@@ -157,7 +158,7 @@ class TopDeals extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FCFCFC',
+    backgroundColor: COLORS.white,
   },
   inputIOS: {
     fontSize: 16,
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 4,
-    color: 'black',
+    color: COLORS.black,
     paddingRight: 30,
   },
 });

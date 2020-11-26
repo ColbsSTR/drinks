@@ -7,9 +7,10 @@ import {
   Icon,
 } from 'native-base';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
+import COLORS from '../assets/colors';
 
 export default DrinkCard = (props) => {
-  const { drink } = props; 
+	const { drink } = props; 
   return (
     <View style={styles.container}>
         <Card style={styles.card}>
@@ -26,7 +27,9 @@ export default DrinkCard = (props) => {
             </CardItem>
             <CardItem style={ styles.cardItem }>
               <Body>
-                <Text>{drink.Description}</Text>
+                <Text numberOfLines={3} style={ styles.text }>
+                  {drink.Description}
+                </Text>
               </Body>
             </CardItem>
         </Card>
@@ -37,23 +40,24 @@ export default DrinkCard = (props) => {
 const styles = StyleSheet.create({
 	container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: COLORS.white,
     justifyContent: 'center',
-    alignItems: 'center',
+		alignItems: 'center',
   },
   card: {
     shadowRadius: 3, 
     shadowOpacity: .3, 
     shadowOffset:{ width: 0, height: 3 },
     borderRadius: 5,
-    backgroundColor: '#ffffff',
+    backgroundColor: COLORS.white,
     width: Dimensions.get('window').width - 20,
   },
   cardItem: {
 		borderRadius: 6,
+		height: 80
   },
   text: {
-    color: 'black',
+    color: COLORS.darkGrey,
     paddingBottom: 5,
   }
 });
