@@ -10,15 +10,27 @@ import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import COLORS from '../assets/colors';
 
 export default DrinkCard = (props) => {
-	const { drink } = props; 
+  const { drink } = props; 
+
+  const getDrinkIcon = (type) => {
+    return drinks = {
+      'Beer': 'beer',
+      'Cocktail': 'cocktail',
+      'Wine': 'wine-glass',
+    }[type];
+  };
   return (
     <View style={styles.container}>
         <Card style={styles.card}>
             <CardItem bordered style={styles.cardItem}>
               <Left>
-                <Icon name='wine-outline' />
+                <Icon 
+                  name={getDrinkIcon(drink.Type)} 
+                  type='FontAwesome5' 
+                  style={styles.icon}
+                />
                 <Body>
-                  <Text style={styles.text}>
+                  <Text style={styles.header}>
                     {drink.Name}
                   </Text>
                   <Text>${drink.Price}</Text>
@@ -27,7 +39,7 @@ export default DrinkCard = (props) => {
             </CardItem>
             <CardItem style={ styles.cardItem }>
               <Body>
-                <Text numberOfLines={3} style={ styles.text }>
+                <Text numberOfLines={3} style={ styles.body }>
                   {drink.Description}
                 </Text>
               </Body>
@@ -37,7 +49,7 @@ export default DrinkCard = (props) => {
   );
 };
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
 	container: {
     flex: 1,
     backgroundColor: COLORS.white,
@@ -56,8 +68,15 @@ const styles = StyleSheet.create({
 		borderRadius: 6,
 		height: 80
   },
-  text: {
+  header: {
     color: COLORS.darkGrey,
+    fontWeight: 'bold',
     paddingBottom: 5,
+  },
+  body: {
+    color: COLORS.mediumGrey,
+  },
+  icon: {
+    color: COLORS.orange,
   }
 });

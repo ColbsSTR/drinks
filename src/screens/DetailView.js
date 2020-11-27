@@ -39,7 +39,11 @@ class Detailview extends Component {
           }}
         />
         <View style={{paddingTop: 30}}>
-          <Rating imageSize={30} readonly startingValue={rating} style={ styles.rating }/>
+          <Rating 
+            imageSize={30} 
+            readonly 
+            startingValue={rating} 
+          />
           <TouchableOpacity onPress={() => this.props.showModal()}>
             <Text style={ styles.reviewText}>
               Add a review
@@ -66,14 +70,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
-    backgroundColor: COLORS.backgroundWhite,
+    backgroundColor: COLORS.white,
   },
   map: {
     flex: 1,
     aspectRatio: 2 / 1,
-  },
-  rating: {
-    backgroundColor: COLORS.backgroundWhite,
   },
   reviewText: {
     textAlign: 'center', 

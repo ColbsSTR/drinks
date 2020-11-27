@@ -5,6 +5,7 @@ import { Card, Icon } from 'native-base';
 import RNPickerSelect from 'react-native-picker-select';
 import { getTopDeals } from '../state/Actions/topDeals';
 import DrinkCard from '../components/DrinkCard';
+import { DrinkCardPlaceholder } from '../placeholders/DrinkCardPlaceholder'
 import filter from '../utilities/filter';
 import COLORS from '../assets/colors';
 
@@ -26,7 +27,8 @@ class TopDeals extends Component {
     super(props);
 
     this.state = {
-      deals: [],
+      deals: [{}, {}, {}], //Empty objects for placeholders map
+      dataInitialized: false,
       modalVisible: false,
       filterByType: null,
       filterByPrice: null,
@@ -40,7 +42,7 @@ class TopDeals extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.topDeals.length === 0 && this.props.topDeals.length > 0) {
-      this.setState({ deals: this.props.topDeals });
+      this.setState({ deals: this.props.topDeals, dataInitialized: true });
     }
   }
 
@@ -53,7 +55,7 @@ class TopDeals extends Component {
         <DrinkCard drink={drink} />
       </TouchableOpacity>
     );
-  }
+  };
 
   filterDrinks(filterObject) {
     const { filterByPrice, filterByType, filterByRating } = this.state;
@@ -95,6 +97,8 @@ class TopDeals extends Component {
   );
 
   render() {
+    const { dataInitialized } = this.state;
+
     return (
       <View style={styles.container}>
         <View>
@@ -105,7 +109,7 @@ class TopDeals extends Component {
             <Card style={{ flex: 1, flexDirection: 'row' }}>
               <Icon name='filter-outline' style={{ padding: 8}} />
               <View style={{ flexDirection: 'row', padding: 5 }}>
-                <Icon name='beer' />
+                <Icon name='beer'/>
                 <RNPickerSelect
                   onValueChange={(type) => this.filterDrinks({type: 'filterByType' , value: type})}
                   placeholder={ { label: 'All Types', value: null } }
@@ -148,7 +152,7 @@ class TopDeals extends Component {
         </View>
         <FlatList
           data={this.state.deals}
-          renderItem={({item}) => this.renderDrinkCards(item)}
+          renderItem={({item}) => dataInitialized ? this.renderDrinkCards(item) : <DrinkCardPlaceholder /> }
         />
       </View>
     );
@@ -158,7 +162,7 @@ class TopDeals extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.backgroundWhite,
   },
   inputIOS: {
     fontSize: 16,
