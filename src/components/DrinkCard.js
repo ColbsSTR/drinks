@@ -52,7 +52,7 @@ export default DrinkCard = (props) => {
 export const styles = StyleSheet.create({
 	container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.backgroundWhite,
     justifyContent: 'center',
 		alignItems: 'center',
   },

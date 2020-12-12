@@ -18,52 +18,52 @@ class Login extends Component {
 
   render() {
     let deviceHeight = Dimensions.get('window').height
-    const { mediumGrey, lightGrey, white, red } = COLORS;
+    const { orange, lightOrange, white, red } = COLORS;
     return (
-      <LinearGradient colors={[mediumGrey, lightGrey]} style={{ flex: 1 }}>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <View style={{flex: 1, paddingTop: deviceHeight * .1 }}>
-          <View style={{ height: '50%' }}>
-            <Image
-              style={{ height: 100, width: 350, top: 10 }}
-              source={ LOGO }
-            />
+      <LinearGradient colors={[orange, lightOrange]} style={{ flex: 1 }}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{flex: 2, paddingTop: deviceHeight * .1 }}>
+            <View style={{ height: '50%' }}>
+              <Image
+                style={{ height: 100, width: 350, top: 10 }}
+                source={ LOGO }
+              />
+            </View>
+          </View>
+          <View style={{flex: 3, width: '100%' }}>
+            <View style={{padding: 5}}>
+              <SocialIcon
+                title='Sign In With Facebook'
+                button
+                type='facebook'
+              />
+            </View>
+            <View style={{padding: 5}}>
+              <SocialIcon
+                title='Sign In With Instagram'
+                button
+                type='instagram'
+              />
+            </View>
+            <View style={{padding: 5}}>
+              <SocialIcon
+                title='Sign In With Google'
+                button
+                type='google'
+                style={{ backgroundColor: red }}
+              />
+            </View>
+            <View style={{ padding: 5, justifyContent: 'center', alignItems: 'center' }}>
+              <Text
+                onPress={() => {
+                  this.props.loginAsGuest();
+                }}
+                style={{ color: white }}>
+                Continue As Guest
+              </Text>
+            </View>
           </View>
         </View>
-        <View style={{flex: 1, width: '100%' }}>
-          <View style={{padding: 5}}>
-            <SocialIcon
-              title='Sign In With Facebook'
-              button
-              type='facebook'
-            />
-          </View>
-          <View style={{padding: 5}}>
-            <SocialIcon
-              title='Sign In With Instagram'
-              button
-              type='instagram'
-            />
-          </View>
-          <View style={{padding: 5}}>
-            <SocialIcon
-              title='Sign In With Google'
-              button
-              type='google'
-              style={{ backgroundColor: red }}
-            />
-          </View>
-        </View>
-        <View style={{flex: 1, paddingTop: 20 }}>
-          <Text
-            onPress={() => {
-              this.props.loginAsGuest();
-            }}
-            style={{ color: white }}>
-            Continue As Guest
-          </Text>
-        </View>
-      </View>
       </LinearGradient>
     );
   }
