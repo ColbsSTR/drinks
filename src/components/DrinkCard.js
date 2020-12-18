@@ -17,6 +17,7 @@ export default DrinkCard = (props) => {
       'Beer': 'beer',
       'Cocktail': 'cocktail',
       'Wine': 'wine-glass',
+      'Margarita': 'cocktail',
     }[type];
   };
   return (

@@ -25,20 +25,28 @@ function HomeStackScreen() {
       }}
     >
       <HomeStack.Screen name="TopDeals" component={TopDeals} />
-      <HomeStack.Screen name="DetailView" component={DetailView} />
+      <HomeStack.Screen 
+        name="DetailView" 
+        component={DetailView}
+        tintColor='black'
+        options={{
+          headerTintColor: 'black'
+        }}
+      />
     </HomeStack.Navigator>
   );
 }
 
 export const RootNav = () => {
-    const isSignedIn = useSelector(state => state.authentication.guest);
-  
+    const isGuest = useSelector(state => state.authentication.guest);
+    const isSignedIn = useSelector(state => state.authentication.isSignedIn);
+
     return (
       <NavigationContainer>
-        {isSignedIn ? (
+        {isGuest || isSignedIn ? (
         <Tab.Navigator
           screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
+            tabBarIcon: ({ focused, color }) => {
               let iconName;
   
               if (route.name === 'TopDeals') {

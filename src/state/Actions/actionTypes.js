@@ -4,6 +4,7 @@ export const CLOSE_MODAL = 'CLOSE_MODAL';
 
 // Login
 export const LOGIN_AS_GUEST = 'LOGIN_AS_GUEST';
+export const LOGIN_SUCCEEDED = 'LOGIN_SUCCEEDED';
 
 //**********************//
 //ASYNC OPERATIONS TYPES//

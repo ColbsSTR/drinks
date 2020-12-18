@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {View, Text, Image, Dimensions} from 'react-native';
+import { LoginManager, AccessToken } from 'react-native-fbsdk'
+import auth from '@react-native-firebase/auth';
 import { SocialIcon } from 'react-native-elements'
 import {connect} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
-import { loginAsGuest } from '../state/Actions/authentication';
+import { loginAsGuest, loginSucceeded } from '../state/Actions/authentication';
 import { LOGO } from '../assets/images/index';
 import COLORS from '../assets/colors';
 
@@ -14,7 +16,31 @@ class Login extends Component {
     this.state = {};
   }
 
-  componentDidMount() {}
+  handleFacebookLogin = async () => {
+    const result = await LoginManager.logInWithPermissions(["public_profile"]);
+    if (result.isCancelled) {
+      return;
+    }
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+
+    // Sign-in the user with the credential
+    const user = await auth().signInWithCredential(facebookCredential);
+
+    if (!user) {
+      throw 'Something went wrong trying to access your profile...';
+    }
+
+    //Set user state and login to the app
+    this.props.loginSucceeded(user);
+  }
 
   render() {
     let deviceHeight = Dimensions.get('window').height
@@ -36,6 +62,7 @@ class Login extends Component {
                 title='Sign In With Facebook'
                 button
                 type='facebook'
+                onPress={ this.handleFacebookLogin }
               />
             </View>
             <View style={{padding: 5}}>
@@ -71,6 +98,8 @@ class Login extends Component {
 
 const mapDispatchToProps = {
   loginAsGuest,
+  loginSucceeded,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
+
