@@ -7,6 +7,7 @@ import { Icon } from 'react-native-elements';
 import TopDeals from '../screens/TopDeals';
 import DetailView from '../screens/DetailView';
 import Login from '../screens/Login';
+import Profile from '../screens/Profile';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -48,11 +49,16 @@ export const RootNav = () => {
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color }) => {
               let iconName;
-  
-              if (route.name === 'TopDeals') {
-                iconName = focused
-                  ? 'fire'
-                  : 'fire';
+
+              switch(route.name) {
+                case 'TopDeals':
+                  iconName = focused ? 'fire' : 'fire';
+                  break;
+                case 'Profile':
+                  iconName = focused ? 'user' : 'user';
+                  break;
+                default:
+                  break;
               }
 
               return <Icon
@@ -69,6 +75,7 @@ export const RootNav = () => {
           }}
         >
           <Tab.Screen name="TopDeals" component={HomeStackScreen} />
+          <Tab.Screen name="Profile" component={Profile} />
         </Tab.Navigator>
         ) : (
           <AuthStack.Navigator

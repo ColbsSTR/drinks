@@ -5,6 +5,7 @@ import topDeals from './topDeals.reducer';
 import venueInformation from './venueInformation.reducer';
 import authentication from './authentication.reducer';
 import reviews from './reviews.reducer';
+import likedDrinks from './LikedDrinks';
 import { rootSaga } from '../Sagas/index';
 
 const AppReducers = combineReducers({
@@ -14,6 +15,7 @@ const AppReducers = combineReducers({
     venueInformation,
     authentication,
     reviews,
+    likedDrinks,
 });
 
 const sagaMiddleware = createSagaMiddleware();

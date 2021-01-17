@@ -13,8 +13,6 @@ export function* venueInformationWorker(action) {
     try {
         const response = yield call(getVenue, action.payload);
         yield put(succeed(response));
-        // **TODO**
-        //Add success message here
     } catch (err) {
         yield put(fail(err));
         // **TODO**

@@ -11,6 +11,8 @@ import {
 import { Icon } from 'native-base';
 import RNPickerSelect from 'react-native-picker-select';
 import { getTopDeals } from '../state/Actions/topDeals';
+import { removeLikedDrink } from '../state/Actions/LikedDrinks/removeLikedDrink';
+import { addLikedDrink } from '../state/Actions/LikedDrinks/addLikedDrink';
 import DrinkCard from '../components/DrinkCard';
 import { DrinkCardPlaceholder } from '../placeholders/DrinkCardPlaceholder'
 import filter from '../utilities/filter';
@@ -34,6 +36,7 @@ class TopDeals extends Component {
 
   constructor(props) {
     super(props);
+    this.onHeartPress = this.onHeartPress.bind(this);
 
     this.state = {
       deals: [{}, {}, {}], //Empty objects for placeholders map
@@ -61,7 +64,7 @@ class TopDeals extends Component {
         onPress={() => {
           this.props.navigation.navigate('DetailView', {drink});
         }}>
-        <DrinkCard drink={drink} />
+        <DrinkCard drink={drink} onHeartPress={this.onHeartPress} />
       </TouchableOpacity>
     );
   };
@@ -97,13 +100,17 @@ class TopDeals extends Component {
     }
   };
 
-  DropDownIcon = () => (
-    <Icon
-      name="arrow-down"
-      type="font-awesome"
-      size={15}
-    />
-  );
+  onHeartPress(drink, lottieRef) {
+    const { docId } = drink;
+    const liked = this.props.likedDrinks.includes(docId);
+    if (liked) {
+      this.props.removeLikedDrink({ drinkId: docId });
+      lottieRef.current.reset();
+    } else {
+      this.props.addLikedDrink({ drinkId: docId });
+      lottieRef.current.play(0,50);
+    }
+  };
 
   render() {
     const { dataInitialized } = this.state;
@@ -198,11 +205,14 @@ const mapStateToProps = (state) => {
   return {
     isWaiting: state.topDeals.isWaiting,
     topDeals: state.topDeals.deals,
+    likedDrinks: state.topDeals.likedDrinks,
   };
 };
 
 const mapDispatchToProps = {
   getTopDeals,
+  removeLikedDrink,
+  addLikedDrink,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopDeals);

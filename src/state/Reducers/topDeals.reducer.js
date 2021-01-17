@@ -1,8 +1,10 @@
 import { GET_TOPDEALS_START, GET_TOPDEALS_SUCCEED, GET_TOPDEALS_FAIL } from '../Actions/actionTypes';
+import { mergeDrinkData } from '../../utilities/mergeDrinkData';
 
 const initialState = {
     isWaiting: false,
     deals: [],
+    likedDrinks: [],
 }
 
 const topDeals = (state = initialState, action) => {
@@ -10,11 +12,13 @@ const topDeals = (state = initialState, action) => {
         case GET_TOPDEALS_START:
             return { ...state, isWaiting: true };
         case GET_TOPDEALS_SUCCEED:
-            return { ...state, isWaiting: false, deals: action.payload };
+            const { topDeals, likedDrinks } = action.payload;
+            const deals = mergeDrinkData(topDeals, likedDrinks);
+            return { ...state, isWaiting: false, deals, likedDrinks };
         case GET_TOPDEALS_FAIL:
             return { ...state, isWaiting: false, error: action.payload };
         default:
-            return state
+            return state;
     }
 }
 

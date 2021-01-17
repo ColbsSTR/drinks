@@ -1,4 +1,4 @@
-import { LOGIN_AS_GUEST, LOGIN_SUCCEEDED } from './actionTypes';
+import { LOGIN_START, LOGIN_AS_GUEST, LOGIN_SUCCEEDED, LOGIN_FAIL, LOGIN_CANCELLED } from './actionTypes';
 
 export const loginAsGuest = () => {
     return {
@@ -6,10 +6,28 @@ export const loginAsGuest = () => {
     }
 }
 
+export const login = () => {
+    return {
+        type: LOGIN_START,
+    }
+}
+
 export const loginSucceeded = (data) => {
-    console.tron.log('data from login', data);
     return {
         type: LOGIN_SUCCEEDED,
         payload: data,
+    }
+}
+
+export const loginFail = (data) => {
+    return {
+        type: LOGIN_FAIL,
+        payload: data,
+    }
+}
+
+export const loginCancelled = () => {
+    return {
+        type: LOGIN_CANCELLED,
     }
 }

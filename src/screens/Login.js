@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
-import {View, Text, Image, Dimensions} from 'react-native';
-import { LoginManager, AccessToken } from 'react-native-fbsdk'
-import auth from '@react-native-firebase/auth';
+import {View, Text, Image, ActivityIndicator} from 'react-native';
 import { SocialIcon } from 'react-native-elements'
 import {connect} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
-import { loginAsGuest, loginSucceeded } from '../state/Actions/authentication';
+import { loginAsGuest, login } from '../state/Actions/authentication';
 import { LOGO } from '../assets/images/index';
 import COLORS from '../assets/colors';
 
@@ -16,90 +14,75 @@ class Login extends Component {
     this.state = {};
   }
 
-  handleFacebookLogin = async () => {
-    const result = await LoginManager.logInWithPermissions(["public_profile"]);
-    if (result.isCancelled) {
-      return;
-    }
-    // Once signed in, get the users AccesToken
-    const data = await AccessToken.getCurrentAccessToken();
-
-    if (!data) {
-      throw 'Something went wrong obtaining access token';
-    }
-
-    // Create a Firebase credential with the AccessToken
-    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
-
-    // Sign-in the user with the credential
-    const user = await auth().signInWithCredential(facebookCredential);
-
-    if (!user) {
-      throw 'Something went wrong trying to access your profile...';
-    }
-
-    //Set user state and login to the app
-    this.props.loginSucceeded(user);
+  handleFacebookLogin = () => {
+    this.props.login();
   }
 
   render() {
-    let deviceHeight = Dimensions.get('window').height
     const { orange, lightOrange, white, red } = COLORS;
+    const { isWaiting } = this.props;
+
     return (
-      <LinearGradient colors={[orange, lightOrange]} style={{ flex: 1 }}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <View style={{flex: 2, paddingTop: deviceHeight * .1 }}>
-            <View style={{ height: '50%' }}>
-              <Image
-                style={{ height: 100, width: 350, top: 10 }}
-                source={ LOGO }
-              />
-            </View>
+      <LinearGradient colors={[orange, lightOrange]} style={{ flex: 1, justifyContent: 'center' }}>
+        { isWaiting ? ( 
+          <ActivityIndicator size="large" color='white' /> 
+        ) : (
+        <View style={{ flex: 1, width: '100%', justifyContent: 'center' }}>
+          <View style={{ alignItems: 'center', paddingBottom: 15 }}>
+            <Image
+              style={{ height: 100, width: 350, top: 10 }}
+              source={ LOGO }
+            />
           </View>
-          <View style={{flex: 3, width: '100%' }}>
-            <View style={{padding: 5}}>
-              <SocialIcon
-                title='Sign In With Facebook'
-                button
-                type='facebook'
-                onPress={ this.handleFacebookLogin }
-              />
-            </View>
-            <View style={{padding: 5}}>
-              <SocialIcon
-                title='Sign In With Instagram'
-                button
-                type='instagram'
-              />
-            </View>
-            <View style={{padding: 5}}>
-              <SocialIcon
-                title='Sign In With Google'
-                button
-                type='google'
-                style={{ backgroundColor: red }}
-              />
-            </View>
-            <View style={{ padding: 5, justifyContent: 'center', alignItems: 'center' }}>
-              <Text
-                onPress={() => {
-                  this.props.loginAsGuest();
-                }}
-                style={{ color: white }}>
-                Continue As Guest
-              </Text>
-            </View>
+          <View style={{padding: 5}}>
+            <SocialIcon
+              title='Sign In With Facebook'
+              button
+              type='facebook'
+              onPress={ this.handleFacebookLogin }
+            />
           </View>
+          <View style={{padding: 5}}>
+            <SocialIcon
+              title='Sign In With Instagram'
+              button
+              type='instagram'
+            />
+          </View>
+          <View style={{padding: 5}}>
+            <SocialIcon
+              title='Sign In With Google'
+              button
+              type='google'
+              style={{ backgroundColor: red }}
+            />
+          </View>
+          <View style={{ padding: 5, justifyContent: 'center', alignItems: 'center' }}>
+            <Text
+              onPress={() => {
+                this.props.loginAsGuest();
+              }}
+              style={{ color: white }}>
+              Continue As Guest
+            </Text>
+          </View> 
         </View>
+        )}
       </LinearGradient>
     );
   }
 }
 
-const mapDispatchToProps = {
-  loginAsGuest,
-  loginSucceeded,
+const mapStatetoProps = (state) => {
+  return {
+    isWaiting: state.authentication.isWaiting
+  }
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapDispatchToProps = {
+  loginAsGuest,
+  login,
+};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Login);
 
