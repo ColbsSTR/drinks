@@ -11,6 +11,7 @@ import Profile from '../screens/Profile';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
 function HomeStackScreen() {
@@ -35,6 +36,37 @@ function HomeStackScreen() {
         }}
       />
     </HomeStack.Navigator>
+  );
+}
+
+function ProfileStackScreen() {
+  return (
+    <ProfileStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#ef8921',
+        },
+        headerTitleStyle: {
+          color: 'white',
+        },
+      }}
+    >
+      <ProfileStack.Screen 
+        name="Profile" 
+        component={Profile} 
+        options={{
+          headerShown: false,
+        }}
+      />
+      <ProfileStack.Screen 
+        name="DetailView" 
+        component={DetailView}
+        tintColor='black'
+        options={{
+          headerTintColor: 'black'
+        }}
+      />
+    </ProfileStack.Navigator>
   );
 }
 
@@ -75,7 +107,7 @@ export const RootNav = () => {
           }}
         >
           <Tab.Screen name="TopDeals" component={HomeStackScreen} />
-          <Tab.Screen name="Profile" component={Profile} />
+          <Tab.Screen name="Profile" component={ProfileStackScreen} />
         </Tab.Navigator>
         ) : (
           <AuthStack.Navigator

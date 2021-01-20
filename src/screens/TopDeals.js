@@ -56,6 +56,9 @@ class TopDeals extends Component {
     if (prevProps.topDeals.length === 0 && this.props.topDeals.length > 0) {
       this.setState({ deals: this.props.topDeals, dataInitialized: true });
     }
+    if (prevProps.likedDrinks !== this.props.likedDrinks) {
+      this.setState({ deals: this.props.topDeals})
+    }
   }
 
   renderDrinkCards(drink) {
@@ -114,7 +117,6 @@ class TopDeals extends Component {
 
   render() {
     const { dataInitialized } = this.state;
-
     return (
       <View style={styles.container}>
         <View style={[ styles.filterContainer, styles.card ]}>

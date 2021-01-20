@@ -1,23 +1,79 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { View, StyleSheet } from 'react-native';
-import { Avatar } from 'react-native-elements';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { View, StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Avatar, ButtonGroup } from 'react-native-elements';
 import { H2 } from 'native-base';
 import { deviceHeight } from '../assets/styles/dimensions/deviceDimensions';
 import COLORS from '../assets/colors';
-import LikedDrinks from './LikedDrinks';
-
-const Tab = createMaterialTopTabNavigator();
+import { removeLikedDrink } from '../state/Actions/LikedDrinks/removeLikedDrink';
+import { addLikedDrink } from '../state/Actions/LikedDrinks/addLikedDrink';
 
 class Profile extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			selectedTab: 0,
+		}
+		this.updateSelectedTab = this.updateSelectedTab.bind(this);
+		this.onHeartPress = this.onHeartPress.bind(this);
 	}
+
+	updateSelectedTab = (tab) => {
+		this.setState({selectedTab: tab});
+	};
+
+	onHeartPress(drink, lottieRef) {
+		const { docId } = drink;
+		const liked = this.props.likedDrinks.includes(docId);
+		if (liked) {
+		  this.props.removeLikedDrink({ drinkId: docId });
+		  lottieRef.current.reset();
+		} else {
+		  this.props.addLikedDrink({ drinkId: docId });
+		  lottieRef.current.play(0,50);
+		}
+	};
+
+	renderDrinkCards(drink) {
+		return (
+		  <TouchableOpacity
+			onPress={() => {
+			  this.props.navigation.navigate('DetailView', {drink});
+			}}>
+			<DrinkCard drink={drink} onHeartPress={this.onHeartPress} />
+		  </TouchableOpacity>
+		);
+	};
+
+	drinkCards = () => {
+		const likedDrinks = this.props.drinks.filter(drink => drink.liked);
+		return (
+			<FlatList
+            	data={likedDrinks}
+            	renderItem={({item}) => this.renderDrinkCards(item) }
+          	/>
+		);
+	}
+
+	renderSelectedTab = () => {
+		switch(this.state.selectedTab) {
+			case 0:
+				return this.drinkCards();
+			case 1:
+				return <Text>share me!!</Text>;
+			default:
+				return;
+		}
+	}
+
+	likedTabButton = () => <Text>Liked Drinks</Text>
+	shareTabButton = () => <Text>Share This App</Text>
 	
 	render() {
 		const { photoURL, displayName } = this.props.user.user;
+		const { selectedTab } = this.state;
+		const buttons = [{ element: this.likedTabButton }, { element: this.shareTabButton }];
+
 		return (
 			<View style={ styles.container }>
 				<View style={ styles.avatarContainer }>
@@ -35,11 +91,14 @@ class Profile extends Component {
 						</H2>
 					</View>
 				</View>
-				{/* <View style={{ flex: 1 }}>
-					<Tab.Navigator>
-						<Tab.Screen name="Liked Drinks" component={ LikedDrinks }/>
-					</Tab.Navigator>
-				</View> */}
+				<ButtonGroup
+					onPress={this.updateSelectedTab}
+					selectedIndex={selectedTab}
+					buttons={buttons}
+					containerStyle={{height: 38}} 
+					selectedButtonStyle={{backgroundColor: COLORS.orange}}
+				/>
+				{this.renderSelectedTab()}
 			</View>
 		);
 	}
@@ -47,24 +106,33 @@ class Profile extends Component {
 
 const styles = StyleSheet.create({
 	avatarContainer: {
-		flex: 1,
-		paddingTop: deviceHeight * .15,
+		paddingTop: deviceHeight * .10,
 	},
 	container: {
 		flex: 1,
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 		alignItems: 'center',
 	},
 	nameContainer: {
-		marginTop: 20,
+		marginVertical: 20,
 		alignItems: 'center',
+	},
+	tabContainer: {
+		flex: 1,
 	}
 });
 
 const mapStateToProps = (state) => {
 	return {
 		user: state.authentication.user,
+		drinks: state.topDeals.deals,
+		likedDrinks: state.topDeals.likedDrinks
 	}
 }
 
-export default connect(mapStateToProps)(Profile);
+const mapDispatchToProps = {
+	removeLikedDrink,
+	addLikedDrink,
+  };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
