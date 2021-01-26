@@ -49,11 +49,13 @@ class TopDeals extends Component {
   }
 
   componentDidMount() {
+    console.tron.log('topdeals mounted', this.props);
     this.props.getTopDeals();
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.topDeals.length === 0 && this.props.topDeals.length > 0) {
+    if (prevProps.topDeals !== this.props.topDeals) {
+      console.tron.log('topdeals componentDidUpdate', this.props, prevProps);
       this.setState({ deals: this.props.topDeals, dataInitialized: true });
     }
     if (prevProps.likedDrinks !== this.props.likedDrinks) {

@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { loginAsGuest, login } from '../state/Actions/authentication';
 import { LOGO } from '../assets/images/index';
 import COLORS from '../assets/colors';
-
+import { facebook, google } from '../language/keys/authentication/signInProvider';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -14,12 +14,12 @@ class Login extends Component {
     this.state = {};
   }
 
-  handleFacebookLogin = () => {
-    this.props.login();
+  handleLogin = (type) => {
+    this.props.login(type);
   }
 
   render() {
-    const { orange, lightOrange, white, red } = COLORS;
+    const { orange, lightOrange, white, red, black } = COLORS;
     const { isWaiting } = this.props;
 
     return (
@@ -27,6 +27,7 @@ class Login extends Component {
         { isWaiting ? ( 
           <ActivityIndicator size="large" color='white' /> 
         ) : (
+        <>
         <View style={{ flex: 1, width: '100%', justifyContent: 'center' }}>
           <View style={{ alignItems: 'center', paddingBottom: 15 }}>
             <Image
@@ -36,25 +37,26 @@ class Login extends Component {
           </View>
           <View style={{padding: 5}}>
             <SocialIcon
-              title='Sign In With Facebook'
+              title='Continue With Facebook'
               button
               type='facebook'
-              onPress={ this.handleFacebookLogin }
+              onPress={ () => this.handleLogin(facebook) }
             />
           </View>
           <View style={{padding: 5}}>
             <SocialIcon
-              title='Sign In With Instagram'
+              title='Continue With Instagram'
               button
               type='instagram'
             />
           </View>
           <View style={{padding: 5}}>
             <SocialIcon
-              title='Sign In With Google'
+              title='Continue With Google'
               button
               type='google'
               style={{ backgroundColor: red }}
+              onPress={ () => this.handleLogin(google) }
             />
           </View>
           <View style={{ padding: 5, justifyContent: 'center', alignItems: 'center' }}>
@@ -67,6 +69,10 @@ class Login extends Component {
             </Text>
           </View> 
         </View>
+        <View style={{ marginBottom: 20, alignItems: 'center' }}>
+          <Text style={{ color: black }}>Please drink responsibly</Text>
+        </View>
+        </>
         )}
       </LinearGradient>
     );

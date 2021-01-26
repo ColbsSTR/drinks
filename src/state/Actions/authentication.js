@@ -1,4 +1,4 @@
-import { LOGIN_START, LOGIN_AS_GUEST, LOGIN_SUCCEEDED, LOGIN_FAIL, LOGIN_CANCELLED } from './actionTypes';
+import { LOGIN_START, LOGOUT_START, LOGIN_AS_GUEST, LOGIN_SUCCEEDED, LOGIN_FAIL, LOGIN_CANCELLED } from './actionTypes';
 
 export const loginAsGuest = () => {
     return {
@@ -6,9 +6,16 @@ export const loginAsGuest = () => {
     }
 }
 
-export const login = () => {
+export const login = (provider) => {
     return {
         type: LOGIN_START,
+        payload: provider,
+    }
+}
+
+export const logout = () => {
+    return {
+        type: LOGOUT_START,
     }
 }
 

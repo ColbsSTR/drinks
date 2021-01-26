@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Card,
@@ -11,10 +11,26 @@ import {
   Icon,
 } from 'native-base';
 import {StyleSheet} from 'react-native';
+import { useIsFocused } from '@react-navigation/native'
 import COLORS from '../assets/colors';
+import { getCurrentDayOfWeek, getCurrentTimeMilitaryFormat } from '../utilities/time';
 
 export default DrinkDetailCard = (props) => {
   const drink = props.drink;
+  const [isDrinkLive, setDrinkStatus] = useState(false);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const { Days, Hours } = drink;
+    const currentDay = getCurrentDayOfWeek();
+    const currentTime = getCurrentTimeMilitaryFormat();
+    if(Days.includes(currentDay) && (currentTime >= Hours.Beginning && currentTime < Hours.End)) {
+      setDrinkStatus(true);
+    } else {
+      setDrinkStatus(false);
+    }
+  }, [isFocused]);
+
   return (
     <Card style={styles.card1}>
       <CardItem header bordered style={styles.center}>
@@ -48,12 +64,12 @@ export default DrinkDetailCard = (props) => {
       </ListItem>
       <ListItem icon>
         <Left>
-          <Button style={{backgroundColor: drink.open ? 'orange' : 'red'}}>
-            <Icon type="FontAwesome" name={drink.open ? 'check' : 'times'} />
+          <Button style={{backgroundColor: isDrinkLive ? COLORS.orange : COLORS.red}}>
+            <Icon type="FontAwesome" name={isDrinkLive ? 'check' : 'times'} />
           </Button>
         </Left>
         <Body>
-          <Text>Open Currently</Text>
+          <Text>Available Currently</Text>
         </Body>
       </ListItem>
       <CardItem>

@@ -1,16 +1,21 @@
+import { Alert } from 'react-native';
 import { takeLatest, put, call } from 'redux-saga/effects';
-import { LOGIN_START } from '../Actions/actionTypes';
+import { LOGIN_START, LOGOUT_START, LOGOUT_SUCCEED, RESET_DEALS } from '../Actions/actionTypes';
 import { loginSucceeded, loginFail, loginCancelled } from '../Actions/authentication';
-import { loginWithFacebook } from '../../services/Firebase/authentication';
+import { login, logout } from '../../services/Firebase/authentication';
 import { createNewUser, isNewUser } from '../../services/Firebase/users';
+import { emailInUse } from '../../language/keys/authentication/errorCodes';
+import { errors } from '../../language/locales/login/errorStrings';
 
 export function* authenticationWatcher() {
-    yield takeLatest(LOGIN_START, authenticationWorker);
+    yield takeLatest(LOGIN_START, loginWorker);
+    yield takeLatest(LOGOUT_START, logoutWorker);
 }
 
-export function* authenticationWorker() {
+export function* loginWorker(action) {
     try {
-        const user = yield call(loginWithFacebook);
+        const { payload } = action;
+        const user = yield call(login, payload);
         if (user) { //This check is for the case where the user presses cancel
             const newUser = yield call(isNewUser, user);
             if (newUser) {
@@ -22,6 +27,22 @@ export function* authenticationWorker() {
         }
     } catch(err) {
         yield put(loginFail(err));
-        //***TODO*** modal??
+        //***TODO*** modal
+        if (err.code.toString() === emailInUse) {
+            Alert.alert(
+                errors.emailInUseHeader,
+                errors.emailInUseDescription,
+            );
+        }
+    }
+}
+
+export function* logoutWorker() {
+    try {
+        yield call(logout);
+        yield put({ type: LOGOUT_SUCCEED });
+        yield put({ type: RESET_DEALS });
+    } catch(err) {
+        //Not really sure what need to be done here
     }
 }

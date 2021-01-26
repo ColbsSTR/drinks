@@ -16,6 +16,7 @@ export const createNewUser = async (user) => {
 export const isNewUser = async (user) => {
     try {
         const userDoc = await firestore().collection('Users').doc(user.user.uid).get();
+
         if (!userDoc.data()) {
             return true;
         }

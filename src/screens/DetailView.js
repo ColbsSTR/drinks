@@ -5,7 +5,6 @@ import MapView from 'react-native-maps';
 import {ScrollView} from 'react-native-gesture-handler';
 import { Rating } from "react-native-elements";
 import {showModal} from '../state/Actions/modal';
-import {getVenueInformation} from '../state/Actions/venueInformation';
 import ReviewModal from '../components/ReviewModal';
 import DrinkDetailCard from '../components/DrinkDetailCard';
 import {connect} from 'react-redux';
@@ -15,11 +14,9 @@ import COLORS from '../assets/colors';
 class Detailview extends Component {
   constructor(props) {
     super(props);
-  }
-
-  componentDidMount() {
-    const { docId } = this.props.route.params.drink;
-    this.props.getVenueInformation(docId);
+    this.state = {
+      isDrinkLive: false,
+    }
   }
 
   render() {
@@ -86,12 +83,10 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     topDeals: state.topDeals.deals,
-    venue: state.venueInformation,
   };
 };
 
 const mapDispatchToProps = {
-  getVenueInformation,
   showModal,
 };
 

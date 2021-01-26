@@ -9,6 +9,11 @@ export const LOGIN_SUCCEEDED = 'LOGIN_SUCCEEDED';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGIN_CANCELLED = 'LOGIN_CANCELLED';
 
+// Logout
+export const LOGOUT_START = 'LOGOUT_START';
+export const LOGOUT_SUCCEED = 'LOGOUT_SUCCEED';
+export const RESET_DEALS = 'RESET_DEALS';
+
 //**********************//
 //ASYNC OPERATIONS TYPES//
 //**********************//

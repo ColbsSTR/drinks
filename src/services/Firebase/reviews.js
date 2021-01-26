@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 
-export const writeReviews = (data) => {
+export const writeReviews = (data, user) => {
     const { docID, rating } = data;
     //**TODO**
     //Need to add a check for if there is already a document. If so, update, else add. This should never
@@ -8,7 +8,7 @@ export const writeReviews = (data) => {
     //reviews.
     firestore().collection('Drinks').doc(docID).collection('Reviews').add({
         Rating: rating,
-        userID: 'test', //**TODO** This will need to be firebase.auth.currentUser()
+        userID: user.user.uid,
     }).then((resp) => {
         return resp;
     }).catch((err) => {

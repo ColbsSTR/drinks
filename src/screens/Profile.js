@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { View, StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Avatar, ButtonGroup } from 'react-native-elements';
 import { H2 } from 'native-base';
 import { deviceHeight } from '../assets/styles/dimensions/deviceDimensions';
@@ -70,10 +70,10 @@ class Profile extends Component {
 	shareTabButton = () => <Text>Share This App</Text>
 	
 	render() {
-		const { photoURL, displayName } = this.props.user.user;
+		const { photoURL, displayName } = this.props.user.user || {};
+		const { removing } = this.props;
 		const { selectedTab } = this.state;
 		const buttons = [{ element: this.likedTabButton }, { element: this.shareTabButton }];
-
 		return (
 			<View style={ styles.container }>
 				<View style={ styles.avatarContainer }>
@@ -98,6 +98,7 @@ class Profile extends Component {
 					containerStyle={{height: 38}} 
 					selectedButtonStyle={{backgroundColor: COLORS.orange}}
 				/>
+				{ removing && ( <ActivityIndicator size="large" color='gray' /> ) }
 				{this.renderSelectedTab()}
 			</View>
 		);
@@ -106,7 +107,7 @@ class Profile extends Component {
 
 const styles = StyleSheet.create({
 	avatarContainer: {
-		paddingTop: deviceHeight * .10,
+		paddingTop: deviceHeight * .03,
 	},
 	container: {
 		flex: 1,
@@ -126,7 +127,8 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.authentication.user,
 		drinks: state.topDeals.deals,
-		likedDrinks: state.topDeals.likedDrinks
+		likedDrinks: state.topDeals.likedDrinks,
+		removing: state.likedDrinks.removeLikedDrink.isWaiting,
 	}
 }
 

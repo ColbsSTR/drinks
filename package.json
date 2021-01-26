@@ -11,6 +11,7 @@
     "pods": "cd ios && pod install && cd .."
   },
   "dependencies": {
+    "@react-native-community/google-signin": "^5.0.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/picker": "^1.8.1",
     "@react-native-firebase/app": "^10.3.0",
@@ -23,6 +24,7 @@
     "lodash": "^4.17.20",
     "lottie-ios": "^3.1.8",
     "lottie-react-native": "^3.5.0",
+    "moment": "^2.29.1",
     "native-base": "^2.13.14",
     "react": "16.13.1",
     "react-native": "0.63.2",
