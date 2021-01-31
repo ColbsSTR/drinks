@@ -45,6 +45,23 @@
 	<string>drinksApp</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>comgooglemaps</string>
+		<string>citymapper</string>
+		<string>uber</string>
+		<string>lyft</string>
+		<string>transit</string>
+		<string>truckmap</string>
+		<string>waze</string>
+		<string>yandexnavi</string>
+		<string>moovit</string>
+		<string>yandextaxi</string>
+		<string>yandexmaps</string>
+		<string>kakaomap</string>
+		<string>szn-mapy</string>
+		<string>mapsme</string>
+		<string>osmandmaps</string>
+		<string>gett</string>
+		<string>nmap</string>
 		<string>fbapi</string>
 		<string>fbapi20130214</string>
 		<string>fbapi20130410</string>
@@ -77,7 +94,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Location is required to show the best drink specials around you.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
