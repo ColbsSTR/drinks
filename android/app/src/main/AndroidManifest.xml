@@ -2,6 +2,7 @@
   package="com.drinksapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <meta-data
       android:name="com.google.android.geo.API_KEY"
       android:value="Your Google maps API Key Here"/>
@@ -41,6 +42,10 @@
               <data android:scheme="@string/fb_login_protocol_scheme" />
           </intent-filter>
       </activity>
+      <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyC5f0ZMMaX0ZaDGt7iCq2Zl2y4i3RHLMxk"/>
+      <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </application>
 
 </manifest>

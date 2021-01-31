@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from 'native-base';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import {ScrollView} from 'react-native-gesture-handler';
 import { Rating } from "react-native-elements";
+import { showLocation } from 'react-native-map-link'
 import {showModal} from '../state/Actions/modal';
 import ReviewModal from '../components/ReviewModal';
 import DrinkDetailCard from '../components/DrinkDetailCard';
@@ -19,6 +20,16 @@ class Detailview extends Component {
     }
   }
 
+  getDirections = () => {
+    const {drink} = this.props.route.params;
+    showLocation({
+      latitude: drink.Location._latitude,
+      longitude: drink.Location._longitude,
+      title: drink.Venue,
+      appsWhiteList: ['google-maps', 'apple-maps'],
+  })
+  }
+
   render() {
     const {drink} = this.props.route.params;
     const rating = formatRating(drink.Rating);
@@ -29,12 +40,18 @@ class Detailview extends Component {
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitude: drink.Location._latitude,
+            longitude: drink.Location._longitude,
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
           }}
-        />
+        >
+          <Marker
+            coordinate={{ latitude: drink.Location._latitude, longitude: drink.Location._longitude}}
+            title='Tap to get directions'
+            onCalloutPress={() => this.getDirections()}
+          />
+        </MapView>
         <View style={{paddingTop: 30}}>
           <Rating 
             imageSize={30} 

@@ -10,10 +10,37 @@ import DetailView from '../screens/DetailView';
 import Login from '../screens/Login';
 import Profile from '../screens/Profile';
 import Settings from '../screens/Settings';
+import DrinkMap from '../screens/DrinkMap';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
+
+function MapStack() {
+  return (
+    <MainStack.Navigator>
+      <MainStack.Screen name="DrinkMap" component={DrinkMap} 
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen 
+        name="DetailView" 
+        component={DetailView}
+        tintColor='black'
+        options={{
+          headerStyle: {
+            backgroundColor: '#ef8921',
+          },
+          headerTitleStyle: {
+            color: 'white',
+          },
+          headerTintColor: 'black'
+        }}
+      />
+    </MainStack.Navigator>
+  );
+}
 
 function HomeStack() {
   return (
@@ -96,6 +123,9 @@ function Tabs() {
             case 'Profile':
               iconName = focused ? 'user' : 'user';
               break;
+            case 'DrinkMap':
+              iconName = focused ? 'map' : 'map';
+              break;
             default:
               break;
           }
@@ -112,7 +142,9 @@ function Tabs() {
         activeTintColor: '#fca311',
         inactiveTintColor: 'gray',
       }}
+      initialRouteName='TopDeals'
     >
+      <Tab.Screen name="DrinkMap" component={MapStack} />
       <Tab.Screen name="TopDeals" component={HomeStack}/>
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
