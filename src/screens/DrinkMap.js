@@ -27,9 +27,10 @@ class DrinkMap extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
                 <MapView
-                    style={{ flex: 1 }}
+                    style={{ 
+                    flex: 1,
+                    }}
                     region={this.state.region}
                 >
                     {this.props.topDeals.map((drink, index) => (
@@ -42,13 +43,12 @@ class DrinkMap extends Component {
                         >
                             <Image
                                 source={this.getMarkerImage(drink.Type)}
-                                style={{ width: 50, height: 50, color: 'orange' }}
+                                style={{ width: 50, height: 50 }}
                                 resizeMode="contain"
                             />
                         </Marker>
                     ))}
                 </MapView>
-            </View>
         );
     }
 }

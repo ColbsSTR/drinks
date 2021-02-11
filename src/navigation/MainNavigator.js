@@ -54,7 +54,7 @@ function HomeStack() {
         },
       }}
     >
-      <MainStack.Screen name="TopDeals" component={TopDeals} />
+      <MainStack.Screen name="TopDeals" component={TopDeals} options={{ headerShown: false }}/>
       <MainStack.Screen 
         name="DetailView" 
         component={DetailView}
@@ -101,6 +101,14 @@ function ProfileStack () {
       <MainStack.Screen
         name="Settings"
         component={Settings}
+        options={{
+          headerTintColor: 'black'
+        }}
+      />
+      <MainStack.Screen 
+        name="DetailView" 
+        component={DetailView}
+        tintColor='black'
         options={{
           headerTintColor: 'black'
         }}

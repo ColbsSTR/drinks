@@ -7,6 +7,8 @@ import { loginAsGuest, login } from '../state/Actions/authentication';
 import { LOGO } from '../assets/images/index';
 import COLORS from '../assets/colors';
 import { facebook, google } from '../language/keys/authentication/signInProvider';
+import ClankingDrinks from '../components/ClankingDrinks';
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -24,8 +26,8 @@ class Login extends Component {
 
     return (
       <LinearGradient colors={[orange, lightOrange]} style={{ flex: 1, justifyContent: 'center' }}>
-        { isWaiting ? ( 
-          <ActivityIndicator size="large" color='white' /> 
+        { isWaiting ? (
+          <ClankingDrinks />
         ) : (
         <>
         <View style={{ flex: 1, width: '100%', justifyContent: 'center' }}>

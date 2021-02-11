@@ -6,10 +6,9 @@ import {
   TouchableOpacity, 
   View, 
   Dimensions, 
-  Platform 
+  ScrollView,
 } from 'react-native';
-import { Icon } from 'native-base';
-import RNPickerSelect from 'react-native-picker-select';
+import { Header, Button, Icon, Segment, Text } from 'native-base';
 import { getTopDeals } from '../state/Actions/topDeals';
 import { removeLikedDrink } from '../state/Actions/LikedDrinks/removeLikedDrink';
 import { addLikedDrink } from '../state/Actions/LikedDrinks/addLikedDrink';
@@ -17,6 +16,7 @@ import DrinkCard from '../components/DrinkCard';
 import { DrinkCardPlaceholder } from '../placeholders/DrinkCardPlaceholder'
 import filter from '../utilities/filter';
 import COLORS from '../assets/colors';
+import Filters from '../components/Filters/Filters';
 
 const TabIcon = (props) => (
   <Icon
@@ -37,6 +37,7 @@ class TopDeals extends Component {
   constructor(props) {
     super(props);
     this.onHeartPress = this.onHeartPress.bind(this);
+    this.filterDrinks = this.filterDrinks.bind(this);
 
     this.state = {
       deals: [{}, {}, {}], //Empty objects for placeholders map
@@ -45,17 +46,16 @@ class TopDeals extends Component {
       filterByType: null,
       filterByPrice: null,
       filterByDistance: null,
+      selectedTab: 1,
     };
   }
 
   componentDidMount() {
-    console.tron.log('topdeals mounted', this.props);
     this.props.getTopDeals();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.topDeals !== this.props.topDeals) {
-      console.tron.log('topdeals componentDidUpdate', this.props, prevProps);
       this.setState({ deals: this.props.topDeals, dataInitialized: true });
     }
     if (prevProps.likedDrinks !== this.props.likedDrinks) {
@@ -79,21 +79,21 @@ class TopDeals extends Component {
     let filteredDrinks = [];
 
     switch(filterObject.type) {
-      case 'filterByType':
+      case 'Type':
         filteredDrinks = filter(this.props.topDeals, {drinkType: filterObject.value, drinkPrice: filterByPrice, drinkRating: filterByRating});
         this.setState({
           filterByType: filterObject.value,
           deals: filteredDrinks
         });
         break;
-      case 'filterByPrice':
+      case 'Price':
         filteredDrinks = filter(this.props.topDeals, {drinkType: filterByType, drinkPrice: filterObject.value, drinkRating: filterByRating});
         this.setState({
           filterByPrice: filterObject.value,
           deals: filteredDrinks
         });
         break;
-      case 'filterByDistance':
+      case 'Distance':
         filteredDrinks = filter(this.props.topDeals, {drinkType: filterByType, drinkPrice: filterByPrice, drinkDistance: filterObject.value});
         this.setState({
           filterByDistance: filterObject.value,
@@ -116,59 +116,49 @@ class TopDeals extends Component {
       lottieRef.current.play(0,50);
     }
   };
+  
+  onSegmentButtonPress(tab) {
+    this.setState({ selectedTab: tab });
+  }
+
+  segmentButton(buttonName, tab, first, last) {
+    const selected = this.state.selectedTab === tab ? true : false;
+    return (
+      <Button 
+        style={[styles.segmentButton, selected && styles.activeSegmentButton]}
+        onPress={() => this.onSegmentButtonPress(tab)}
+        first={first}
+        last={last}
+      >
+        <Text style={[styles.segmentButtonText, selected && styles.activeSegmentButtonText]}>
+          {buttonName}
+        </Text>
+      </Button>
+    );
+  }
 
   render() {
     const { dataInitialized } = this.state;
     return (
       <View style={styles.container}>
-        <View style={[ styles.filterContainer, styles.card ]}>
-          <Icon name='filter-outline' style={{ padding: 8}} />
-          <View style={{ flex: 1, flexDirection: 'row', paddingVertical: 5 }}>
-            <Icon name='beer'/>
-            <RNPickerSelect
-              onValueChange={(type) => this.filterDrinks({type: 'filterByType' , value: type})}
-              placeholder={ { label: 'All Types', value: null } }
-              style={ Platform.OS === 'ios' ? { inputIOS: { paddingTop: 8, paddingHorizontal: 5 }}: {}}
-              items={[
-                { label: 'Beer', value: 'Beer' },
-                { label: 'Cocktail', value: 'Cocktail' },
-                { label: 'Wine', value: 'Wine' },
-              ]}
-            />
-          </View>
-          <View style={{ flex: 1, flexDirection: 'row', paddingVertical: 6 }}>
-            <Icon name='cash-outline' />
-            <RNPickerSelect
-              onValueChange={(price) => this.filterDrinks({type: 'filterByPrice' , value: price})}
-              placeholder={ { label: 'All Prices', value: null } }
-              style={ Platform.OS === 'ios' ? { inputIOS: { paddingTop: 8, paddingHorizontal: 5 }}: {}}
-              items={[
-                { label: '$1', value: 1 },
-                { label: '$3 or less', value: 3 },
-                { label: '$5 or less', value: 5 },
-              ]}
-            />
-          </View>
-          <View style={{ flex: 1, flexDirection: 'row', paddingVertical: 5 }}>
-            <Icon name='navigate-outline' />
-            <RNPickerSelect
-              onValueChange={(distance) => this.filterDrinks({type: 'filterByDistance' , value: distance})}
-              placeholder={ { label: 'Any Distance', value: null } }
-              style={ Platform.OS === 'ios' ? { inputIOS: { paddingTop: 8 }}: { inputAndroid: { paddingTop: 40 }}}
-              items={[
-                { label: '< 5 miles', value: 5 },
-                { label: '< 10 miles', value: 10 },
-                { label: '< 20 miles', value: 20 },
-              ]}
-            />
-          </View>
-        </View>
-        <View style={{ flex: 1 }} >
-          <FlatList
-            data={this.state.deals}
-            renderItem={({item}) => dataInitialized ? this.renderDrinkCards(item) : <DrinkCardPlaceholder /> }
+        <Header hasSegment style={{ backgroundColor: COLORS.orange, width: '100%', borderBottomColor: 'black', borderBottomWidth: 2 }}>
+            <Segment style={styles.segment}>
+              {this.segmentButton('Specialty', 0, true, false)}
+              {this.segmentButton('Top Deals', 1, false, false)}
+              {this.segmentButton('Local Craft', 2, false, true)}
+            </Segment>
+        </Header>
+        <ScrollView>
+          <Filters 
+            filterDrinks={this.filterDrinks}
           />
-        </View>
+          <View>
+            <FlatList
+              data={this.state.deals}
+              renderItem={({item}) => dataInitialized ? this.renderDrinkCards(item) : <DrinkCardPlaceholder /> }
+            />
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -181,13 +171,6 @@ const styles = StyleSheet.create({
     shadowOffset:{ width: 0, height: 3 },
     borderRadius: 5,
     backgroundColor: COLORS.white,
-  },
-  filterContainer: {
-    height: Platform.OS === 'ios' ? height * .06 : height * .08, 
-    flexDirection: 'row', 
-    alignItems: 'center',
-    backgroundColor: COLORS.backgroundWhite,
-    marginBottom: 10,
   },
   container: {
     flex: 1,
@@ -202,6 +185,22 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     color: COLORS.black,
     paddingRight: 30,
+  },
+  segment: {
+    backgroundColor: COLORS.orange,
+  },
+  segmentButton: {
+    borderColor: COLORS.white,
+    borderWidth: 3
+  },
+  segmentButtonText: {
+    color: COLORS.white,
+  },
+  activeSegmentButtonText: {
+    color: COLORS.orange,
+  },
+  activeSegmentButton: {
+    backgroundColor: COLORS.white,
   },
 });
 

@@ -18,7 +18,7 @@ export default function filter(drinks, filters) {
 }
 
 export function filterByTypeOfDrink (drinks, typeOfDrink) {
-    if (typeOfDrink === 'ALL') {
+    if (typeOfDrink === 'All') {
         return drinks;
     }
     let filteredDrinks = [];
@@ -31,7 +31,7 @@ export function filterByTypeOfDrink (drinks, typeOfDrink) {
 }
 
 export function filterByPrice(drinks, price) {
-    if (price === 'ALL') {
+    if (price === 'All') {
         return drinks;
     }
     let filteredDrinks = [];
@@ -44,7 +44,7 @@ export function filterByPrice(drinks, price) {
 }
 
 export function filterByDistance(drinks, distance) {
-    if (distance === 'ALL') {
+    if (distance === 'All') {
         return drinks;
     }
     let filteredDrinks = [];

@@ -49,9 +49,9 @@ class Profile extends Component {
 		const likedDrinks = this.props.drinks.filter(drink => drink.liked);
 		return (
 			<FlatList
-            	data={likedDrinks}
-            	renderItem={({item}) => this.renderDrinkCards(item) }
-          	/>
+        data={likedDrinks}
+        renderItem={({item}) => this.renderDrinkCards(item) }
+      />
 		);
 	}
 
@@ -79,7 +79,7 @@ class Profile extends Component {
 				<View style={ styles.avatarContainer }>
 					<Avatar 
 						rounded
-						size="xlarge"
+						size="large"
 						source={{
 							uri:
 								photoURL ? photoURL : 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
@@ -95,7 +95,7 @@ class Profile extends Component {
 					onPress={this.updateSelectedTab}
 					selectedIndex={selectedTab}
 					buttons={buttons}
-					containerStyle={{height: 38}} 
+					containerStyle={{height: 30}} 
 					selectedButtonStyle={{backgroundColor: COLORS.orange}}
 				/>
 				{ removing && ( <ActivityIndicator size="large" color='gray' /> ) }
@@ -107,7 +107,9 @@ class Profile extends Component {
 
 const styles = StyleSheet.create({
 	avatarContainer: {
-		paddingTop: deviceHeight * .03,
+    paddingTop: deviceHeight * .03,
+    justifyContent: 'center',
+    alignItems: 'center',
 	},
 	container: {
 		flex: 1,
