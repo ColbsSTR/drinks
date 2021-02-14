@@ -7,7 +7,7 @@ import { deviceHeight } from '../assets/styles/dimensions/deviceDimensions';
 import COLORS from '../assets/colors';
 import { removeLikedDrink } from '../state/Actions/LikedDrinks/removeLikedDrink';
 import { addLikedDrink } from '../state/Actions/LikedDrinks/addLikedDrink';
-import DrinkCard from '../components/DrinkCard';
+import DrinkSnippetCard from '../components/DrinkSnippetCard';
 
 class Profile extends Component {
 	constructor(props) {
@@ -41,7 +41,7 @@ class Profile extends Component {
 			onPress={() => {
 			  this.props.navigation.navigate('DetailView', {drink});
 			}}>
-			<DrinkCard drink={drink} onHeartPress={this.onHeartPress} />
+				<DrinkSnippetCard drink={drink} />
 		  </TouchableOpacity>
 		);
 	};
@@ -96,8 +96,8 @@ class Profile extends Component {
 					onPress={this.updateSelectedTab}
 					selectedIndex={selectedTab}
 					buttons={buttons}
-					containerStyle={{height: 30}} 
-					selectedButtonStyle={{backgroundColor: COLORS.orange}}
+					containerStyle={ styles.unSelectedButton } 
+					selectedButtonStyle={ styles.selectedButton }
 				/>
 				{ removing && ( <ActivityIndicator size="large" color='gray' /> ) }
 				{this.renderSelectedTab()}
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'flex-start',
 		alignItems: 'center',
+		backgroundColor: COLORS.backgroundWhite,
 	},
 	nameContainer: {
 		marginVertical: 20,
@@ -123,6 +124,13 @@ const styles = StyleSheet.create({
 	},
 	tabContainer: {
 		flex: 1,
+	},
+	unSelectedButton: {
+		height: 30, 
+		backgroundColor: COLORS.white,
+	},
+	selectedButton: {
+		backgroundColor: COLORS.orange,
 	}
 });
 

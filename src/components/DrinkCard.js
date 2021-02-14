@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
   card: {
     shadowRadius: 3, 
     shadowOpacity: .3, 
-    shadowOffset:{ width: 0, height: 3 },
+    shadowOffset:{ width: 0, height: 1 },
     borderRadius: 5,
     backgroundColor: COLORS.white,
     width: Dimensions.get('window').width - 20,

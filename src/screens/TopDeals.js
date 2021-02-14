@@ -67,7 +67,9 @@ class TopDeals extends Component {
       <TouchableOpacity
         onPress={() => {
           this.props.navigation.navigate('DetailView', {drink});
-        }}>
+        }}
+        style={{ backgroundColor: COLORS.backgroundWhite }}
+      >
         <DrinkCard drink={drink} onHeartPress={this.onHeartPress} />
       </TouchableOpacity>
     );
