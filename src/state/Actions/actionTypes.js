@@ -18,11 +18,11 @@ export const RESET_DEALS = 'RESET_DEALS';
 //ASYNC OPERATIONS TYPES//
 //**********************//
 
-// Get deals from firebase
-export const GET_TOPDEALS = 'GET_TOPDEALS';
-export const GET_TOPDEALS_START = 'GET_TOPDEALS_START';
-export const GET_TOPDEALS_SUCCEED = 'GET_TOPDEALS_SUCCEED';
-export const GET_TOPDEALS_FAIL = 'GET_TOPDEALS_FAIL';
+// Get all drinks from firebase
+export const GET_ALL_DRINKS = 'GET_ALL_DRINKS';
+export const GET_ALL_DRINKS_START = 'GET_ALL_DRINKS_START';
+export const GET_ALL_DRINKS_SUCCEED = 'GET_ALL_DRINKS_SUCCEED';
+export const GET_ALL_DRINKS_FAIL = 'GET_ALL_DRINKS_FAIL';
 
 // Get information about the venue
 export const GET_VENUEINFORMATION = 'GET_VENUEINFORMATION';

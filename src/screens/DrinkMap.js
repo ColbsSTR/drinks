@@ -55,7 +55,7 @@ class DrinkMap extends Component {
 
 const mapStateToProps = (state) => {
     return {
-      topDeals: state.topDeals.deals,
+      topDeals: state.drinks.allDrinks,
     };
 };
 

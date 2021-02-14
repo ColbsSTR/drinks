@@ -7,6 +7,7 @@ import { deviceHeight } from '../assets/styles/dimensions/deviceDimensions';
 import COLORS from '../assets/colors';
 import { removeLikedDrink } from '../state/Actions/LikedDrinks/removeLikedDrink';
 import { addLikedDrink } from '../state/Actions/LikedDrinks/addLikedDrink';
+import DrinkCard from '../components/DrinkCard';
 
 class Profile extends Component {
 	constructor(props) {
@@ -128,8 +129,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
 	return {
 		user: state.authentication.user,
-		drinks: state.topDeals.deals,
-		likedDrinks: state.topDeals.likedDrinks,
+		drinks: state.drinks.allDrinks,
+		likedDrinks: state.drinks.likedDrinks,
 		removing: state.likedDrinks.removeLikedDrink.isWaiting,
 	}
 }

@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    topDeals: state.topDeals.deals,
+    topDeals: state.drinks.deals,
   };
 };
 

@@ -1,10 +1,10 @@
 import _ from 'lodash';
 
-export const mergeDrinkData = (topDeals, likedDrinks) => {
-    const modifiedDeals = [];
-    _.forEach(topDeals, drink => {
+export const mergeDrinkData = (allDrinks, likedDrinks) => {
+    const modifiedDrinks = [];
+    _.forEach(allDrinks, drink => {
         drink['liked'] = likedDrinks ? likedDrinks.includes(drink.docId) : false;
-        modifiedDeals.push(drink);
+        modifiedDrinks.push(drink);
     });
-    return modifiedDeals;
+    return modifiedDrinks;
 }
