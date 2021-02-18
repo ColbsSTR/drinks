@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import { Button, Icon } from 'native-base';
 import RBSheet from "react-native-raw-bottom-sheet";
 import _ from 'lodash';
@@ -8,6 +8,7 @@ import { FilterButton } from './FilterButton';
 import { FilterItem } from './FilterItem';
 import { ActiveFilterButton } from './ActiveFilterButton';
 import { distances, types, prices } from '../../language/locales/filters/index';
+import isLocationAvailable from '../../services/isLocationAvailable';
 
 class Filters extends Component {
   constructor(props) {
@@ -21,9 +22,19 @@ class Filters extends Component {
     };
   }
 
-  handleFilterPress = (filterType) => {
-    this.setState({ selectedFilterType: filterType });
-    this.RBSheet.open();
+  handleFilterPress = async (filterType) => {
+    if (filterType === 'Distance') {
+      const locationAvailable = await isLocationAvailable();
+      if (locationAvailable) {
+        this.setState({ selectedFilterType: filterType });
+        this.RBSheet.open();
+      } else {
+        Alert.alert(`Sorry, we can't locate you. Enable DrinksApp for location services in settings.`);
+      }
+    } else {
+      this.setState({ selectedFilterType: filterType });
+      this.RBSheet.open();
+    }
   }
 
   handleFilterItemPress = (filterValue) => {

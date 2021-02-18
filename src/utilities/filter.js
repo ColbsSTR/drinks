@@ -1,20 +1,21 @@
 import _ from 'lodash';
+import haversine from 'haversine';
 
-export default function filter(drinks, filters) {
-    const { drinkType, drinkPrice, drinkDistance } = filters;
-    let filteredDrinks = drinks;
+export default function filter(drinks, filters, currentLocation) {
+  const { drinkType, drinkPrice, drinkDistance } = filters;
+  let filteredDrinks = drinks;
 
-    if (drinkType) {
-        filteredDrinks = filterByTypeOfDrink(filteredDrinks, drinkType);
-    }
-    if (drinkPrice) {
-        filteredDrinks = filterByPrice(filteredDrinks, drinkPrice);
-    }
-    if (drinkDistance) {
-        filteredDrinks = filterByDistance(filteredDrinks, drinkDistance);
-    }
+  if (drinkType) {
+      filteredDrinks = filterByTypeOfDrink(filteredDrinks, drinkType);
+  }
+  if (drinkPrice) {
+      filteredDrinks = filterByPrice(filteredDrinks, drinkPrice);
+  }
+  if (drinkDistance) {
+      filteredDrinks = filterByDistance(filteredDrinks, drinkDistance, currentLocation);
+  }
 
-    return filteredDrinks;
+  return filteredDrinks;
 }
 
 export function filterByTypeOfDrink (drinks, typeOfDrink) {
@@ -43,15 +44,18 @@ export function filterByPrice(drinks, price) {
     return filteredDrinks;
 }
 
-export function filterByDistance(drinks, distance) {
+export function filterByDistance(drinks, distance, currentLocation) {
     if (distance === 'All') {
         return drinks;
     }
     let filteredDrinks = [];
+    const start = { latitude: currentLocation.coords.latitude, longitude: currentLocation.coords.longitude };
     _.forEach(drinks, drink => {
-        if (drink.Rating <= distance) { //***TODO*** add in distance to each drink
-            filteredDrinks.push(drink);
-        }
+      let end = { latitude: drink.Location._latitude, longitude: drink.Location._longitude }
+      const distanceToDrink = haversine(start, end, {unit: 'mile'});
+      if (distanceToDrink <= distance) {
+        filteredDrinks.push(drink);
+      }
     });
     return filteredDrinks;
 }

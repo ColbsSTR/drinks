@@ -2,7 +2,7 @@
   package="com.drinksapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <meta-data
       android:name="com.google.android.geo.API_KEY"
       android:value="Your Google maps API Key Here"/>

@@ -6,11 +6,15 @@ import {
   TouchableOpacity, 
   View, 
   ScrollView,
+  Alert,
 } from 'react-native';
-import { Header, Button, Icon, Segment, Text } from 'native-base';
+import { Header, Button, Segment, Text } from 'native-base';
+import Geolocation from 'react-native-geolocation-service';
+import isLocationAvailable from '../services/isLocationAvailable';
 import { getAllDrinks } from '../state/Actions/drinks';
 import { removeLikedDrink } from '../state/Actions/LikedDrinks/removeLikedDrink';
 import { addLikedDrink } from '../state/Actions/LikedDrinks/addLikedDrink';
+import { setCurrentLocation } from '../state/Actions/location.js';
 import DrinkCard from '../components/DrinkCard';
 import { DrinkCardPlaceholder } from '../placeholders/DrinkCardPlaceholder';
 import Filters from '../components/Filters/Filters';
@@ -34,8 +38,32 @@ class TopDeals extends Component {
     };
   }
 
+  watchPosition = async () => {
+    const locationAvailable = await isLocationAvailable();
+    if (locationAvailable) {
+      this.watchID = Geolocation.watchPosition(
+        (position) => { 
+          this.props.setCurrentLocation({ currentLocation: position });
+        }, 
+        () => { Alert.alert('Sorry we had trouble accessing your location right now.') }, 
+        { enableHighAccuracy: true }
+      );
+    }
+  }
+
   componentDidMount() {
     this.props.getAllDrinks();
+    this.watchPosition();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.allDrinks !== this.props.allDrinks) {
+      this.updateDrinksState();
+    }
+  }
+
+  componentWillUnmount() {
+    Geolocation.clearWatch(this.watchID);
   }
 
   updateDrinksState() {
@@ -53,12 +81,6 @@ class TopDeals extends Component {
         break;
       default:
         break;
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.allDrinks !== this.props.allDrinks) {
-      this.updateDrinksState();
     }
   }
 
@@ -85,21 +107,22 @@ class TopDeals extends Component {
         filteredDrinks = filter(selectedDrinkCategory, {drinkType: filterObject.value, drinkPrice: filterByPrice, drinkRating: filterByRating});
         this.setState({
           filterByType: filterObject.value,
-          drinks: filteredDrinks
+          drinks: filteredDrinks,
         });
         break;
       case 'Price':
         filteredDrinks = filter(selectedDrinkCategory, {drinkType: filterByType, drinkPrice: filterObject.value, drinkRating: filterByRating});
         this.setState({
           filterByPrice: filterObject.value,
-          drinks: filteredDrinks
+          drinks: filteredDrinks,
         });
         break;
       case 'Distance':
-        filteredDrinks = filter(selectedDrinkCategory, {drinkType: filterByType, drinkPrice: filterByPrice, drinkDistance: filterObject.value});
+        const { currentLocation } = this.props;
+        filteredDrinks = filter(selectedDrinkCategory, {drinkType: filterByType, drinkPrice: filterByPrice, drinkDistance: filterObject.value}, currentLocation);
         this.setState({
           filterByDistance: filterObject.value,
-          drinks: filteredDrinks
+          drinks: filteredDrinks,
         });
         break;
       default:
@@ -219,6 +242,7 @@ const mapStateToProps = (state) => {
     localDrinks: state.drinks.localDrinks,
     likedDrinks: state.drinks.likedDrinks,
     allDrinks: state.drinks.allDrinks,
+    currentLocation: state.location.currentLocation,
   };
 };
 
@@ -226,6 +250,7 @@ const mapDispatchToProps = {
   getAllDrinks,
   removeLikedDrink,
   addLikedDrink,
+  setCurrentLocation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopDeals);
