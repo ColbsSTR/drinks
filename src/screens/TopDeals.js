@@ -68,20 +68,9 @@ class TopDeals extends Component {
 
   updateDrinksState() {
     const { selectedTab } = this.state;
-    const { specialtyDrinks, topDeals, localDrinks } = this.props;
-    switch(selectedTab) {
-      case 0:
-        this.setState({ drinks: specialtyDrinks, dataInitialized: true });
-        break;
-      case 1:
-        this.setState({ drinks: topDeals, dataInitialized: true });
-        break;
-      case 2:
-        this.setState({ drinks: localDrinks, dataInitialized: true });
-        break;
-      default:
-        break;
-    }
+    const currentSelectedDrinks = this.getSelectedCategoryOfDrinks(selectedTab);
+    this.setState({ drinks: currentSelectedDrinks, dataInitialized: true });
+    this.reApplyFilters(currentSelectedDrinks);
   }
 
   renderDrinkCards(drink) {
@@ -97,9 +86,16 @@ class TopDeals extends Component {
     );
   };
 
+  reApplyFilters(drinkCategory) {
+    const { filterByType, filterByPrice, filterByDistance } = this.state;
+    filterByType && this.filterDrinks({type: 'Type', value: filterByType }, drinkCategory);
+    filterByPrice && this.filterDrinks({type: 'Price', value: filterByPrice }, drinkCategory);
+    filterByDistance && this.filterDrinks({type: 'Distance', value: filterByDistance }, drinkCategory);
+  }
+
   filterDrinks(filterObject, selectedCategory) {
     const { filterByPrice, filterByType, filterByRating, selectedTab } = this.state;
-    const selectedDrinkCategory = selectedCategory ? selectedCategory : this.getSelectedDrinkCategory(selectedTab);
+    const selectedDrinkCategory = selectedCategory ? selectedCategory : this.getSelectedCategoryOfDrinks(selectedTab);
     let filteredDrinks = [];
 
     switch(filterObject.type) {
@@ -142,7 +138,7 @@ class TopDeals extends Component {
     }
   };
   
-  getSelectedDrinkCategory(selectedTab) {
+  getSelectedCategoryOfDrinks(selectedTab) {
     const { topDeals, specialtyDrinks, localDrinks } = this.props;
     return {
       0: specialtyDrinks,
@@ -152,13 +148,9 @@ class TopDeals extends Component {
   }
 
   onSegmentButtonPress(tab) {
-    const drinkCategory = this.getSelectedDrinkCategory(tab);
-    const { filterByType, filterByPrice, filterByDistance } = this.state;
+    const drinkCategory = this.getSelectedCategoryOfDrinks(tab);
     this.setState({ selectedTab: tab, drinks: drinkCategory });
-    // Re-apply the filters
-    filterByType && this.filterDrinks({type: 'Type', value: filterByType }, drinkCategory);
-    filterByPrice && this.filterDrinks({type: 'Price', value: filterByPrice }, drinkCategory);
-    filterByDistance && this.filterDrinks({type: 'Distance', value: filterByDistance }, drinkCategory);
+    this.reApplyFilters(drinkCategory);
   }
 
   segmentButton(buttonName, tab, first, last) {
