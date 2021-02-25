@@ -14,7 +14,6 @@ export function* drinksWorker() {
 
     try {
         const allDrinks = yield call(getAllDrinks);
-        //Call the formatter?
         const user = yield select(getUser);
         const likedDrinks = yield call(getLikedDrinks, user);
         yield put(succeed({allDrinks, likedDrinks}));

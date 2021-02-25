@@ -77,7 +77,7 @@ class TopDeals extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.props.navigation.navigate('DetailView', {drink});
+          this.props.navigation.navigate('DetailView', { docId: drink.docId });
         }}
         style={{ backgroundColor: COLORS.backgroundWhite }}
       >
@@ -188,6 +188,7 @@ class TopDeals extends Component {
             <FlatList
               data={this.state.drinks}
               renderItem={({item}) => dataInitialized ? this.renderDrinkCards(item) : <DrinkCardPlaceholder /> }
+              keyExtractor={item => item.docId}
             />
           </View>
         </ScrollView>

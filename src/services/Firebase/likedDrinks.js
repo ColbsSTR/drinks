@@ -2,7 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 
 const getUserData = async (user) => {
 	try {
-		const userDoc = await firestore().collection('Users').doc(user.user.uid).get();
+		const userDoc = await firestore().collection('Users').doc(user.uid).get();
 		return userDoc;
 	} catch(err) {
 		throw err;
@@ -17,12 +17,11 @@ export const addLikedDrink = async (data, user) => {
 		if (userData) {
 			const newLikedDrinks = userData.data().LikedDrinks.concat(drinkId);
 			try {
-				const result = await firestore().collection('Users').doc(user.user.uid).update({
+				const result = await firestore().collection('Users').doc(user.uid).update({
 					LikedDrinks: newLikedDrinks,
 				});
 				return result;
 			} catch(err) {
-				console.tron.log('failed adding new', err);
 				throw err;
 			}
 		} else {
@@ -44,12 +43,11 @@ export const removeLikedDrink = async (data, user) => {
 			if (indexOfDrink > -1) { updatedLikedDrinks.splice(indexOfDrink, 1) }
 
 			try {
-				const result = await firestore().collection('Users').doc(user.user.uid).update({
+				const result = await firestore().collection('Users').doc(user.uid).update({
 					LikedDrinks: updatedLikedDrinks,
 				});
 				return result;
 			} catch(err) {
-				console.tron.log('failed removing drink', err);
 				throw err;
 			}
 		} else {

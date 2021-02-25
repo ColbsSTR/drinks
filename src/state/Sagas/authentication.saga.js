@@ -17,11 +17,11 @@ export function* loginWorker(action) {
         const { payload } = action;
         const user = yield call(login, payload);
         if (user) { //This check is for the case where the user presses cancel
-            const newUser = yield call(isNewUser, user);
+            const newUser = yield call(isNewUser, user.user);
             if (newUser) {
-                yield call(createNewUser, user);
+                yield call(createNewUser, user.user);
             }
-            yield put(loginSucceeded(user));
+            yield put(loginSucceeded(user.user));
         } else {
             yield put(loginCancelled());
         }

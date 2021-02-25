@@ -12,9 +12,9 @@ export default ReviewModal = props => {
     const [rating, setRating] = useState(4);
 
     const submitReview = () => {
-      const { docID } = props;
+      const { docID, currentRating } = props;
       dispatch(closeModal());
-      dispatch(writeReview({ docID, rating }));
+      dispatch(writeReview({ docID, currentRating, rating }));
     }
 
     return(

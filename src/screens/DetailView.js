@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from 'native-base';
+import _ from 'lodash';
 import MapView, { Marker } from 'react-native-maps';
 import {ScrollView} from 'react-native-gesture-handler';
 import { Rating } from "react-native-elements";
@@ -27,13 +28,23 @@ class Detailview extends Component {
       longitude: drink.Location._longitude,
       title: drink.Venue,
       appsWhiteList: ['google-maps', 'apple-maps'],
-  })
+    });
+  }
+
+  getSelectedDrink = docId => {
+    const { drinks } = this.props;
+    for(let i = 0; i < drinks.length; i++) {
+      if(drinks[i].docId === docId) {
+        return drinks[i];
+      }
+    }
   }
 
   render() {
-    const {drink} = this.props.route.params;
-    const rating = formatRating(drink.Rating);
-
+    const { docId } = this.props.route.params;
+    const drink = this.getSelectedDrink(docId);
+    const rating = formatRating(drink.Rating.Average);
+  
     return (
       <ScrollView style={styles.container}>
         <DrinkDetailCard drink={drink} />
@@ -64,7 +75,7 @@ class Detailview extends Component {
             </Text>
           </TouchableOpacity>
         </View>
-        <ReviewModal docID={drink.docId}/>
+        <ReviewModal docID={drink.docId} currentRating={drink.Rating}/>
       </ScrollView>
     );
   }
@@ -99,7 +110,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    topDeals: state.drinks.deals,
+    drinks: state.drinks.allDrinks,
   };
 };
 

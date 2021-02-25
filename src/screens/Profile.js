@@ -71,7 +71,7 @@ class Profile extends Component {
 	shareTabButton = () => <Text>Share This App</Text>
 	
 	render() {
-		const { photoURL, displayName } = this.props.user.user || {};
+		const { photoURL, displayName } = this.props.user || {};
 		const { removing } = this.props;
 		const { selectedTab } = this.state;
 		const buttons = [{ element: this.likedTabButton }, { element: this.shareTabButton }];

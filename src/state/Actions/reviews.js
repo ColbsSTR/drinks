@@ -1,6 +1,14 @@
-import { WRITE_REVIEW, WRITE_REVIEW_START, WRITE_REVIEW_SUCCEED, WRITE_REVIEW_FAIL } from './actionTypes';
+import { WRITE_REVIEW, WRITE_REVIEW_START, WRITE_REVIEW_SUCCEED, WRITE_REVIEW_FAIL, UPDATE_DRINK_RATING } from './actionTypes';
 
-//when calling this just need to pass { docId: '', reviewData: 5 } to payload
+//NON-ASNYC
+export const updateDrinkRating = (data) => {
+    return {
+        type: UPDATE_DRINK_RATING,
+        payload: data,
+    }
+}
+
+//ASYNC
 export const writeReview = (data) => {
     return {
         type: WRITE_REVIEW,

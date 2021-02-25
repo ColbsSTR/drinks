@@ -1,8 +1,9 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
+import auth from '@react-native-firebase/auth';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native';
 import TopDeals from '../screens/TopDeals';
@@ -11,6 +12,8 @@ import Login from '../screens/Login';
 import Profile from '../screens/Profile';
 import Settings from '../screens/Settings';
 import DrinkMap from '../screens/DrinkMap';
+import SplashScreen from '../screens/SplashScreen';
+import { loginSucceeded } from '../state/Actions/authentication';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -160,16 +163,35 @@ function Tabs() {
 }
 
 export const RootNav = () => {
-    const isGuest = useSelector(state => state.authentication.guest);
-    const isSignedIn = useSelector(state => state.authentication.isSignedIn);
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
 
-    return (
-      <NavigationContainer>
-        <Stack.Navigator>
-        {isGuest || isSignedIn ? (
+  function onAuthStateChanged(user) {
+    user && dispatch(loginSucceeded(user)); //On logout, user will be null
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+  const isGuest = useSelector(state => state.authentication.guest);
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+      {isGuest || user ? (
+        <Stack.Screen
+          name='Tabs'
+          component={Tabs}
+          options={{ headerShown: false }}
+        />
+      ) : initializing ? (
           <Stack.Screen
-            name='Tabs'
-            component={Tabs}
+            name="SplashScreen"
+            component={SplashScreen}
             options={{ headerShown: false }}
           />
         ) : (
@@ -178,8 +200,9 @@ export const RootNav = () => {
             component={Login}
             options={{ headerShown: false }}
           />
-        )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
+        )
+      }
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }

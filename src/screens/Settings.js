@@ -10,10 +10,6 @@ class Settings extends Component {
         super(props);
     }
 
-    componentWillUnmount() {
-		console.tron.log('unmounting settings');
-	}
-
     onSignout = () => {
         Alert.alert(
             'Are you sure you want to logout?',

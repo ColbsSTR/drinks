@@ -14,8 +14,11 @@ export const LOGOUT_START = 'LOGOUT_START';
 export const LOGOUT_SUCCEED = 'LOGOUT_SUCCEED';
 export const RESET_DEALS = 'RESET_DEALS';
 
-//Location
+// Location
 export const SET_LOCATION = 'SET_LOCATION';
+
+// Update state (instead of calling firebase again, change the local state to represent changes)
+export const UPDATE_DRINK_RATING = 'UPDATE_DRINK_RATING';
 
 //**********************//
 //ASYNC OPERATIONS TYPES//
