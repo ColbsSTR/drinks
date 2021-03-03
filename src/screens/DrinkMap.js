@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Image, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service';
-import isLocationAvailable from '../services/isLocationAvailable';
+import { Icon } from 'native-base';
+import COLORS from '../assets/colors';
+
 class DrinkMap extends Component {
     constructor(props) {
         super(props);
@@ -30,10 +30,10 @@ class DrinkMap extends Component {
 
     getMarkerImage = (type) => {
         return {
-            'Beer': require('../assets/images/beerBottle.png'),
-            'Cocktail': require('../assets/images/cocktailGlass.png'),
-            'Wine': require('../assets/images/wineGlass.png'),
-            'Margarita': require('../assets/images/cocktailGlass.png'),
+            'Beer': 'beer',
+            'Cocktail': 'cocktail',
+            'Wine': 'wine-glass',
+            'Margarita': 'cocktail',
         }[type];
     }
 
@@ -43,10 +43,11 @@ class DrinkMap extends Component {
             <Marker
                 coordinate={{ latitude, longitude }}
             >
-                <Image
-                    source={require('../assets/images/currentLocation.png')}
-                    style={{ width: 50, height: 50 }}
-                    resizeMode="contain"
+                <Icon 
+                    name='ios-location'
+                    type='Ionicons' 
+                    style={{ color: COLORS.black }}
+                    size={100}
                 />
             </Marker>
         );
@@ -54,29 +55,29 @@ class DrinkMap extends Component {
 
     render() {
         return (
-                <MapView
-                    style={{ 
+            <MapView
+                style={{ 
                     flex: 1,
-                    }}
-                    region={this.state.region}
-                >
-                    {this.props.currentLocation && this.currentLocationMarker()}
-                    {this.props.topDeals.map((drink, index) => (
-                        <Marker
-                            key={index}
-                            coordinate={{ latitude: drink.Location._latitude, longitude: drink.Location._longitude}}
-                            title={`$${drink.Price} ` + drink.Name}
-                            description={drink.Venue}
-                            onCalloutPress={() => this.props.navigation.navigate('DetailView', {drink})}
-                        >
-                            <Image
-                                source={this.getMarkerImage(drink.Type)}
-                                style={{ width: 50, height: 50 }}
-                                resizeMode="contain"
-                            />
-                        </Marker>
-                    ))}
-                </MapView>
+                }}
+                region={this.state.region}
+            >
+                {this.props.currentLocation && this.currentLocationMarker()}
+                {this.props.topDeals.map((drink, index) => (
+                    <Marker
+                        key={index}
+                        coordinate={{ latitude: drink.Location._latitude, longitude: drink.Location._longitude}}
+                        title={`$${drink.Price} ` + drink.Name}
+                        description={drink.Venue}
+                        onCalloutPress={() => this.props.navigation.navigate('DetailView', {docId: drink.docId})}
+                    >
+                        <Icon 
+                            name={this.getMarkerImage(drink.Type)} 
+                            type='FontAwesome5' 
+                            style={{ color: COLORS.red }}
+                        />
+                    </Marker>
+                ))}
+            </MapView>
         );
     }
 }

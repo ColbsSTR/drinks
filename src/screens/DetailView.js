@@ -22,7 +22,8 @@ class Detailview extends Component {
   }
 
   getDirections = () => {
-    const {drink} = this.props.route.params;
+    const { docId } = this.props.route.params;
+    const drink = this.getSelectedDrink(docId);
     showLocation({
       latitude: drink.Location._latitude,
       longitude: drink.Location._longitude,

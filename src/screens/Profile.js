@@ -38,9 +38,10 @@ class Profile extends Component {
 	renderDrinkCards(drink) {
 		return (
 		  <TouchableOpacity
-			onPress={() => {
-			  this.props.navigation.navigate('DetailView', {drink});
-			}}>
+				onPress={() => {
+					this.props.navigation.navigate('DetailView', { docId: drink.docId });
+				}}
+			>
 				<DrinkSnippetCard drink={drink} />
 		  </TouchableOpacity>
 		);
@@ -146,6 +147,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
 	removeLikedDrink,
 	addLikedDrink,
-  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

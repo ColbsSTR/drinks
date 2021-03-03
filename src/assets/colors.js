@@ -11,6 +11,7 @@ const COLORS = {
     cyan: '#23E3CE',
     olive: '#808000',
     red: '#FC766AFF',
+    purple: '#963cbdff',
 };
 
 export default COLORS;

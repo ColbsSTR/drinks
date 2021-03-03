@@ -129,7 +129,7 @@ function Tabs() {
 
           switch(route.name) {
             case 'TopDeals':
-              iconName = focused ? 'fire' : 'fire';
+              iconName = focused ? 'glass-cheers' : 'glass-cheers';
               break;
             case 'Profile':
               iconName = focused ? 'user' : 'user';
@@ -144,7 +144,7 @@ function Tabs() {
           return <Icon
             name={iconName}
             type='font-awesome-5'
-            size={25}
+            size={route.name === 'TopDeals' ? 30 : 23}
             color={color}
           />;
         },
