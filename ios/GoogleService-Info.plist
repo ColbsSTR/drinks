@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>645795511035-9jcro27boe7q9f5l5mgevcda71i1mo66.apps.googleusercontent.com</string>
+	<string>645795511035-3dqa0a0v77kmp3bciekrkae0sd2fa8m7.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.645795511035-9jcro27boe7q9f5l5mgevcda71i1mo66</string>
+	<string>com.googleusercontent.apps.645795511035-3dqa0a0v77kmp3bciekrkae0sd2fa8m7</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>645795511035-4oefbv68g6mtmj9hpbg2pf09duqo3gmt.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCsynA0rQiRfB1C0-57QggdqYpQh-FBqP4</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.reactjs.native.example.drinksApp</string>
+	<string>com.drinksApp</string>
 	<key>PROJECT_ID</key>
 	<string>drinks-3822f</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:645795511035:ios:d3036fc952830b61310e5e</string>
+	<string>1:645795511035:ios:9cebadfa151aa6dd310e5e</string>
 	<key>DATABASE_URL</key>
 	<string>https://drinks-3822f.firebaseio.com</string>
 </dict>

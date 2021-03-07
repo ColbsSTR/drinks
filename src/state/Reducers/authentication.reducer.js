@@ -20,7 +20,7 @@ const authentication = (state = initialState, action) => {
         case LOGIN_CANCELLED:
             return { initialState };
         case LOGOUT_START:
-            return { ...state, isSignedIn: false, user: {} };
+            return { ...state, isSignedIn: false };
         default:
             return state;
     }

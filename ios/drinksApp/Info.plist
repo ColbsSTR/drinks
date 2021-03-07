@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>drinksApp</string>
+	<string>Drinks</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -33,7 +33,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.645795511035-9jcro27boe7q9f5l5mgevcda71i1mo66</string>
+				<string>com.googleusercontent.apps.645795511035-3dqa0a0v77kmp3bciekrkae0sd2fa8m7</string>
 			</array>
 		</dict>
 	</array>

@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, Image, ActivityIndicator} from 'react-native';
+import {View, Text, Image, Platform} from 'react-native';
 import { SocialIcon } from 'react-native-elements'
 import {connect} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import { loginAsGuest, login } from '../state/Actions/authentication';
 import { LOGO } from '../assets/images/index';
 import COLORS from '../assets/colors';
-import { facebook, google } from '../language/keys/authentication/signInProvider';
+import { facebook, google, apple } from '../language/keys/authentication/signInProvider';
 import ClankingDrinks from '../components/ClankingDrinks';
 
 class Login extends Component {
@@ -47,13 +47,6 @@ class Login extends Component {
           </View>
           <View style={{padding: 5}}>
             <SocialIcon
-              title='Continue With Instagram'
-              button
-              type='instagram'
-            />
-          </View>
-          <View style={{padding: 5}}>
-            <SocialIcon
               title='Continue With Google'
               button
               type='google'
@@ -61,6 +54,17 @@ class Login extends Component {
               onPress={ () => this.handleLogin(google) }
             />
           </View>
+          { Platform.OS === 'ios' &&
+            <View style={{padding: 5}}>
+              <SocialIcon
+                title='Continue With Apple'
+                button
+                type='apple'
+                onPress={ () => this.handleLogin(apple) }
+                style={{ backgroundColor: 'black' }}
+              />
+            </View>
+          }
           <View style={{ padding: 5, justifyContent: 'center', alignItems: 'center' }}>
             <Text
               onPress={() => {

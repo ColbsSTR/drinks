@@ -1,7 +1,8 @@
+import auth from '@react-native-firebase/auth';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { GoogleSignin } from '@react-native-community/google-signin';
-import auth from '@react-native-firebase/auth';
-import { facebook, google } from '../../language/keys/authentication/signInProvider';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
+import { facebook, google, apple } from '../../language/keys/authentication/signInProvider';
 
 export const login = async (loginProvider) => {
   try {
@@ -12,6 +13,9 @@ export const login = async (loginProvider) => {
       case google:
         const googleUser = await loginWithGoogle();
         return googleUser;
+      case apple:
+        const appleUser = await loginWithApple();
+        return appleUser;
       default:
         return null;
     }
@@ -54,6 +58,30 @@ export const loginWithFacebook = async () => {
   
       // Sign-in the user with the credential
       return auth().signInWithCredential(googleCredential);
+    } catch(err) {
+      throw err;
+    }
+  }
+
+  export const loginWithApple = async () => {
+    try {
+      // Start the sign-in request
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      // Ensure Apple returned a user identityToken
+      if (!appleAuthRequestResponse.identityToken) {
+        throw 'Apple Sign-In failed - no identify token returned';
+      }
+
+      // Create a Firebase credential from the response
+      const { identityToken, nonce } = appleAuthRequestResponse;
+      const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+
+      // Sign the user in with the credential
+      return auth().signInWithCredential(appleCredential);
     } catch(err) {
       throw err;
     }
