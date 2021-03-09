@@ -13,6 +13,7 @@ import Profile from '../screens/Profile';
 import Settings from '../screens/Settings';
 import DrinkMap from '../screens/DrinkMap';
 import SplashScreen from '../screens/SplashScreen';
+import { UpdateFormField } from '../components/UpdateFormField';
 import { loginSucceeded } from '../state/Actions/authentication';
 
 const Tab = createBottomTabNavigator();
@@ -57,7 +58,11 @@ function HomeStack() {
         },
       }}
     >
-      <MainStack.Screen name="TopDeals" component={TopDeals} options={{ headerShown: false }}/>
+      <MainStack.Screen 
+        name="TopDeals" 
+        component={TopDeals} 
+        options={{ headerShown: false }}
+      />
       <MainStack.Screen 
         name="DetailView" 
         component={DetailView}
@@ -105,6 +110,14 @@ function ProfileStack () {
         name="Settings"
         component={Settings}
         options={{
+          headerTintColor: 'black'
+        }}
+      />
+      <MainStack.Screen 
+        name="UpdateFormField"
+        component={UpdateFormField}
+        options={{
+          title: 'Update Profile',
           headerTintColor: 'black'
         }}
       />

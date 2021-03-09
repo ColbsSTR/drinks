@@ -1,4 +1,4 @@
-import { LOGIN_AS_GUEST, LOGIN_START, LOGIN_SUCCEEDED, LOGIN_FAIL, LOGIN_CANCELLED, LOGOUT_START, LOGOUT_SUCCEED } from '../Actions/actionTypes';
+import { LOGIN_AS_GUEST, LOGIN_START, LOGIN_SUCCEEDED, LOGIN_FAIL, LOGIN_CANCELLED, LOGOUT_START, UPDATE_USER_DISPLAY_NAME_SUCCEED } from '../Actions/actionTypes';
 
 const initialState = {
     guest: false,
@@ -21,6 +21,8 @@ const authentication = (state = initialState, action) => {
             return { initialState };
         case LOGOUT_START:
             return { ...state, isSignedIn: false };
+        case UPDATE_USER_DISPLAY_NAME_SUCCEED:
+            return { ...state, user: action.payload };
         default:
             return state;
     }

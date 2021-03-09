@@ -21,7 +21,7 @@ class Login extends Component {
   }
 
   render() {
-    const { orange, lightOrange, white, red, black } = COLORS;
+    const { orange, lightOrange, white, red, black, blue } = COLORS;
     const { isWaiting } = this.props;
 
     return (
@@ -65,15 +65,15 @@ class Login extends Component {
               />
             </View>
           }
-          <View style={{ padding: 5, justifyContent: 'center', alignItems: 'center' }}>
+          {/* <View style={{ padding: 5, justifyContent: 'center', alignItems: 'center' }}>
             <Text
               onPress={() => {
                 this.props.loginAsGuest();
               }}
               style={{ color: white }}>
-              Continue As Guest
+              Sign up with Email and Password
             </Text>
-          </View> 
+          </View>  */}
         </View>
         <View style={{ marginBottom: 20, alignItems: 'center' }}>
           <Text style={{ color: black }}>Please drink responsibly</Text>

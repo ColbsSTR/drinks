@@ -1,4 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 export const createNewUser = async (user) => {
 	try {
@@ -11,7 +12,7 @@ export const createNewUser = async (user) => {
 	} catch(err) {
 		throw err;
 	}
-}
+};
 
 export const isNewUser = async (user) => {
     try {
@@ -24,4 +25,16 @@ export const isNewUser = async (user) => {
     } catch(err) {
         throw new Error('Could not retrieve user information.');
     }
-}
+};
+
+export const updateDisplayName = async ({name}) => {
+    try {
+        await auth().currentUser.updateProfile({
+            displayName: name,
+        });
+        const updatedUser = await auth().currentUser;
+        return updatedUser;
+    } catch(err) {
+        throw new Error('Could not update display name...');
+    }
+};

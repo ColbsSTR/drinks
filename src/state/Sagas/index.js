@@ -3,6 +3,7 @@ import { drinksWatcher } from './drinks.saga';
 import { venueInformationWatcher } from './venueInformation.saga';
 import { reviewsWatcher } from './reviews.saga';
 import { authenticationWatcher } from './authentication.saga';
+import { updateUserDisplayNameWatcher } from './User/updateDisplayName.saga';
 import likedDrinks from './LikedDrinks';
 
 //***TODO*****//
@@ -15,5 +16,6 @@ export function* rootSaga() {
 		call(reviewsWatcher),
 		call(likedDrinks),
 		call(authenticationWatcher),
+		call(updateUserDisplayNameWatcher),
 	]);
 };
