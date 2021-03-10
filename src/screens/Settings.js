@@ -32,7 +32,6 @@ class Settings extends Component {
 
   render() {
     const { displayName } = this.props.user;
-
     return(
       <View style={styles.container}>
         <Form>
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.authentication.user,
+    user: state.authentication.user,
 	}
 }
 

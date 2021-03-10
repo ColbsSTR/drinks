@@ -93,6 +93,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location is required to update the specials around you wherever you are.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location is required to show the best drink specials around you.</string>
 	<key>UIAppFonts</key>

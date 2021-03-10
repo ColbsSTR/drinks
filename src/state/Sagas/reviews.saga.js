@@ -5,6 +5,7 @@ import { WRITE_REVIEW } from '../Actions/actionTypes';
 import { getUser } from '../Selectors/getUserState';
 import { getDrinks } from '../Selectors/getDrinksState';
 import { mergeReviewData } from '../../utilities/transformers/mergeReviewData';
+import { showToast } from '../../components/Toast';
 
 export function* reviewsWatcher() {
     yield takeLatest(WRITE_REVIEW, writeReviewsWorker);
@@ -22,11 +23,9 @@ export function* writeReviewsWorker(action) {
         const newRating = yield call(writeNewRating, action.payload);
         const newDrinks = yield call(mergeReviewData, { docID, rating: newRating, allDrinks }); // newDrinks contains all of the old drink data with the new review data. This is so we don't have to call firebase again
         yield put(updateDrinkRating(newDrinks));
-        // **TODO**
-        //Add success message here
+        showToast('Submitted!', 1250, '', 'success');
     } catch(err) {
         yield put(fail(err));
-        // **TODO**
-        //Add error handling logic here. Modal, error toast, etc...
+        showToast('Sorry, we had a problem sunmitting that...', 1500, 'okay', 'error')
     }
 }
