@@ -20,6 +20,9 @@ export const SET_LOCATION = 'SET_LOCATION';
 // Update state (instead of calling firebase again, change the local state to represent changes)
 export const UPDATE_DRINK_RATING = 'UPDATE_DRINK_RATING';
 
+//BarOwners
+export const ADD_DRINK = 'ADD_DRINK';
+
 //**********************//
 //ASYNC OPERATIONS TYPES//
 //**********************//
