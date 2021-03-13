@@ -13,6 +13,8 @@ import Profile from '../screens/Profile';
 import Settings from '../screens/Settings';
 import DrinkMap from '../screens/DrinkMap';
 import SplashScreen from '../screens/SplashScreen';
+import AddDrink from '../screens/AddDrink';
+import BarAdminProfile from '../screens/BarAdminProfile';
 import { UpdateFormField } from '../components/UpdateFormField';
 import { loginSucceeded } from '../state/Actions/authentication';
 
@@ -175,6 +177,88 @@ function Tabs() {
   );
 }
 
+function AddDrinkStack() {
+  return (
+    <MainStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#ef8921',
+        },
+        headerTitleStyle: {
+          color: 'white',
+        },
+      }}
+    >
+      <MainStack.Screen 
+        name="AddDrink" 
+        component={AddDrink} 
+        options={{
+          title: 'Add Drink'
+        }}
+      />
+    </MainStack.Navigator>
+  );
+}
+
+function BarAdminProfileStack() {
+  return (
+    <MainStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#ef8921',
+        },
+        headerTitleStyle: {
+          color: 'white',
+        },
+      }}
+    >
+      <MainStack.Screen 
+        name="BarAdminProfile" 
+        component={BarAdminProfile} 
+        options={{
+          title: 'Profile'
+        }}
+      />
+    </MainStack.Navigator>
+  );
+}
+
+function BarOwnerTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color }) => {
+          let iconName;
+
+          switch(route.name) {
+            case 'AddDrink':
+              iconName = focused ? 'plus-circle' : 'plus-circle';
+              break;
+            case 'BarAdminProfile':
+              iconName = focused ? 'user' : 'user';
+              break;
+            default:
+              break;
+          }
+          return <Icon
+            name={iconName}
+            type='feather'
+            color={color}
+          />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: '#fca311',
+        inactiveTintColor: 'gray',
+      }}
+      initialRouteName='AddDrink'
+    >
+      <MainStack.Screen name="AddDrink" component={AddDrinkStack} />
+      <MainStack.Screen name="BarAdminProfile" component={BarAdminProfileStack} /> 
+    </Tab.Navigator>
+  );
+}
+
 export const RootNav = () => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(null);
@@ -196,7 +280,12 @@ export const RootNav = () => {
     <NavigationContainer>
       <Stack.Navigator>
       {isGuest || user ? (
-        <Stack.Screen
+        user.email === 'addadrink123@gmail.com' ? 
+        <Stack.Screen 
+          name='BarOwner'
+          component={BarOwnerTabs}
+          options={{ headerShown: false }}
+        /> : <Stack.Screen
           name='Tabs'
           component={Tabs}
           options={{ headerShown: false }}
