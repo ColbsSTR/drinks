@@ -21,7 +21,7 @@ class Login extends Component {
   }
 
   render() {
-    const { orange, lightOrange, white, red, black, blue } = COLORS;
+    const { orange, lightOrange, red, black } = COLORS;
     const { isWaiting } = this.props;
 
     return (

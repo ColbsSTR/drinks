@@ -5,7 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from "react-redux";
 import { Icon } from 'react-native-elements';
-import { TouchableOpacity } from 'react-native';
 import TopDeals from '../screens/TopDeals';
 import DetailView from '../screens/DetailView';
 import Login from '../screens/Login';
@@ -95,17 +94,7 @@ function ProfileStack () {
         name="Profile" 
         component={Profile} 
         options={{
-          headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-              <Icon
-                name='cog'
-                type='font-awesome-5'
-                size={25}
-                color='lightgray'
-                style={{ paddingRight: 12 }}
-              />
-            </TouchableOpacity>
-          ),
+          headerShown: false,
         }}
       />
       <MainStack.Screen
