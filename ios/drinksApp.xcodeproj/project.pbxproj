@@ -804,7 +804,7 @@
 				CODE_SIGN_ENTITLEMENTS = drinksApp/drinksApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2NV732GU44;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = drinksApp/Info.plist;
@@ -833,7 +833,7 @@
 				CODE_SIGN_ENTITLEMENTS = drinksApp/drinksApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2NV732GU44;
 				INFOPLIST_FILE = drinksApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
