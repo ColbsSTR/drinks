@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 8,
     backgroundColor: COLORS.white,
+    paddingBottom: 10,
   },
   map: {
     flex: 1,

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   Card,
   CardItem,
@@ -8,8 +8,10 @@ import {
 } from 'native-base';
 import { View, Text, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import LottieView from 'lottie-react-native';
+import { useIsFocused } from '@react-navigation/native'
 import COLORS from '../assets/colors';
 import { heart } from '../assets/animations/index';
+import { currentAvailability } from '../utilities/drinkAvailability';
 
 export const getDrinkIcon = (type) => {
   return drinks = {
@@ -23,6 +25,12 @@ export const getDrinkIcon = (type) => {
 export default DrinkCard = props => {
   const { drink, onHeartPress } = props;
   const LottieRef = useRef(null);
+  const isFocused = useIsFocused();
+  const [drinkAvailable, setDrinkAvailability] = useState(false);
+  
+  useEffect(() => {
+    currentAvailability(drink) ? setDrinkAvailability(true) : setDrinkAvailability(false);
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
@@ -35,10 +43,14 @@ export default DrinkCard = props => {
                 style={styles.icon}
               />
               <Body>
-                <Text style={styles.header}>
-                  {drink.Name}
-                </Text>
-                <Text>${drink.Price}</Text>
+                <View style={styles.rowView}>
+                  <Text style={styles.header}>
+                    {drink.Name}
+                  </Text>
+                  <Text> - </Text>
+                  <Text>${drink.Price}</Text>
+                </View>
+                { drinkAvailable && <Text style={styles.availableText}>Available</Text> }
               </Body>
             </Left>
             <TouchableOpacity onPress={ () => { onHeartPress(drink, LottieRef) } }>
@@ -92,6 +104,13 @@ export const styles = StyleSheet.create({
   },
   icon: {
     color: COLORS.orange,
+  },
+  availableText: {
+    color: 'green', 
+    fontSize: 12,
+  },
+  rowView: {
+    flexDirection: 'row',
   }
 });
 

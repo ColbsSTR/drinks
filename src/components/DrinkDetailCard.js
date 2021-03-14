@@ -13,7 +13,7 @@ import {
 import {StyleSheet} from 'react-native';
 import { useIsFocused } from '@react-navigation/native'
 import COLORS from '../assets/colors';
-import { getCurrentDayOfWeek, getCurrentTimeMilitaryFormat } from '../utilities/time';
+import { currentAvailability } from '../utilities/drinkAvailability';
 
 export default DrinkDetailCard = (props) => {
   const drink = props.drink;
@@ -21,14 +21,7 @@ export default DrinkDetailCard = (props) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    const { Days, Hours } = drink;
-    const currentDay = getCurrentDayOfWeek();
-    const currentTime = getCurrentTimeMilitaryFormat();
-    if(Days.includes(currentDay) && (currentTime >= Hours.Beginning && currentTime < Hours.End)) {
-      setDrinkStatus(true);
-    } else {
-      setDrinkStatus(false);
-    }
+    currentAvailability(drink) ? setDrinkStatus(true) : setDrinkStatus(false);
   }, [isFocused]);
 
   return (

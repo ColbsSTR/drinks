@@ -44,9 +44,9 @@ class DrinkMap extends Component {
                 coordinate={{ latitude, longitude }}
             >
                 <Icon 
-                    name='ios-location'
-                    type='Ionicons' 
-                    style={{ color: COLORS.black }}
+                    name='location-arrow'
+                    type='FontAwesome' 
+                    style={{ color: COLORS.blue }}
                     size={100}
                 />
             </Marker>
