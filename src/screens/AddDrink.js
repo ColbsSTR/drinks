@@ -55,7 +55,12 @@ class AddDrink extends Component {
       VenueName,
       Days,
     });
-    this.setState(initialState);
+    this.setState({ 
+      Description: null,
+      Name: null,
+      Price: null,
+      Category: null,
+    });
   }
 
   render() {
@@ -65,11 +70,11 @@ class AddDrink extends Component {
         <Form>
             <Item inlineLabel>
               <Label>Name</Label>
-              <Input onChangeText={(name) => this.setState({ Name: name}) } />
+              <Input value={this.state.Name} onChangeText={(name) => this.setState({ Name: name}) } />
             </Item>
             <Item inlineLabel>
               <Label>Price</Label>
-              <Input onChangeText={(price) => this.setState({ Price: price}) }/>
+              <Input value={this.state.Price} onChangeText={(price) => this.setState({ Price: price}) }/>
             </Item>
             <Item picker>
               <Picker
@@ -104,7 +109,7 @@ class AddDrink extends Component {
               </Picker>
             </Item>
             <Item>
-              <Input placeholder="Description" onChangeText={(description) => this.setState({ Description: description}) }/>
+              <Input value={this.state.Description} placeholder="Description" onChangeText={(description) => this.setState({ Description: description}) }/>
             </Item>
             <Item inlineLabel>
               <Label>Latitude</Label>
