@@ -12,6 +12,8 @@ import DrinkDetailCard from '../components/DrinkDetailCard';
 import {connect} from 'react-redux';
 import { formatRating } from '../utilities/formatRating';
 import COLORS from '../assets/colors';
+import { TopDeal } from '../language/keys/drinkCategory';
+import CustomRating from '../components/CustomRating';
 
 class Detailview extends Component {
   constructor(props) {
@@ -64,19 +66,31 @@ class Detailview extends Component {
             onCalloutPress={() => this.getDirections()}
           />
         </MapView>
-        <View style={{paddingTop: 30}}>
-          <Rating 
-            imageSize={30} 
-            readonly 
-            startingValue={rating} 
-          />
-          <TouchableOpacity onPress={() => this.props.showModal()}>
-            <Text style={ styles.reviewText}>
-              Add a review
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <ReviewModal docID={drink.docId} currentRating={drink.Rating}/>
+        { 
+          drink.Category === TopDeal ? 
+          <View style={{ alignItems: 'center' }}>
+            <CustomRating />
+            <TouchableOpacity onPress={() => this.props.showModal()}>
+              <Text style={{ color: COLORS.blue, fontSize: 14, paddingTop: 20 }}>Tell us how hot this venue is</Text>
+            </TouchableOpacity>
+          </View>
+          : 
+          <>
+            <View style={{paddingTop: 30}}>
+              <Rating 
+                imageSize={30} 
+                readonly 
+                startingValue={rating} 
+              />
+              <TouchableOpacity onPress={() => this.props.showModal()}>
+                <Text style={ styles.reviewText}>
+                  Add a review
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <ReviewModal docID={drink.docId} currentRating={drink.Rating}/>
+          </>
+        }
       </ScrollView>
     );
   }

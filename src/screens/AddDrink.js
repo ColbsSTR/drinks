@@ -100,7 +100,7 @@ class AddDrink extends Component {
               >
                 <Picker.Item label="Top Deal" value="TopDeal" />
                 <Picker.Item label="Specialty" value="Specialty" />
-                <Picker.Item label="Local" value="Local" />
+                <Picker.Item label="Local Craft" value="Local" />
               </Picker>
             </Item>
             <Item>

@@ -23,6 +23,7 @@ class LikedDrinks extends Component {
 		return (
 			<View style={ styles.container }>
 				<FlatList
+          showsVerticalScrollIndicator={false}
           data={likedDrinks}
           renderItem={({item}) => this.RenderDrinkCards(item) }
         />
