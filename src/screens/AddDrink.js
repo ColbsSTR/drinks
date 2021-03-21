@@ -11,8 +11,7 @@ const initialState = {
   Type: null,
   Category: null,
   Description: null,
-  Latitude: null,
-  Longitude: null,
+  Address: null,
   StartingTime: null,
   EndingTime: null,
   VenueName: null,
@@ -40,7 +39,7 @@ class AddDrink extends Component {
 
   handleAddDrink = () => {
     const { 
-      Name, Price, Type, Category, Description, Latitude, Longitude, StartingTime, EndingTime, VenueName, Days
+      Name, Price, Type, Category, Description, Address, StartingTime, EndingTime, VenueName, Days
     } = this.state;
     this.props.addDrink({
       Name,
@@ -48,8 +47,7 @@ class AddDrink extends Component {
       Type,
       Category,
       Description,
-      Latitude: Number(Latitude),
-      Longitude: Number(Longitude),
+      Address,
       StartingTime: Number(StartingTime),
       EndingTime: Number(EndingTime),
       VenueName,
@@ -68,15 +66,48 @@ class AddDrink extends Component {
     return (
       <ScrollView>
         <Form>
-            <Item inlineLabel>
+            <Item floatingLabel>
               <Label>Name</Label>
               <Input value={this.state.Name} onChangeText={(name) => this.setState({ Name: name}) } />
             </Item>
-            <Item inlineLabel>
+            <Item floatingLabel>
               <Label>Price</Label>
               <Input value={this.state.Price} onChangeText={(price) => this.setState({ Price: price}) }/>
             </Item>
-            <Item picker>
+            <Item floatingLabel>
+              <Label>Description</Label>
+              <Input value={this.state.Description} onChangeText={(description) => this.setState({ Description: description}) }/>
+            </Item>
+            <Item floatingLabel>
+              <Label>Address</Label>
+              <Input onChangeText={(address) => this.setState({ Address: address }) }/>
+            </Item>
+            <Item floatingLabel>
+              <Label>Starting Time</Label>
+              <Input onChangeText={(startingTime) => this.setState({ StartingTime: startingTime }) }/>
+            </Item>
+            <Item floatingLabel>
+              <Label>Ending Time</Label>
+              <Input onChangeText={(endingTime) => this.setState({ EndingTime: endingTime }) }/>
+            </Item>
+            <Item floatingLabel>
+              <Label>Venue Name</Label>
+              <Input onChangeText={(venueName) => this.setState({ VenueName: venueName}) }/>
+            </Item>
+            <Item style={{ marginTop: 30 }}>
+              <Label>Select Available Days</Label>
+              <Input disabled/>
+            </Item>
+          </Form>
+          { _.map(daysOfTheWeek, day => (
+            <ListItem key={day}>
+              <CheckBox onPress={() => this.toggleDays(day) } checked={this.state.Days?.includes(day)}/>
+                <Body>
+                  <Text>{day}</Text>
+                </Body>
+            </ListItem>
+          ))}
+          <Item picker style={{ paddingTop: 20 }}>
               <Picker
                 mode="dropdown"
                 iosIcon={<Icon name="arrow-down" />}
@@ -108,42 +139,6 @@ class AddDrink extends Component {
                 <Picker.Item label="Local" value="Local" />
               </Picker>
             </Item>
-            <Item>
-              <Input value={this.state.Description} placeholder="Description" onChangeText={(description) => this.setState({ Description: description}) }/>
-            </Item>
-            <Item inlineLabel>
-              <Label>Latitude</Label>
-              <Input onChangeText={(latitude) => this.setState({ Latitude: latitude}) }/>
-            </Item>
-            <Item inlineLabel>
-              <Label>Longitude</Label>
-              <Input onChangeText={(longitude) => this.setState({ Longitude: longitude}) }/>
-            </Item>
-            <Item inlineLabel>
-              <Label>Starting Time</Label>
-              <Input onChangeText={(startingTime) => this.setState({ StartingTime: startingTime}) }/>
-            </Item>
-            <Item inlineLabel>
-              <Label>Ending Time</Label>
-              <Input onChangeText={(endingTime) => this.setState({ EndingTime: endingTime}) }/>
-            </Item>
-            <Item inlineLabel>
-              <Label>Venue Name</Label>
-              <Input onChangeText={(venueName) => this.setState({ VenueName: venueName}) }/>
-            </Item>
-            <Item inlineLabel style={{ marginTop: 30 }}>
-              <Label>Select Available Days</Label>
-              <Input disabled/>
-            </Item>
-          </Form>
-          { _.map(daysOfTheWeek, day => (
-            <ListItem key={day}>
-              <CheckBox onPress={() => this.toggleDays(day) } checked={this.state.Days?.includes(day)}/>
-                <Body>
-                  <Text>{day}</Text>
-                </Body>
-            </ListItem>
-          ))}
           <Button full style={{ marginTop: 30 }} onPress={() => this.handleAddDrink()}>
             <Text>Add Drink</Text>
           </Button>

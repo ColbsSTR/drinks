@@ -1,16 +1,19 @@
 import firestore from '@react-native-firebase/firestore';
+import { getCoordsFromAddress } from '../../utilities/geocode';
 
 export const addDrink = async (data) => {
   const { 
-    Name, Price, Type, Category, Description, Latitude, Longitude, StartingTime, EndingTime, VenueName, Days
+    Name, Price, Type, Category, Description, Address, StartingTime, EndingTime, VenueName, Days
   } = data;
   try {
+    const coords = await getCoordsFromAddress(Address);
+    const { lat, lng } = coords.results[0].geometry.location;
     await firestore().collection('Drinks').add({
       Name,
       Price,
       Type,
       Description,
-      Location: new firestore.GeoPoint(Latitude, Longitude),
+      Location: new firestore.GeoPoint(lat, lng),
       Category,
       Hours: {
         Beginning: StartingTime,
