@@ -39,7 +39,7 @@ export default DrinkDetailCard = (props) => {
           <Text>Price</Text>
         </Body>
         <Right>
-          <Text>${drink.Price}</Text>
+          <Text>{ typeof drink.Price === 'number' ? '$' + drink.Price : drink.Price}</Text>
         </Right>
       </ListItem>
       <ListItem icon>

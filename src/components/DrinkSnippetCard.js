@@ -25,7 +25,7 @@ export default DrinkSnippetCard = props => {
                 <Text style={styles.header}>
                   {drink.Name}
                 </Text>
-                <Text>${drink.Price}</Text>
+                <Text>{typeof drink.Price === 'number' ? '$' + drink.Price : drink.Price }</Text>
               </Body>
             </Left>
           </CardItem>

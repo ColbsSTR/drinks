@@ -37,7 +37,7 @@ export function filterByPrice(drinks, price) {
     }
     let filteredDrinks = [];
     _.forEach(drinks, drink => {
-        if (drink.Price <= price) {
+        if (drink.Price <= price || typeof drink.Price !== 'number') {
             filteredDrinks.push(drink);
         }
     });

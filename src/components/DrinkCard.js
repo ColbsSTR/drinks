@@ -48,7 +48,7 @@ export default DrinkCard = props => {
                     {drink.Name}
                   </Text>
                   <Text> - </Text>
-                  <Text>${drink.Price}</Text>
+                  <Text>{typeof drink.Price === 'number' ? '$' + drink.Price : drink.Price }</Text>
                 </View>
                 { drinkAvailable && <Text style={styles.availableText}>Available</Text> }
               </Body>

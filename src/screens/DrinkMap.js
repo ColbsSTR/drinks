@@ -66,7 +66,7 @@ class DrinkMap extends Component {
                     <Marker
                         key={index}
                         coordinate={{ latitude: drink.Location._latitude, longitude: drink.Location._longitude}}
-                        title={`$${drink.Price} ` + drink.Name}
+                        title={ typeof drink.Price === 'number' ? `$${drink.Price} ` + drink.Name : `${drink.Price} ` + drink.Name}
                         description={drink.Venue}
                         onCalloutPress={() => this.props.navigation.navigate('DetailView', {docId: drink.docId})}
                     >
