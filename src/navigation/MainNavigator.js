@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { useSelector, useDispatch } from "react-redux";
-import { Icon } from 'react-native-elements';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
+import {Icon} from 'react-native-elements';
 import TopDeals from '../screens/TopDeals';
 import DetailView from '../screens/DetailView';
 import Login from '../screens/Login';
@@ -14,8 +14,8 @@ import DrinkMap from '../screens/DrinkMap';
 import SplashScreen from '../screens/SplashScreen';
 import AddDrink from '../screens/AddDrink';
 import BarAdminProfile from '../screens/BarAdminProfile';
-import { UpdateFormField } from '../components/UpdateFormField';
-import { loginSucceeded } from '../state/Actions/authentication';
+import {UpdateFormField} from '../components/UpdateFormField';
+import {loginSucceeded} from '../state/Actions/authentication';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -24,15 +24,17 @@ const MainStack = createStackNavigator();
 function MapStack() {
   return (
     <MainStack.Navigator>
-      <MainStack.Screen name="DrinkMap" component={DrinkMap} 
+      <MainStack.Screen
+        name="DrinkMap"
+        component={DrinkMap}
         options={{
           headerShown: false,
         }}
       />
-      <MainStack.Screen 
-        name="DetailView" 
+      <MainStack.Screen
+        name="DetailView"
         component={DetailView}
-        tintColor='black'
+        tintColor="black"
         options={{
           headerStyle: {
             backgroundColor: '#ef8921',
@@ -40,7 +42,7 @@ function MapStack() {
           headerTitleStyle: {
             color: 'white',
           },
-          headerTintColor: 'black'
+          headerTintColor: 'black',
         }}
       />
     </MainStack.Navigator>
@@ -57,26 +59,25 @@ function HomeStack() {
         headerTitleStyle: {
           color: 'white',
         },
-      }}
-    >
-      <MainStack.Screen 
-        name="TopDeals" 
-        component={TopDeals} 
-        options={{ headerShown: false }}
+      }}>
+      <MainStack.Screen
+        name="TopDeals"
+        component={TopDeals}
+        options={{headerShown: false}}
       />
-      <MainStack.Screen 
-        name="DetailView" 
+      <MainStack.Screen
+        name="DetailView"
         component={DetailView}
-        tintColor='black'
+        tintColor="black"
         options={{
-          headerTintColor: 'black'
+          headerTintColor: 'black',
         }}
       />
     </MainStack.Navigator>
   );
 }
 
-function ProfileStack () {
+function ProfileStack() {
   const navigation = useNavigation();
 
   return (
@@ -88,11 +89,10 @@ function ProfileStack () {
         headerTitleStyle: {
           color: 'white',
         },
-      }}
-    >
-      <MainStack.Screen 
-        name="Profile" 
-        component={Profile} 
+      }}>
+      <MainStack.Screen
+        name="Profile"
+        component={Profile}
         options={{
           headerShown: false,
         }}
@@ -101,23 +101,23 @@ function ProfileStack () {
         name="Settings"
         component={Settings}
         options={{
-          headerTintColor: 'black'
+          headerTintColor: 'black',
         }}
       />
-      <MainStack.Screen 
+      <MainStack.Screen
         name="UpdateFormField"
         component={UpdateFormField}
         options={{
           title: 'Update Profile',
-          headerTintColor: 'black'
+          headerTintColor: 'black',
         }}
       />
-      <MainStack.Screen 
-        name="DetailView" 
+      <MainStack.Screen
+        name="DetailView"
         component={DetailView}
-        tintColor='black'
+        tintColor="black"
         options={{
-          headerTintColor: 'black'
+          headerTintColor: 'black',
         }}
       />
     </MainStack.Navigator>
@@ -127,11 +127,11 @@ function ProfileStack () {
 function Tabs() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color }) => {
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color}) => {
           let iconName;
 
-          switch(route.name) {
+          switch (route.name) {
             case 'TopDeals':
               iconName = focused ? 'glass-cheers' : 'glass-cheers';
               break;
@@ -145,22 +145,23 @@ function Tabs() {
               break;
           }
 
-          return <Icon
-            name={iconName}
-            type='font-awesome-5'
-            size={route.name === 'TopDeals' ? 30 : 23}
-            color={color}
-          />;
+          return (
+            <Icon
+              name={iconName}
+              type="font-awesome-5"
+              size={route.name === 'TopDeals' ? 30 : 23}
+              color={color}
+            />
+          );
         },
       })}
       tabBarOptions={{
         activeTintColor: '#fca311',
         inactiveTintColor: 'gray',
       }}
-      initialRouteName='TopDeals'
-    >
+      initialRouteName="TopDeals">
       <Tab.Screen name="DrinkMap" component={MapStack} />
-      <Tab.Screen name="TopDeals" component={HomeStack}/>
+      <Tab.Screen name="TopDeals" component={HomeStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
@@ -176,13 +177,12 @@ function AddDrinkStack() {
         headerTitleStyle: {
           color: 'white',
         },
-      }}
-    >
-      <MainStack.Screen 
-        name="AddDrink" 
-        component={AddDrink} 
+      }}>
+      <MainStack.Screen
+        name="AddDrink"
+        component={AddDrink}
         options={{
-          title: 'Add Drink'
+          title: 'Add Drink',
         }}
       />
     </MainStack.Navigator>
@@ -199,13 +199,12 @@ function BarAdminProfileStack() {
         headerTitleStyle: {
           color: 'white',
         },
-      }}
-    >
-      <MainStack.Screen 
-        name="BarAdminProfile" 
-        component={BarAdminProfile} 
+      }}>
+      <MainStack.Screen
+        name="BarAdminProfile"
+        component={BarAdminProfile}
         options={{
-          title: 'Profile'
+          title: 'Profile',
         }}
       />
     </MainStack.Navigator>
@@ -215,11 +214,11 @@ function BarAdminProfileStack() {
 function BarOwnerTabs() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color }) => {
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color}) => {
           let iconName;
 
-          switch(route.name) {
+          switch (route.name) {
             case 'AddDrink':
               iconName = focused ? 'plus-circle' : 'plus-circle';
               break;
@@ -229,21 +228,19 @@ function BarOwnerTabs() {
             default:
               break;
           }
-          return <Icon
-            name={iconName}
-            type='feather'
-            color={color}
-          />;
+          return <Icon name={iconName} type="feather" color={color} />;
         },
       })}
       tabBarOptions={{
         activeTintColor: '#fca311',
         inactiveTintColor: 'gray',
       }}
-      initialRouteName='AddDrink'
-    >
+      initialRouteName="AddDrink">
       <MainStack.Screen name="AddDrink" component={AddDrinkStack} />
-      <MainStack.Screen name="BarAdminProfile" component={BarAdminProfileStack} /> 
+      <MainStack.Screen
+        name="BarAdminProfile"
+        component={BarAdminProfileStack}
+      />
     </Tab.Navigator>
   );
 }
@@ -256,44 +253,48 @@ export const RootNav = () => {
   function onAuthStateChanged(user) {
     user && dispatch(loginSucceeded(user)); //On logout, user will be null
     setUser(user);
-    if (initializing) setInitializing(false);
+    if (initializing) {
+      setInitializing(false);
+    }
   }
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
-  const isGuest = useSelector(state => state.authentication.guest);
+  const isGuest = useSelector((state) => state.authentication.guest);
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      {isGuest || user ? (
-        user.email === 'addadrink123@gmail.com' ? 
-        <Stack.Screen 
-          name='BarOwner'
-          component={BarOwnerTabs}
-          options={{ headerShown: false }}
-        /> : <Stack.Screen
-          name='Tabs'
-          component={Tabs}
-          options={{ headerShown: false }}
-        />
-      ) : initializing ? (
+        {isGuest || user ? (
+          user.email === 'addadrink123@gmail.com' ? (
+            <Stack.Screen
+              name="BarOwner"
+              component={BarOwnerTabs}
+              options={{headerShown: false}}
+            />
+          ) : (
+            <Stack.Screen
+              name="Tabs"
+              component={Tabs}
+              options={{headerShown: false}}
+            />
+          )
+        ) : initializing ? (
           <Stack.Screen
             name="SplashScreen"
             component={SplashScreen}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
         ) : (
           <Stack.Screen
             name="Login"
             component={Login}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
-        )
-      }
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};

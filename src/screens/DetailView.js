@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from 'native-base';
 import _ from 'lodash';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import {ScrollView} from 'react-native-gesture-handler';
-import { Rating } from "react-native-elements";
-import { showLocation } from 'react-native-map-link'
+import {Rating} from 'react-native-elements';
+import {showLocation} from 'react-native-map-link';
 import {showModal} from '../state/Actions/modal';
 import ReviewModal from '../components/ReviewModal';
 import DrinkDetailCard from '../components/DrinkDetailCard';
 import {connect} from 'react-redux';
-import { formatRating } from '../utilities/formatRating';
+import {formatRating} from '../utilities/formatRating';
 import COLORS from '../assets/colors';
 
 class Detailview extends Component {
@@ -18,11 +18,11 @@ class Detailview extends Component {
     super(props);
     this.state = {
       isDrinkLive: false,
-    }
+    };
   }
 
   getDirections = () => {
-    const { docId } = this.props.route.params;
+    const {docId} = this.props.route.params;
     const drink = this.getSelectedDrink(docId);
     showLocation({
       latitude: drink.Location._latitude,
@@ -30,22 +30,22 @@ class Detailview extends Component {
       title: drink.Venue,
       appsWhiteList: ['google-maps', 'apple-maps'],
     });
-  }
+  };
 
-  getSelectedDrink = docId => {
-    const { drinks } = this.props;
-    for(let i = 0; i < drinks.length; i++) {
-      if(drinks[i].docId === docId) {
+  getSelectedDrink = (docId) => {
+    const {drinks} = this.props;
+    for (let i = 0; i < drinks.length; i++) {
+      if (drinks[i].docId === docId) {
         return drinks[i];
       }
     }
-  }
+  };
 
   render() {
-    const { docId } = this.props.route.params;
+    const {docId} = this.props.route.params;
     const drink = this.getSelectedDrink(docId);
     const rating = formatRating(drink.Rating.Average);
-  
+
     return (
       <ScrollView style={styles.container}>
         <DrinkDetailCard drink={drink} />
@@ -56,27 +56,23 @@ class Detailview extends Component {
             longitude: drink.Location._longitude,
             latitudeDelta: 0.005,
             longitudeDelta: 0.005,
-          }}
-        >
+          }}>
           <Marker
-            coordinate={{ latitude: drink.Location._latitude, longitude: drink.Location._longitude}}
-            title='Tap to get directions'
+            coordinate={{
+              latitude: drink.Location._latitude,
+              longitude: drink.Location._longitude,
+            }}
+            title="Tap to get directions"
             onCalloutPress={() => this.getDirections()}
           />
         </MapView>
         <View style={{paddingTop: 30}}>
-          <Rating 
-            imageSize={30} 
-            readonly 
-            startingValue={rating} 
-          />
+          <Rating imageSize={30} readonly startingValue={rating} />
           <TouchableOpacity onPress={() => this.props.showModal()}>
-            <Text style={ styles.reviewText}>
-              Add a review
-            </Text>
+            <Text style={styles.reviewText}>Add a review</Text>
           </TouchableOpacity>
         </View>
-        <ReviewModal docID={drink.docId} currentRating={drink.Rating}/>
+        <ReviewModal docID={drink.docId} currentRating={drink.Rating} />
       </ScrollView>
     );
   }
@@ -104,10 +100,10 @@ const styles = StyleSheet.create({
     aspectRatio: 2 / 1,
   },
   reviewText: {
-    textAlign: 'center', 
-    paddingTop: 20, 
+    textAlign: 'center',
+    paddingTop: 20,
     color: COLORS.blue,
-  }
+  },
 });
 
 const mapStateToProps = (state) => {

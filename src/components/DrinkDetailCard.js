@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Button,
   Card,
@@ -11,9 +11,9 @@ import {
   Icon,
 } from 'native-base';
 import {StyleSheet} from 'react-native';
-import { useIsFocused } from '@react-navigation/native'
+import {useIsFocused} from '@react-navigation/native';
 import COLORS from '../assets/colors';
-import { currentAvailability } from '../utilities/drinkAvailability';
+import {currentAvailability} from '../utilities/drinkAvailability';
 
 export default DrinkDetailCard = (props) => {
   const drink = props.drink;
@@ -27,7 +27,7 @@ export default DrinkDetailCard = (props) => {
   return (
     <Card style={styles.card1}>
       <CardItem header bordered style={styles.center}>
-        <Text style={ styles.headerText }>{drink.Name}</Text>
+        <Text style={styles.headerText}>{drink.Name}</Text>
       </CardItem>
       <ListItem icon>
         <Left>
@@ -39,7 +39,9 @@ export default DrinkDetailCard = (props) => {
           <Text>Price</Text>
         </Body>
         <Right>
-          <Text>{ typeof drink.Price === 'number' ? '$' + drink.Price : drink.Price}</Text>
+          <Text>
+            {typeof drink.Price === 'number' ? '$' + drink.Price : drink.Price}
+          </Text>
         </Right>
       </ListItem>
       <ListItem icon>
@@ -57,17 +59,20 @@ export default DrinkDetailCard = (props) => {
       </ListItem>
       <ListItem icon>
         <Left>
-          <Button style={{backgroundColor: isDrinkLive ? COLORS.orange : COLORS.red}}>
+          <Button
+            style={{backgroundColor: isDrinkLive ? COLORS.orange : COLORS.red}}>
             <Icon type="FontAwesome" name={isDrinkLive ? 'check' : 'times'} />
           </Button>
         </Left>
         <Body>
-          <Text>{isDrinkLive ? 'Available Currently' : 'Not Available Currently' }</Text>
+          <Text>
+            {isDrinkLive ? 'Available Currently' : 'Not Available Currently'}
+          </Text>
         </Body>
       </ListItem>
       <CardItem>
         <Body>
-          <Text style={ styles.descriptionText }>{drink.Description}</Text>
+          <Text style={styles.descriptionText}>{drink.Description}</Text>
         </Body>
       </CardItem>
     </Card>
@@ -87,5 +92,5 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     color: COLORS.darkGrey,
-  }
+  },
 });

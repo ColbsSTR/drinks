@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { 
-  StyleSheet, 
-  FlatList, 
-  TouchableOpacity, 
-  View, 
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  View,
   ScrollView,
   Alert,
 } from 'react-native';
-import { Header, Button, Segment, Text } from 'native-base';
+import {Header, Button, Segment, Text} from 'native-base';
 import Geolocation from 'react-native-geolocation-service';
 import isLocationAvailable from '../services/isLocationAvailable';
-import { getAllDrinks } from '../state/Actions/drinks';
-import { removeLikedDrink } from '../state/Actions/LikedDrinks/removeLikedDrink';
-import { addLikedDrink } from '../state/Actions/LikedDrinks/addLikedDrink';
-import { setCurrentLocation } from '../state/Actions/location.js';
+import {getAllDrinks} from '../state/Actions/drinks';
+import {removeLikedDrink} from '../state/Actions/LikedDrinks/removeLikedDrink';
+import {addLikedDrink} from '../state/Actions/LikedDrinks/addLikedDrink';
+import {setCurrentLocation} from '../state/Actions/location.js';
 import DrinkCard from '../components/DrinkCard';
-import { DrinkCardPlaceholder } from '../placeholders/DrinkCardPlaceholder';
+import {DrinkCardPlaceholder} from '../placeholders/DrinkCardPlaceholder';
 import Filters from '../components/Filters/Filters';
 import filter from '../utilities/filter';
 import COLORS from '../assets/colors';
@@ -42,14 +42,18 @@ class TopDeals extends Component {
     const locationAvailable = await isLocationAvailable();
     if (locationAvailable) {
       this.watchID = Geolocation.watchPosition(
-        (position) => { 
-          this.props.setCurrentLocation({ currentLocation: position });
-        }, 
-        () => { Alert.alert('Sorry we had trouble accessing your location right now.') }, 
-        { enableHighAccuracy: true }
+        (position) => {
+          this.props.setCurrentLocation({currentLocation: position});
+        },
+        () => {
+          Alert.alert(
+            'Sorry we had trouble accessing your location right now.',
+          );
+        },
+        {enableHighAccuracy: true},
       );
     }
-  }
+  };
 
   componentDidMount() {
     this.props.getAllDrinks();
@@ -67,9 +71,9 @@ class TopDeals extends Component {
   }
 
   updateDrinksState() {
-    const { selectedTab } = this.state;
+    const {selectedTab} = this.state;
     const currentSelectedDrinks = this.getSelectedCategoryOfDrinks(selectedTab);
-    this.setState({ drinks: currentSelectedDrinks, dataInitialized: true });
+    this.setState({drinks: currentSelectedDrinks, dataInitialized: true});
     this.reApplyFilters(currentSelectedDrinks);
   }
 
@@ -77,45 +81,73 @@ class TopDeals extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.props.navigation.navigate('DetailView', { docId: drink.docId });
+          this.props.navigation.navigate('DetailView', {docId: drink.docId});
         }}
-        style={{ backgroundColor: COLORS.backgroundWhite }}
-      >
+        style={{backgroundColor: COLORS.backgroundWhite}}>
         <DrinkCard drink={drink} onHeartPress={this.onHeartPress} />
       </TouchableOpacity>
     );
-  };
+  }
 
   reApplyFilters(drinkCategory) {
-    const { filterByType, filterByPrice, filterByDistance } = this.state;
-    filterByType && this.filterDrinks({type: 'Type', value: filterByType }, drinkCategory);
-    filterByPrice && this.filterDrinks({type: 'Price', value: filterByPrice }, drinkCategory);
-    filterByDistance && this.filterDrinks({type: 'Distance', value: filterByDistance }, drinkCategory);
+    const {filterByType, filterByPrice, filterByDistance} = this.state;
+    filterByType &&
+      this.filterDrinks({type: 'Type', value: filterByType}, drinkCategory);
+    filterByPrice &&
+      this.filterDrinks({type: 'Price', value: filterByPrice}, drinkCategory);
+    filterByDistance &&
+      this.filterDrinks(
+        {type: 'Distance', value: filterByDistance},
+        drinkCategory,
+      );
   }
 
   filterDrinks(filterObject, selectedCategory) {
-    const { filterByPrice, filterByType, filterByRating, selectedTab } = this.state;
-    const selectedDrinkCategory = selectedCategory ? selectedCategory : this.getSelectedCategoryOfDrinks(selectedTab);
+    const {
+      filterByPrice,
+      filterByType,
+      filterByRating,
+      selectedTab,
+    } = this.state;
+    const selectedDrinkCategory = selectedCategory
+      ? selectedCategory
+      : this.getSelectedCategoryOfDrinks(selectedTab);
     let filteredDrinks = [];
 
-    switch(filterObject.type) {
+    switch (filterObject.type) {
       case 'Type':
-        filteredDrinks = filter(selectedDrinkCategory, {drinkType: filterObject.value, drinkPrice: filterByPrice, drinkRating: filterByRating});
+        filteredDrinks = filter(selectedDrinkCategory, {
+          drinkType: filterObject.value,
+          drinkPrice: filterByPrice,
+          drinkRating: filterByRating,
+        });
         this.setState({
           filterByType: filterObject.value,
           drinks: filteredDrinks,
         });
         break;
       case 'Price':
-        filteredDrinks = filter(selectedDrinkCategory, {drinkType: filterByType, drinkPrice: filterObject.value, drinkRating: filterByRating});
+        filteredDrinks = filter(selectedDrinkCategory, {
+          drinkType: filterByType,
+          drinkPrice: filterObject.value,
+          drinkRating: filterByRating,
+        });
         this.setState({
           filterByPrice: filterObject.value,
           drinks: filteredDrinks,
         });
         break;
       case 'Distance':
-        const { currentLocation } = this.props;
-        filteredDrinks = filter(selectedDrinkCategory, {drinkType: filterByType, drinkPrice: filterByPrice, drinkDistance: filterObject.value}, currentLocation);
+        const {currentLocation} = this.props;
+        filteredDrinks = filter(
+          selectedDrinkCategory,
+          {
+            drinkType: filterByType,
+            drinkPrice: filterByPrice,
+            drinkDistance: filterObject.value,
+          },
+          currentLocation,
+        );
         this.setState({
           filterByDistance: filterObject.value,
           drinks: filteredDrinks,
@@ -124,22 +156,22 @@ class TopDeals extends Component {
       default:
         break;
     }
-  };
+  }
 
   onHeartPress(drink, lottieRef) {
-    const { docId } = drink;
+    const {docId} = drink;
     const liked = this.props.likedDrinks.includes(docId);
     if (liked) {
-      this.props.removeLikedDrink({ drinkId: docId });
+      this.props.removeLikedDrink({drinkId: docId});
       lottieRef.current.reset();
     } else {
-      this.props.addLikedDrink({ drinkId: docId });
-      lottieRef.current.play(0,50);
+      this.props.addLikedDrink({drinkId: docId});
+      lottieRef.current.play(0, 50);
     }
-  };
-  
+  }
+
   getSelectedCategoryOfDrinks(selectedTab) {
-    const { topDeals, specialtyDrinks, localDrinks } = this.props;
+    const {topDeals, specialtyDrinks, localDrinks} = this.props;
     return {
       0: specialtyDrinks,
       1: topDeals,
@@ -149,20 +181,23 @@ class TopDeals extends Component {
 
   onSegmentButtonPress(tab) {
     const drinkCategory = this.getSelectedCategoryOfDrinks(tab);
-    this.setState({ selectedTab: tab, drinks: drinkCategory });
+    this.setState({selectedTab: tab, drinks: drinkCategory});
     this.reApplyFilters(drinkCategory);
   }
 
   segmentButton(buttonName, tab, first, last) {
     const selected = this.state.selectedTab === tab ? true : false;
     return (
-      <Button 
+      <Button
         style={[styles.segmentButton, selected && styles.activeSegmentButton]}
         onPress={() => this.onSegmentButtonPress(tab)}
         first={first}
-        last={last}
-      >
-        <Text style={[styles.segmentButtonText, selected && styles.activeSegmentButtonText]}>
+        last={last}>
+        <Text
+          style={[
+            styles.segmentButtonText,
+            selected && styles.activeSegmentButtonText,
+          ]}>
           {buttonName}
         </Text>
       </Button>
@@ -170,25 +205,36 @@ class TopDeals extends Component {
   }
 
   render() {
-    const { dataInitialized } = this.state;
+    const {dataInitialized} = this.state;
     return (
       <View style={styles.container}>
-        <Header hasSegment style={{ backgroundColor: COLORS.orange, width: '100%', borderBottomColor: 'black', borderBottomWidth: 2 }}>
-            <Segment style={styles.segment}>
-              {this.segmentButton('Specialty', 0, true, false)}
-              {this.segmentButton('Top Deals', 1, false, false)}
-              {this.segmentButton('Local Craft', 2, false, true)}
-            </Segment>
+        <Header
+          hasSegment
+          style={{
+            backgroundColor: COLORS.orange,
+            width: '100%',
+            borderBottomColor: 'black',
+            borderBottomWidth: 2,
+          }}>
+          <Segment style={styles.segment}>
+            {this.segmentButton('Specialty', 0, true, false)}
+            {this.segmentButton('Top Deals', 1, false, false)}
+            {this.segmentButton('Local Craft', 2, false, true)}
+          </Segment>
         </Header>
         <ScrollView>
-          <Filters 
-            filterDrinks={this.filterDrinks}
-          />
+          <Filters filterDrinks={this.filterDrinks} />
           <View>
             <FlatList
               data={this.state.drinks}
-              renderItem={({item}) => dataInitialized ? this.renderDrinkCards(item) : <DrinkCardPlaceholder /> }
-              keyExtractor={item => item.docId}
+              renderItem={({item}) =>
+                dataInitialized ? (
+                  this.renderDrinkCards(item)
+                ) : (
+                  <DrinkCardPlaceholder />
+                )
+              }
+              keyExtractor={(item) => item.docId}
             />
           </View>
         </ScrollView>
@@ -197,11 +243,11 @@ class TopDeals extends Component {
   }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   card: {
-    shadowRadius: 3, 
-    shadowOpacity: .3, 
-    shadowOffset:{ width: 0, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.3,
+    shadowOffset: {width: 0, height: 3},
     borderRadius: 5,
     backgroundColor: COLORS.white,
   },
@@ -214,7 +260,7 @@ const styles = StyleSheet.create({
   },
   segmentButton: {
     borderColor: COLORS.white,
-    borderWidth: 3
+    borderWidth: 3,
   },
   segmentButtonText: {
     color: COLORS.white,

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text } from 'native-base';
+import React, {Component} from 'react';
+import {View, StyleSheet} from 'react-native';
+import {Text} from 'native-base';
 
 class Share extends Component {
   constructor(props) {
@@ -8,7 +8,7 @@ class Share extends Component {
   }
 
   render() {
-    return(
+    return (
       <View style={styles.container}>
         <Text>Share me!</Text>
       </View>
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });
 
 export default Share;
