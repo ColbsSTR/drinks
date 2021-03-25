@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Platform} from 'react-native';
+import {View, StyleSheet, Platform, ScrollView} from 'react-native';
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import MapView, {Marker} from 'react-native-maps';
-import {Icon} from 'native-base';
+import {Icon, Text} from 'native-base';
 import COLORS from '../assets/colors';
-import {TextInput} from 'react-native-gesture-handler';
+import DrinkSnippetCard from '../components/DrinkSnippetCard';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 class DrinkMap extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class DrinkMap extends Component {
       },
       filteredDrinks: [],
       venues: [],
+      selectedVenueDrinks: null,
     };
   }
 
@@ -42,7 +44,27 @@ class DrinkMap extends Component {
     const {topDeals} = this.props;
     const venues = [];
     _.forEach(topDeals, (drink) => {
-      venues.push(drink.Venue);
+      if (venues.length > 0) {
+        const drinkVenue = venues.find(({name}) => name === drink.Venue);
+        if (drinkVenue) {
+          const {name, drinks} = drinkVenue;
+          const venueIndex = venues.findIndex(
+            (venue) => venue.name === drink.Venue,
+          );
+          const updatedDrinkVenue = {name, drinks: [...drinks, drink]};
+          venues.splice(venueIndex, 1, updatedDrinkVenue);
+        } else {
+          venues.push({
+            name: drink.Venue,
+            drinks: [drink],
+          });
+        }
+      } else {
+        venues.push({
+          name: drink.Venue,
+          drinks: [drink],
+        });
+      }
     });
     this.setState({venues});
   };
@@ -70,97 +92,121 @@ class DrinkMap extends Component {
     );
   };
 
-  renderDrinkMarkers = (drink, index) => {
-    return (
-      <Marker
-        key={index}
-        coordinate={{
-          latitude: drink.Location._latitude,
-          longitude: drink.Location._longitude,
-        }}
-        title={
-          typeof drink.Price === 'number'
-            ? `$${drink.Price} ` + drink.Name
-            : `${drink.Price} ` + drink.Name
-        }
-        description={drink.Venue}
-        onCalloutPress={() =>
-          this.props.navigation.navigate('DetailView', {docId: drink.docId})
-        }>
-        <Icon
-          name={this.getMarkerImage(drink.Type)}
-          type="FontAwesome5"
-          style={{color: COLORS.red}}
-        />
-      </Marker>
-    );
-  };
-
-  filterDrinks = (text) => {
-    const {topDeals} = this.props;
-    if (text === '') {
-      this.setState({filteredDrinks: topDeals});
+  renderDrinkMarkers = (drinks, index) => {
+    if (drinks.length === 1) {
+      return (
+        <Marker
+          key={index}
+          coordinate={{
+            latitude: drinks[0].Location._latitude,
+            longitude: drinks[0].Location._longitude,
+          }}
+          title={
+            typeof drinks[0].Price === 'number'
+              ? `$${drinks[0].Price} ` + drinks[0].Name
+              : `${drinks[0].Price} ` + drinks[0].Name
+          }
+          description={drinks[0].Venue}
+          onCalloutPress={() => {
+            this.setState({selectedVenueDrinks: null});
+            this.props.navigation.navigate('DetailView', {
+              docId: drinks[0].docId,
+            });
+          }}>
+          <Icon
+            name={this.getMarkerImage(drinks[0].Type)}
+            type="FontAwesome5"
+            style={{color: COLORS.red}}
+          />
+        </Marker>
+      );
     } else {
-      const filteredDrinks = [];
-      _.forEach(topDeals, (drink) => {
-        let sanitizedName = drink.Name.toLowerCase();
-        let sanitizedText = text.toLowerCase();
-        if (sanitizedName.includes(sanitizedText)) {
-          filteredDrinks.push(drink);
-        }
-      });
-      this.setState({filteredDrinks});
+      return (
+        <Marker
+          key={index}
+          coordinate={{
+            latitude: drinks[0].Location._latitude,
+            longitude: drinks[0].Location._longitude,
+          }}
+          title={drinks[0].Venue}
+          description={drinks.length + ' Drinks Available'}
+          onCalloutPress={() => this.setState({selectedVenueDrinks: drinks})}
+          trackViewChanges={false}>
+          <View style={styles.circle}>
+            <Text style={{color: COLORS.white}}>{drinks.length}</Text>
+          </View>
+        </Marker>
+      );
     }
   };
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <MapView
-          style={{
-            flex: 1,
-          }}
-          region={this.state.region}>
+      <View style={styles.container}>
+        <MapView style={styles.mapView} initialRegion={this.state.region}>
           {this.props.currentLocation && this.currentLocationMarker()}
-          {this.state.filteredDrinks.map((drink, index) =>
-            this.renderDrinkMarkers(drink, index),
+          {this.state.venues.map(({drinks}, index) =>
+            this.renderDrinkMarkers(drinks, index),
           )}
         </MapView>
-        <View style={styles.searchContainer}>
-          <TextInput
-            placeholder="Search By Drink Name"
-            placeholderTextColor="#000"
-            style={{flex: 1, padding: 0}}
-            onChangeText={(text) => this.filterDrinks(text)}
-          />
-          <Icon name="search" style={{fontSize: 22}} />
-        </View>
+        {this.state.selectedVenueDrinks && (
+          <ScrollView
+            style={styles.scrollContainer}
+            horizontal
+            showsHorizontalScrollIndicator={false}>
+            <View style={styles.cardContainer}>
+              {_.map(this.state.selectedVenueDrinks, (drink) => (
+                <TouchableOpacity
+                  style={styles.touchable}
+                  onPress={() =>
+                    this.props.navigation.navigate('DetailView', {
+                      docId: drink.docId,
+                    })
+                  }>
+                  <DrinkSnippetCard drink={drink} />
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
+        )}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  searchContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    width: '90%',
-    alignSelf: 'center',
-    marginTop: Platform.OS === 'ios' ? 50 : 20,
-    backgroundColor: COLORS.backgroundWhite,
-    borderRadius: 5,
-    padding: 10,
-    shadowRadius: 5,
-    shadowColor: COLORS.darkGrey,
-    shadowOpacity: 0.5,
-    shadowOffset: {width: 0, height: 1},
-    elevation: 10,
+  mapView: {
+    flex: 1,
+    zIndex: -1,
+  },
+  container: {
+    flex: 1,
+  },
+  touchable: {
+    paddingRight: 5,
   },
   circle: {
     width: 25,
     height: 25,
     borderRadius: 25 / 2,
     backgroundColor: COLORS.orange,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scrollView: {
+    zIndex: 1,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scrollContainer: {
+    position: 'absolute',
+    bottom: 20,
+    zIndex: 1,
+  },
+  cardContainer: {
+    flexDirection: 'row',
+    marginHorizontal: 10,
   },
 });
 
