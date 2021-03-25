@@ -54,6 +54,7 @@ export default DrinkCard = (props) => {
                     : drink.Price}
                 </Text>
               </View>
+              <Text style={styles.venueName}>{drink.Venue}</Text>
               {drinkAvailable && (
                 <Text style={styles.availableText}>Available</Text>
               )}
@@ -106,7 +107,7 @@ export const styles = StyleSheet.create({
   header: {
     color: COLORS.darkGrey,
     fontWeight: 'bold',
-    paddingBottom: 5,
+    paddingBottom: 3,
   },
   body: {
     color: COLORS.mediumGrey,
@@ -120,5 +121,9 @@ export const styles = StyleSheet.create({
   },
   rowView: {
     flexDirection: 'row',
+  },
+  venueName: {
+    fontSize: 12,
+    paddingBottom: 3,
   },
 });
