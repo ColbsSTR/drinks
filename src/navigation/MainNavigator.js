@@ -262,12 +262,11 @@ export const RootNav = () => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
-  const isGuest = useSelector((state) => state.authentication.guest);
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {isGuest || user ? (
+        {user ? (
           user.email === 'addadrink123@gmail.com' ? (
             <Stack.Screen
               name="BarOwner"

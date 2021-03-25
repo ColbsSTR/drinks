@@ -3,6 +3,7 @@ import {Card, CardItem, Left, Body, Icon} from 'native-base';
 import {View, Text} from 'react-native';
 import {getDrinkIcon, styles} from './DrinkCard';
 
+// eslint-disable-next-line no-undef
 export default DrinkSnippetCard = (props) => {
   const {drink} = props;
   return (
