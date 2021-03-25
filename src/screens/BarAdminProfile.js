@@ -26,7 +26,6 @@ class BarAdminProfile extends Component {
       NotifHeader: null,
       NotifBody: null,
     });
-    console.log('handlesendnotif');
   };
 
   onSignout = () => {
