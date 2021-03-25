@@ -10,7 +10,6 @@ export function* sendNotificationWatcher() {
 export function* sendNotificationWorker(action) {
   try {
     yield call(sendNotification, action.payload);
-    console.log('notifrecieved');
     showToast('Notification sent!', 1250, '', 'success');
   } catch (err) {
     showToast(

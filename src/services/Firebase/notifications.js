@@ -6,10 +6,6 @@ export default requestUserPermission = async () => {
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-  if (enabled) {
-    console.log('Authorization status:', authStatus);
-  }
-
   messaging().setBackgroundMessageHandler(async (remoteMessage) => {
     console.log('Message handled in the background!', remoteMessage);
   });
@@ -17,4 +13,6 @@ export default requestUserPermission = async () => {
   messaging()
     .subscribeToTopic('main')
     .then(() => console.log('Subscribed to topic!'));
+
+  return enabled;
 };
