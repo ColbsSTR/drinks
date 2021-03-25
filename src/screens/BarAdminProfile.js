@@ -84,7 +84,7 @@ class BarAdminProfile extends Component {
 const styles = StyleSheet.create({
   button: {
     margin: 10,
-    width: '100%',
+    width: '95%',
     justifyContent: 'center',
     alignSelf: 'center',
     borderColor: COLORS.orange,
