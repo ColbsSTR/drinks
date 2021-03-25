@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {Header, Button, Segment, Text} from 'native-base';
 import Geolocation from 'react-native-geolocation-service';
+import requestUserPermission from '../services/Firebase/notifications';
 import isLocationAvailable from '../services/isLocationAvailable';
 import {getAllDrinks} from '../state/Actions/drinks';
 import {removeLikedDrink} from '../state/Actions/LikedDrinks/removeLikedDrink';
@@ -38,6 +39,10 @@ class TopDeals extends Component {
     };
   }
 
+  requestNotifs = async () => {
+    const requestNotifs = await requestUserPermission();
+  };
+
   watchPosition = async () => {
     const locationAvailable = await isLocationAvailable();
     if (locationAvailable) {
@@ -57,6 +62,7 @@ class TopDeals extends Component {
 
   componentDidMount() {
     this.props.getAllDrinks();
+    this.requestNotifs();
     this.watchPosition();
   }
 
