@@ -13,7 +13,7 @@ class LikedDrinks extends Component {
       onPress={() => {
         this.props.navigation.navigate('DetailView', {docId: drink.docId});
       }}>
-      <DrinkSnippetCard drink={drink} />
+      <DrinkSnippetCard drink={drink} large={true} />
     </TouchableOpacity>
   );
 
@@ -22,6 +22,7 @@ class LikedDrinks extends Component {
     return (
       <View style={styles.container}>
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={likedDrinks}
           renderItem={({item}) => this.RenderDrinkCards(item)}
         />
