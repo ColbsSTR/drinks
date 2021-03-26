@@ -1,0 +1,1 @@
+export const emailInUse = 'auth/email-already-in-use';

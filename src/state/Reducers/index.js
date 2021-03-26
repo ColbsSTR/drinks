@@ -1,15 +1,25 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import modals from './modals.reducer';
-import topDeals from './topDeals.reducer';
+import drinks from './drinks.reducer';
 import venueInformation from './venueInformation.reducer';
+import authentication from './authentication.reducer';
+import reviews from './reviews.reducer';
+import likedDrinks from './LikedDrinks';
+import location from './location.reducer';
+import updateDisplayName from './User/updateDisplayName.reducer';
 import { rootSaga } from '../Sagas/index';
 
 const AppReducers = combineReducers({
     //where the reducers go
     modals,
-    topDeals,
+    drinks,
     venueInformation,
+    authentication,
+    reviews,
+    likedDrinks,
+    location,
+    updateDisplayName,
 });
 
 const sagaMiddleware = createSagaMiddleware();

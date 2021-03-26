@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">drinksApp</string>
+    <string name="facebook_app_id">376826490032763</string>
+    <string name="fb_login_protocol_scheme">fb376826490032763</string>
 </resources>
