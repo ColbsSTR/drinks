@@ -51,7 +51,7 @@ export default DrinkCard = (props) => {
                 <Text>
                   {typeof drink.Price === 'number'
                     ? '$' + drink.Price
-                    : drink.Price}
+                    : drink.Price + ' Off'}
                 </Text>
               </View>
               <Text style={styles.venueName}>{drink.Venue}</Text>
