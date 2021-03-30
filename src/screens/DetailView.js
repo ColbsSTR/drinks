@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Share} from 'react-native';
 import {Text} from 'native-base';
 import _ from 'lodash';
 import MapView, {Marker} from 'react-native-maps';
@@ -12,6 +12,8 @@ import DrinkDetailCard from '../components/DrinkDetailCard';
 import {connect} from 'react-redux';
 import {formatRating} from '../utilities/formatRating';
 import COLORS from '../assets/colors';
+
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 class Detailview extends Component {
   constructor(props) {
@@ -39,6 +41,41 @@ class Detailview extends Component {
         return drinks[i];
       }
     }
+  };
+
+  onShare = async () => {
+    // try {
+    //   const result = await Share.share({
+    //     url: this.buildLink(),
+    //   });
+
+    //   if (result.action === Share.sharedAction) {
+    //     if (result.activityType) {
+    //       // shared with activity type of result.activityType
+    //     } else {
+    //       // shared
+    //     }
+    //   } else if (result.action === Share.dismissedAction) {
+    //     // dismissed
+    //   }
+    // } catch (error) {
+    //   alert(error.message);
+    // }
+    console.log(this.buildLink());
+  };
+
+  buildLink = async () => {
+    const link = await dynamicLinks().buildLink({
+      link: 'https://invertase.io',
+      // domainUriPrefix is created in your Firebase console
+      domainUriPrefix: 'https://mydrinksapp.page.link',
+      // optional setup which updates Firebase analytics campaign
+      // "banner". This also needs setting up before hand
+      analytics: {
+        campaign: 'banner',
+      },
+    });
+    return link;
   };
 
   render() {
@@ -70,6 +107,9 @@ class Detailview extends Component {
           <Rating imageSize={30} readonly startingValue={rating} />
           <TouchableOpacity onPress={() => this.props.showModal()}>
             <Text style={styles.reviewText}>Add a review</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.onShare()}>
+            <Text style={styles.reviewText}>Share Drink</Text>
           </TouchableOpacity>
         </View>
         <ReviewModal docID={drink.docId} currentRating={drink.Rating} />
