@@ -22,6 +22,8 @@ import Filters from '../components/Filters/Filters';
 import filter from '../utilities/filter';
 import COLORS from '../assets/colors';
 
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+
 class TopDeals extends Component {
   constructor(props) {
     super(props);
@@ -60,6 +62,20 @@ class TopDeals extends Component {
     }
   };
 
+  getInitialLink = () => {
+    dynamicLinks()
+      .getInitialLink()
+      .then((link) => {
+        if (this.state.dataInitialized) {
+          console.log('going to url', link.url.substr(43));
+          this.props.navigation.navigate('DetailView', {
+            docId: link.url.substr(43),
+          });
+        } else {
+        }
+      });
+  };
+
   componentDidMount() {
     this.props.getAllDrinks();
     this.requestNotifs();
@@ -70,6 +86,7 @@ class TopDeals extends Component {
     if (prevProps.allDrinks !== this.props.allDrinks) {
       this.updateDrinksState();
     }
+    this.getInitialLink();
   }
 
   componentWillUnmount() {

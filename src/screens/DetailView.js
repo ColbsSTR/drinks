@@ -44,36 +44,21 @@ class Detailview extends Component {
   };
 
   onShare = async () => {
-    // try {
-    //   const result = await Share.share({
-    //     url: this.buildLink(),
-    //   });
-
-    //   if (result.action === Share.sharedAction) {
-    //     if (result.activityType) {
-    //       // shared with activity type of result.activityType
-    //     } else {
-    //       // shared
-    //     }
-    //   } else if (result.action === Share.dismissedAction) {
-    //     // dismissed
-    //   }
-    // } catch (error) {
-    //   alert(error.message);
-    // }
-    console.log(this.buildLink());
+    try {
+      const result = await Share.share({
+        url: await this.buildLink(),
+      });
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   buildLink = async () => {
     const link = await dynamicLinks().buildLink({
-      link: 'https://invertase.io',
-      // domainUriPrefix is created in your Firebase console
+      link:
+        'https://mydrinksapp.com/shareDrink?drinkId=' +
+        this.props.route.params.docId,
       domainUriPrefix: 'https://mydrinksapp.page.link',
-      // optional setup which updates Firebase analytics campaign
-      // "banner". This also needs setting up before hand
-      analytics: {
-        campaign: 'banner',
-      },
     });
     return link;
   };
