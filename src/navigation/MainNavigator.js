@@ -25,14 +25,14 @@ function MapStack() {
   return (
     <MainStack.Navigator>
       <MainStack.Screen
-        name="DrinkMap"
+        name="Drink Map"
         component={DrinkMap}
         options={{
           headerShown: false,
         }}
       />
       <MainStack.Screen
-        name="DetailView"
+        name="Drink Details"
         component={DetailView}
         tintColor="black"
         options={{
@@ -61,12 +61,12 @@ function HomeStack() {
         },
       }}>
       <MainStack.Screen
-        name="TopDeals"
+        name="Top Deals"
         component={TopDeals}
         options={{headerShown: false}}
       />
       <MainStack.Screen
-        name="DetailView"
+        name="Drink Details"
         component={DetailView}
         tintColor="black"
         options={{
@@ -113,7 +113,7 @@ function ProfileStack() {
         }}
       />
       <MainStack.Screen
-        name="DetailView"
+        name="Drink Details"
         component={DetailView}
         tintColor="black"
         options={{
@@ -132,13 +132,13 @@ function Tabs() {
           let iconName;
 
           switch (route.name) {
-            case 'TopDeals':
+            case 'Top Deals':
               iconName = focused ? 'glass-cheers' : 'glass-cheers';
               break;
             case 'Profile':
               iconName = focused ? 'user' : 'user';
               break;
-            case 'DrinkMap':
+            case 'Drink Map':
               iconName = focused ? 'map' : 'map';
               break;
             default:
@@ -149,7 +149,7 @@ function Tabs() {
             <Icon
               name={iconName}
               type="font-awesome-5"
-              size={route.name === 'TopDeals' ? 30 : 23}
+              size={route.name === 'Top Deals' ? 30 : 23}
               color={color}
             />
           );
@@ -159,9 +159,9 @@ function Tabs() {
         activeTintColor: '#fca311',
         inactiveTintColor: 'gray',
       }}
-      initialRouteName="TopDeals">
-      <Tab.Screen name="DrinkMap" component={MapStack} />
-      <Tab.Screen name="TopDeals" component={HomeStack} />
+      initialRouteName="Top Deals">
+      <Tab.Screen name="Drink Map" component={MapStack} />
+      <Tab.Screen name="Top Deals" component={HomeStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );

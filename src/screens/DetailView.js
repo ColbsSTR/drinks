@@ -7,14 +7,12 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {Rating} from 'react-native-elements';
 import {showLocation} from 'react-native-map-link';
 import {showModal} from '../state/Actions/modal';
+import {buildShareLink} from '../state/Actions/buildShareLink';
 import ReviewModal from '../components/ReviewModal';
 import DrinkDetailCard from '../components/DrinkDetailCard';
 import {connect} from 'react-redux';
 import {formatRating} from '../utilities/formatRating';
 import COLORS from '../assets/colors';
-
-import dynamicLinks from '@react-native-firebase/dynamic-links';
-
 class Detailview extends Component {
   constructor(props) {
     super(props);
@@ -41,26 +39,6 @@ class Detailview extends Component {
         return drinks[i];
       }
     }
-  };
-
-  onShare = async () => {
-    try {
-      const result = await Share.share({
-        url: await this.buildLink(),
-      });
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  buildLink = async () => {
-    const link = await dynamicLinks().buildLink({
-      link:
-        'https://mydrinksapp.com/shareDrink?drinkId=' +
-        this.props.route.params.docId,
-      domainUriPrefix: 'https://mydrinksapp.page.link',
-    });
-    return link;
   };
 
   render() {
@@ -91,9 +69,12 @@ class Detailview extends Component {
         <View style={{paddingTop: 30}}>
           <Rating imageSize={30} readonly startingValue={rating} />
           <TouchableOpacity onPress={() => this.props.showModal()}>
-            <Text style={styles.reviewText}>Add a review</Text>
+            <Text style={styles.reviewText}>Add Review</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.onShare()}>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.buildShareLink(this.props.route.params.docId);
+            }}>
             <Text style={styles.reviewText}>Share Drink</Text>
           </TouchableOpacity>
         </View>
@@ -139,6 +120,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   showModal,
+  buildShareLink,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Detailview);

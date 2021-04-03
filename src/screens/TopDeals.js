@@ -66,14 +66,20 @@ class TopDeals extends Component {
     dynamicLinks()
       .getInitialLink()
       .then((link) => {
-        if (this.state.dataInitialized) {
-          console.log('going to url', link.url.substr(43));
-          this.props.navigation.navigate('DetailView', {
-            docId: link.url.substr(43),
-          });
-        } else {
+        if (this.state.dataInitialized && link != null) {
+          this.handleDynamicLink(link);
         }
       });
+    const linkingListener = dynamicLinks().onLink(this.handleDynamicLink);
+    return () => {
+      linkingListener();
+    };
+  };
+
+  handleDynamicLink = (link) => {
+    this.props.navigation.navigate('Drink Details', {
+      docId: link.url.substr(43),
+    });
   };
 
   componentDidMount() {
@@ -85,8 +91,8 @@ class TopDeals extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.allDrinks !== this.props.allDrinks) {
       this.updateDrinksState();
+      this.getInitialLink();
     }
-    this.getInitialLink();
   }
 
   componentWillUnmount() {
@@ -104,7 +110,7 @@ class TopDeals extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.props.navigation.navigate('DetailView', {docId: drink.docId});
+          this.props.navigation.navigate('Drink Details', {docId: drink.docId});
         }}
         style={{backgroundColor: COLORS.backgroundWhite}}>
         <DrinkCard drink={drink} onHeartPress={this.onHeartPress} />

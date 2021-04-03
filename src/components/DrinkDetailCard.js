@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
-    color: COLORS.blue,
+    color: COLORS.darkGrey,
   },
   descriptionText: {
     color: COLORS.darkGrey,
