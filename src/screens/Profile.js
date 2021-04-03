@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
   nameContainer: {
     marginVertical: 10,
     alignItems: 'center',
+    paddingBottom: 10,
   },
   gearIcon: {
     paddingTop: Platform.OS === 'ios' ? 50 : 20,

@@ -12,6 +12,7 @@ import DrinkDetailCard from '../components/DrinkDetailCard';
 import {connect} from 'react-redux';
 import {formatRating} from '../utilities/formatRating';
 import COLORS from '../assets/colors';
+import {deviceHeight} from '../assets/styles/dimensions/deviceDimensions';
 
 class Detailview extends Component {
   constructor(props) {
@@ -66,7 +67,7 @@ class Detailview extends Component {
             onCalloutPress={() => this.getDirections()}
           />
         </MapView>
-        <View style={{paddingTop: 30}}>
+        <View style={{paddingTop: 30, paddingBottom: deviceHeight * .05}}>
           <Rating imageSize={30} readonly startingValue={rating} />
           <TouchableOpacity onPress={() => this.props.showModal()}>
             <Text style={styles.reviewText}>Add a review</Text>
