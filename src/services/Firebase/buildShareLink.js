@@ -1,4 +1,4 @@
-import {Share} from 'react-native';
+import {Platform, Share} from 'react-native';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 export const buildShareLink = async (docId) => {
@@ -15,9 +15,15 @@ export const buildShareLink = async (docId) => {
 
 export const onShare = async (link) => {
   try {
-    const result = await Share.share({
-      url: link,
-    });
+    if (Platform.OS === 'ios') {
+      const result = await Share.share({
+        url: link,
+      });
+    } else {
+      const result = await Share.share({
+        message: link,
+      });
+    }
   } catch (error) {
     alert(error.message);
   }
