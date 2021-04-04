@@ -16,6 +16,7 @@ import AddDrink from '../screens/AddDrink';
 import BarAdminProfile from '../screens/BarAdminProfile';
 import {UpdateFormField} from '../components/UpdateFormField';
 import {loginSucceeded} from '../state/Actions/authentication';
+import COLORS from '../assets/colors';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -34,10 +35,10 @@ function MapStack() {
       <MainStack.Screen
         name="Drink Details"
         component={DetailView}
-        tintColor="black"
         options={{
+          title: '',
           headerStyle: {
-            backgroundColor: '#ef8921',
+            backgroundColor: COLORS.orange,
           },
           headerTitleStyle: {
             color: 'white',
@@ -70,6 +71,7 @@ function HomeStack() {
         component={DetailView}
         tintColor="black"
         options={{
+          title: '',
           headerTintColor: 'black',
         }}
       />
@@ -117,6 +119,7 @@ function ProfileStack() {
         component={DetailView}
         tintColor="black"
         options={{
+          title: '',
           headerTintColor: 'black',
         }}
       />

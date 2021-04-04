@@ -10,14 +10,33 @@ import {
   Right,
   Icon,
 } from 'native-base';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useIsFocused} from '@react-navigation/native';
 import COLORS from '../assets/colors';
 import {currentAvailability} from '../utilities/drinkAvailability';
+import {militaryToStandard} from '../utilities/time';
+
+export const DrinksHours = ({drink}) => {
+  return drink.Availability.map((day) => {
+    const standardTimeBegin = militaryToStandard(day.Times[0]);
+    const standardTimeEnd = militaryToStandard(day.Times[1]);
+    return (
+      <ListItem>
+        <Text style={{fontSize: 14}}>{day.Day}</Text>
+        <View style={{marginLeft: 12}}>
+          <Text style={{fontSize: 14}}>
+            {standardTimeBegin + ' - ' + standardTimeEnd}
+          </Text>
+        </View>
+      </ListItem>
+    );
+  });
+};
 
 export default DrinkDetailCard = (props) => {
   const drink = props.drink;
   const [isDrinkLive, setDrinkStatus] = useState(false);
+  const [hoursShown, setHoursShown] = useState(false);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -69,7 +88,15 @@ export default DrinkDetailCard = (props) => {
             {isDrinkLive ? 'Available Currently' : 'Not Available Currently'}
           </Text>
         </Body>
+        <Right>
+          <Text
+            style={{color: COLORS.blue, fontSize: 14}}
+            onPress={() => setHoursShown(!hoursShown)}>
+            {hoursShown ? 'Hide Hours' : 'Show Hours'}
+          </Text>
+        </Right>
       </ListItem>
+      {hoursShown && drink.Availability && <DrinksHours drink={drink} />}
       <CardItem>
         <Body>
           <Text style={styles.descriptionText}>{drink.Description}</Text>
@@ -88,7 +115,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
-    color: COLORS.darkGrey,
+    color: COLORS.orange,
+    fontWeight: 'bold',
+    fontSize: 17,
   },
   descriptionText: {
     color: COLORS.darkGrey,
