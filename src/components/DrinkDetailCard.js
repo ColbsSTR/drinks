@@ -11,10 +11,12 @@ import {
   Icon,
 } from 'native-base';
 import {StyleSheet, View} from 'react-native';
+import {useDispatch} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import COLORS from '../assets/colors';
 import {currentAvailability} from '../utilities/drinkAvailability';
 import {militaryToStandard} from '../utilities/time';
+import {buildShareLink} from '../state/Actions/buildShareLink';
 
 export const DrinksHours = ({drink}) => {
   return drink.Availability.map((day) => {
@@ -38,6 +40,7 @@ export default DrinkDetailCard = (props) => {
   const [isDrinkLive, setDrinkStatus] = useState(false);
   const [hoursShown, setHoursShown] = useState(false);
   const isFocused = useIsFocused();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     currentAvailability(drink) ? setDrinkStatus(true) : setDrinkStatus(false);
@@ -46,7 +49,15 @@ export default DrinkDetailCard = (props) => {
   return (
     <Card style={styles.card1}>
       <CardItem header bordered style={styles.center}>
-        <Text style={styles.headerText}>{drink.Name}</Text>
+        <View style={styles.header}>
+          <View style={{flex: 1}} />
+          <Text style={styles.headerText}>{drink.Name}</Text>
+          <Button
+            style={styles.shareButton}
+            onPress={() => dispatch(buildShareLink())}>
+            <Icon type="FontAwesome" name="share-square" />
+          </Button>
+        </View>
       </CardItem>
       <ListItem icon>
         <Left>
@@ -114,10 +125,22 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
   },
+  header: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
   headerText: {
     color: COLORS.orange,
     fontWeight: 'bold',
     fontSize: 17,
+    alignSelf: 'center',
+    textAlign: 'center',
+    flex: 5,
+  },
+  shareButton: {
+    flex: 1,
+    justifyContent: 'center',
   },
   descriptionText: {
     color: COLORS.darkGrey,

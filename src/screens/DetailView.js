@@ -7,7 +7,6 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {Rating} from 'react-native-elements';
 import {showLocation} from 'react-native-map-link';
 import {showModal} from '../state/Actions/modal';
-import {buildShareLink} from '../state/Actions/buildShareLink';
 import ReviewModal from '../components/ReviewModal';
 import DrinkDetailCard from '../components/DrinkDetailCard';
 import {connect} from 'react-redux';
@@ -73,12 +72,6 @@ class Detailview extends Component {
           <TouchableOpacity onPress={() => this.props.showModal()}>
             <Text style={styles.reviewText}>Add Review</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.buildShareLink(this.props.route.params.docId);
-            }}>
-            <Text style={styles.reviewText}>Share Drink</Text>
-          </TouchableOpacity>
         </View>
         <ReviewModal docID={drink.docId} currentRating={drink.Rating} />
       </ScrollView>
@@ -122,7 +115,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   showModal,
-  buildShareLink,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Detailview);
