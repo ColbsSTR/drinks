@@ -54,7 +54,7 @@ export default DrinkDetailCard = (props) => {
           <Text style={styles.headerText}>{drink.Name}</Text>
           <Button
             style={styles.shareButton}
-            onPress={() => dispatch(buildShareLink())}>
+            onPress={() => dispatch(buildShareLink(props.docId))}>
             <Icon type="FontAwesome" name="share-square" />
           </Button>
         </View>
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     alignSelf: 'center',
     textAlign: 'center',
-    flex: 5,
+    flex: 4,
   },
   shareButton: {
     flex: 1,

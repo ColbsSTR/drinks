@@ -49,7 +49,7 @@ class Detailview extends Component {
 
     return (
       <ScrollView style={styles.container}>
-        <DrinkDetailCard drink={drink} />
+        <DrinkDetailCard drink={drink} docId={this.props.route.params.docId} />
         <MapView
           style={styles.map}
           initialRegion={{

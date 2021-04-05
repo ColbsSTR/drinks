@@ -91,8 +91,8 @@ class TopDeals extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.allDrinks !== this.props.allDrinks) {
       this.updateDrinksState();
-      this.getInitialLink();
     }
+    this.getInitialLink();
   }
 
   componentWillUnmount() {
