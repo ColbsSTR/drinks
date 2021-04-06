@@ -5,6 +5,7 @@ import {reviewsWatcher} from './reviews.saga';
 import {authenticationWatcher} from './authentication.saga';
 import {updateUserDisplayNameWatcher} from './User/updateDisplayName.saga';
 import {addDrinkWatcher} from './addDrink.saga';
+import {editDrinkWatcher} from './editDrink.saga';
 import {sendNotificationWatcher} from './sendNotification.saga';
 import likedDrinks from './LikedDrinks';
 
@@ -19,6 +20,7 @@ export function* rootSaga() {
     call(likedDrinks),
     call(authenticationWatcher),
     call(addDrinkWatcher),
+    call(editDrinkWatcher),
     call(updateUserDisplayNameWatcher),
     call(sendNotificationWatcher),
   ]);

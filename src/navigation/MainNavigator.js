@@ -17,6 +17,7 @@ import BarAdminProfile from '../screens/BarAdminProfile';
 import {UpdateFormField} from '../components/UpdateFormField';
 import {loginSucceeded} from '../state/Actions/authentication';
 import COLORS from '../assets/colors';
+import EditDrink from '../screens/EditDrink';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -208,6 +209,13 @@ function BarAdminProfileStack() {
         component={BarAdminProfile}
         options={{
           title: 'Profile',
+        }}
+      />
+      <MainStack.Screen
+        name="EditDrink"
+        component={EditDrink}
+        options={{
+          title: 'Edit Drink',
         }}
       />
     </MainStack.Navigator>
