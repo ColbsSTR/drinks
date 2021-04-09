@@ -11,7 +11,7 @@ import {
   Icon,
 } from 'native-base';
 import {StyleSheet, View} from 'react-native';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import COLORS from '../assets/colors';
 import {currentAvailability} from '../utilities/drinkAvailability';
 import {militaryToStandard} from '../utilities/time';
@@ -38,6 +38,7 @@ export default DrinkDetailCard = (props) => {
   const [isDrinkLive, setDrinkStatus] = useState(false);
   const [hoursShown, setHoursShown] = useState(false);
   const isFocused = useIsFocused();
+  const navigation = useNavigation();
 
   useEffect(() => {
     currentAvailability(drink) ? setDrinkStatus(true) : setDrinkStatus(false);
@@ -73,7 +74,11 @@ export default DrinkDetailCard = (props) => {
           <Text>Venue</Text>
         </Body>
         <Right>
-          <Text>{drink.Venue}</Text>
+          <Text
+            style={{color: COLORS.blue, fontSize: 15}}
+            onPress={() => navigation.navigate('VenueProfile', {drink: drink})}>
+            {drink.Venue}
+          </Text>
         </Right>
       </ListItem>
       <ListItem icon>

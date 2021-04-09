@@ -40,7 +40,7 @@ class TopDeals extends Component {
   }
 
   requestNotifs = async () => {
-    const requestNotifs = await requestUserPermission();
+    await requestUserPermission();
   };
 
   watchPosition = async () => {
