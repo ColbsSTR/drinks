@@ -20,6 +20,7 @@ import DrinkCard from '../components/DrinkCard';
 import {DrinkCardPlaceholder} from '../placeholders/DrinkCardPlaceholder';
 import Filters from '../components/Filters/Filters';
 import filter from '../utilities/filter';
+import {SortDrinksByAvailability} from '../utilities/sortDrinks';
 import COLORS from '../assets/colors';
 
 class TopDeals extends Component {
@@ -51,9 +52,7 @@ class TopDeals extends Component {
           this.props.setCurrentLocation({currentLocation: position});
         },
         () => {
-          Alert.alert(
-            'Sorry we had trouble accessing your location right now.',
-          );
+          Alert.alert('Sorry we had trouble accessing your location right now.');
         },
         {enableHighAccuracy: true},
       );
@@ -79,7 +78,8 @@ class TopDeals extends Component {
   updateDrinksState() {
     const {selectedTab} = this.state;
     const currentSelectedDrinks = this.getSelectedCategoryOfDrinks(selectedTab);
-    this.setState({drinks: currentSelectedDrinks, dataInitialized: true});
+    const drinksSortedByAvailability = SortDrinksByAvailability(currentSelectedDrinks);
+    this.setState({drinks: drinksSortedByAvailability, dataInitialized: true});
     this.reApplyFilters(currentSelectedDrinks);
   }
 
@@ -97,28 +97,20 @@ class TopDeals extends Component {
 
   reApplyFilters(drinkCategory) {
     const {filterByType, filterByPrice, filterByDistance} = this.state;
-    filterByType &&
-      this.filterDrinks({type: 'Type', value: filterByType}, drinkCategory);
+    filterByType && this.filterDrinks({type: 'Type', value: filterByType}, drinkCategory);
     filterByPrice &&
       this.filterDrinks({type: 'Price', value: filterByPrice}, drinkCategory);
     filterByDistance &&
-      this.filterDrinks(
-        {type: 'Distance', value: filterByDistance},
-        drinkCategory,
-      );
+      this.filterDrinks({type: 'Distance', value: filterByDistance}, drinkCategory);
   }
 
   filterDrinks(filterObject, selectedCategory) {
-    const {
-      filterByPrice,
-      filterByType,
-      filterByRating,
-      selectedTab,
-    } = this.state;
+    const {filterByPrice, filterByType, filterByRating, selectedTab} = this.state;
     const selectedDrinkCategory = selectedCategory
       ? selectedCategory
       : this.getSelectedCategoryOfDrinks(selectedTab);
     let filteredDrinks = [];
+    let drinksSortedByAvailability;
 
     switch (filterObject.type) {
       case 'Type':
@@ -127,9 +119,10 @@ class TopDeals extends Component {
           drinkPrice: filterByPrice,
           drinkRating: filterByRating,
         });
+        drinksSortedByAvailability = SortDrinksByAvailability(filteredDrinks);
         this.setState({
           filterByType: filterObject.value,
-          drinks: filteredDrinks,
+          drinks: drinksSortedByAvailability,
         });
         break;
       case 'Price':
@@ -138,9 +131,10 @@ class TopDeals extends Component {
           drinkPrice: filterObject.value,
           drinkRating: filterByRating,
         });
+        drinksSortedByAvailability = SortDrinksByAvailability(filteredDrinks);
         this.setState({
           filterByPrice: filterObject.value,
-          drinks: filteredDrinks,
+          drinks: drinksSortedByAvailability,
         });
         break;
       case 'Distance':
@@ -154,9 +148,10 @@ class TopDeals extends Component {
           },
           currentLocation,
         );
+        drinksSortedByAvailability = SortDrinksByAvailability(filteredDrinks);
         this.setState({
           filterByDistance: filterObject.value,
-          drinks: filteredDrinks,
+          drinks: drinksSortedByAvailability,
         });
         break;
       default:
@@ -187,7 +182,8 @@ class TopDeals extends Component {
 
   onSegmentButtonPress(tab) {
     const drinkCategory = this.getSelectedCategoryOfDrinks(tab);
-    this.setState({selectedTab: tab, drinks: drinkCategory});
+    const drinksSortedByAvailability = SortDrinksByAvailability(drinkCategory);
+    this.setState({selectedTab: tab, drinks: drinksSortedByAvailability});
     this.reApplyFilters(drinkCategory);
   }
 
@@ -200,10 +196,7 @@ class TopDeals extends Component {
         first={first}
         last={last}>
         <Text
-          style={[
-            styles.segmentButtonText,
-            selected && styles.activeSegmentButtonText,
-          ]}>
+          style={[styles.segmentButtonText, selected && styles.activeSegmentButtonText]}>
           {buttonName}
         </Text>
       </Button>
@@ -234,11 +227,7 @@ class TopDeals extends Component {
             <FlatList
               data={this.state.drinks}
               renderItem={({item}) =>
-                dataInitialized ? (
-                  this.renderDrinkCards(item)
-                ) : (
-                  <DrinkCardPlaceholder />
-                )
+                dataInitialized ? this.renderDrinkCards(item) : <DrinkCardPlaceholder />
               }
               keyExtractor={(item) => item.docId}
             />

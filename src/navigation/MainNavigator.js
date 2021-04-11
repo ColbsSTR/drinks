@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {Icon} from 'react-native-elements';
 import TopDeals from '../screens/TopDeals';
 import DetailView from '../screens/DetailView';
@@ -31,6 +31,7 @@ function MapStack() {
         component={DrinkMap}
         options={{
           headerShown: false,
+          title: 'Drink Map',
         }}
       />
       <MainStack.Screen
@@ -65,7 +66,7 @@ function HomeStack() {
       <MainStack.Screen
         name="TopDeals"
         component={TopDeals}
-        options={{headerShown: false}}
+        options={{headerShown: false, title: 'Top Deals'}}
       />
       <MainStack.Screen
         name="DetailView"
@@ -128,10 +129,19 @@ function ProfileStack() {
   );
 }
 
+export const getTabBarLabel = (route) => {
+  return {
+    TopDeals: 'Top Deals',
+    DrinkMap: 'Drink Map',
+    Profile: 'Profile',
+  }[route];
+};
+
 function Tabs() {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
+        tabBarLabel: getTabBarLabel(route.name),
         tabBarIcon: ({focused, color}) => {
           let iconName;
 
@@ -248,10 +258,7 @@ function BarOwnerTabs() {
       }}
       initialRouteName="AddDrink">
       <MainStack.Screen name="AddDrink" component={AddDrinkStack} />
-      <MainStack.Screen
-        name="BarAdminProfile"
-        component={BarAdminProfileStack}
-      />
+      <MainStack.Screen name="BarAdminProfile" component={BarAdminProfileStack} />
     </Tab.Navigator>
   );
 }
@@ -285,11 +292,7 @@ export const RootNav = () => {
               options={{headerShown: false}}
             />
           ) : (
-            <Stack.Screen
-              name="Tabs"
-              component={Tabs}
-              options={{headerShown: false}}
-            />
+            <Stack.Screen name="Tabs" component={Tabs} options={{headerShown: false}} />
           )
         ) : initializing ? (
           <Stack.Screen
@@ -298,11 +301,7 @@ export const RootNav = () => {
             options={{headerShown: false}}
           />
         ) : (
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{headerShown: false}}
-          />
+          <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
         )}
       </Stack.Navigator>
     </NavigationContainer>
