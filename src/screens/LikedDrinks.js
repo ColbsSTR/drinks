@@ -11,7 +11,7 @@ class LikedDrinks extends Component {
   RenderDrinkCards = (drink) => (
     <TouchableOpacity
       onPress={() => {
-        this.props.navigation.navigate('Drink Details', {docId: drink.docId});
+        this.props.navigation.navigate('DetailView', {docId: drink.docId});
       }}>
       <DrinkSnippetCard drink={drink} large={true} />
     </TouchableOpacity>

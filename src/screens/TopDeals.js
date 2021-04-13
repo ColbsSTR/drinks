@@ -76,7 +76,7 @@ class TopDeals extends Component {
   };
 
   handleDynamicLink = (link) => {
-    this.props.navigation.navigate('Drink Details', {
+    this.props.navigation.navigate('DetailView', {
       docId: link.url.substr(43),
     });
   };
@@ -110,7 +110,7 @@ class TopDeals extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.props.navigation.navigate('Drink Details', {docId: drink.docId});
+          this.props.navigation.navigate('DetailView', {docId: drink.docId});
         }}
         style={{backgroundColor: COLORS.backgroundWhite}}>
         <DrinkCard drink={drink} onHeartPress={this.onHeartPress} />

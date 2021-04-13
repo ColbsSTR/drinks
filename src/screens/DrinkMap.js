@@ -109,7 +109,7 @@ class DrinkMap extends Component {
           description={drinks[0].Venue}
           onCalloutPress={() => {
             this.setState({selectedVenueDrinks: null});
-            this.props.navigation.navigate('Drink Details', {
+            this.props.navigation.navigate('DetailView', {
               docId: drinks[0].docId,
             });
           }}>
@@ -159,7 +159,7 @@ class DrinkMap extends Component {
                 <TouchableOpacity
                   style={styles.touchable}
                   onPress={() =>
-                    this.props.navigation.navigate('Drink Details', {
+                    this.props.navigation.navigate('DetailView', {
                       docId: drink.docId,
                     })
                   }>

@@ -27,7 +27,7 @@ function MapStack() {
   return (
     <MainStack.Navigator>
       <MainStack.Screen
-        name="Drink Map"
+        name="DrinkMap"
         component={DrinkMap}
         options={{
           headerShown: false,
@@ -35,7 +35,7 @@ function MapStack() {
         }}
       />
       <MainStack.Screen
-        name="Drink Details"
+        name="DetailView"
         component={DetailView}
         options={{
           title: '',
@@ -64,12 +64,12 @@ function HomeStack() {
         },
       }}>
       <MainStack.Screen
-        name="Top Deals"
+        name="TopDeals"
         component={TopDeals}
         options={{headerShown: false, title: 'Top Deals'}}
       />
       <MainStack.Screen
-        name="Drink Details"
+        name="DetailView"
         component={DetailView}
         tintColor="black"
         options={{
@@ -117,7 +117,7 @@ function ProfileStack() {
         }}
       />
       <MainStack.Screen
-        name="Drink Details"
+        name="DetailView"
         component={DetailView}
         tintColor="black"
         options={{
@@ -131,8 +131,8 @@ function ProfileStack() {
 
 export const getTabBarLabel = (route) => {
   return {
-    TopDeals: 'Top Deals',
-    DrinkMap: 'Drink Map',
+    TopDeals: 'TopDeals',
+    DrinkMap: 'DrinkMap',
     Profile: 'Profile',
   }[route];
 };
@@ -146,13 +146,13 @@ function Tabs() {
           let iconName;
 
           switch (route.name) {
-            case 'Top Deals':
+            case 'TopDeals':
               iconName = focused ? 'glass-cheers' : 'glass-cheers';
               break;
             case 'Profile':
               iconName = focused ? 'user' : 'user';
               break;
-            case 'Drink Map':
+            case 'DrinkMap':
               iconName = focused ? 'map' : 'map';
               break;
             default:
@@ -163,7 +163,7 @@ function Tabs() {
             <Icon
               name={iconName}
               type="font-awesome-5"
-              size={route.name === 'Top Deals' ? 30 : 23}
+              size={route.name === 'TopDeals' ? 30 : 23}
               color={color}
             />
           );
@@ -173,9 +173,17 @@ function Tabs() {
         activeTintColor: '#fca311',
         inactiveTintColor: 'gray',
       }}
-      initialRouteName="Top Deals">
-      <Tab.Screen name="Drink Map" component={MapStack} />
-      <Tab.Screen name="Top Deals" component={HomeStack} />
+      initialRouteName="TopDeals">
+      <Tab.Screen
+        name="DrinkMap"
+        component={MapStack}
+        options={{tabBarLabel: 'Drink Map'}}
+      />
+      <Tab.Screen
+        name="TopDeals"
+        component={HomeStack}
+        options={{tabBarLabel: 'Top Deals'}}
+      />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
