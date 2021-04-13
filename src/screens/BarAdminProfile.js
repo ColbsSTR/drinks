@@ -1,10 +1,19 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, StyleSheet, Alert} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Alert,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import {Button, Input, Item, Text, Label, Form} from 'native-base';
 import {sendNotification} from '../state/Actions/sendNotification';
+import {getAllDrinks} from '../state/Actions/drinks';
 import {logout} from '../state/Actions/authentication';
 import COLORS from '../assets/colors';
+import DrinkSnippetCard from '../components/DrinkSnippetCard';
 
 const initialState = {
   NotifHeader: null,
@@ -14,6 +23,10 @@ class BarAdminProfile extends Component {
   constructor(props) {
     super(props);
     this.state = initialState;
+  }
+
+  componentDidMount() {
+    this.props.getAllDrinks();
   }
 
   handleSendNotif = () => {
@@ -43,9 +56,19 @@ class BarAdminProfile extends Component {
     );
   };
 
+  RenderDrinkCards = (drink) => (
+    <TouchableOpacity
+      onPress={() => {
+        this.props.navigation.navigate('EditDrink', {drink: drink});
+      }}>
+      <DrinkSnippetCard drink={drink} large={true} />
+    </TouchableOpacity>
+  );
+
   render() {
+    const {drinks} = this.props;
     return (
-      <View>
+      <ScrollView>
         <Form>
           <Item floatingLabel>
             <Label>Notification Header</Label>
@@ -75,7 +98,12 @@ class BarAdminProfile extends Component {
         <Button bordered style={styles.button} onPress={() => this.onSignout()}>
           <Text style={{color: COLORS.orange}}>Sign Out</Text>
         </Button>
-      </View>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={drinks}
+          renderItem={({item}) => this.RenderDrinkCards(item)}
+        />
+      </ScrollView>
     );
   }
 }
@@ -90,9 +118,16 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = (state) => {
+  return {
+    drinks: state.drinks.allDrinks,
+  };
+};
+
 const mapDispatchToProps = {
   sendNotification,
   logout,
+  getAllDrinks,
 };
 
-export default connect(null, mapDispatchToProps)(BarAdminProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(BarAdminProfile);

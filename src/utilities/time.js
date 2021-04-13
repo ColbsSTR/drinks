@@ -16,6 +16,6 @@ export const militaryToStandard = (time) => {
       return (time % 12) + 'PM';
     }
   } else {
-    return time + 'AM';
+    return time === 0 ? '12AM' : time + 'AM';
   }
 };

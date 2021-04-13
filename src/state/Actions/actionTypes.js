@@ -22,6 +22,7 @@ export const UPDATE_DRINK_RATING = 'UPDATE_DRINK_RATING';
 
 //BarOwners
 export const ADD_DRINK = 'ADD_DRINK';
+export const EDIT_DRINK = 'EDIT_DRINK';
 
 //**********************//
 //ASYNC OPERATIONS TYPES//
