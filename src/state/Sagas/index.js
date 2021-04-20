@@ -8,6 +8,7 @@ import {addDrinkWatcher} from './addDrink.saga';
 import {editDrinkWatcher} from './editDrink.saga';
 import {sendNotificationWatcher} from './sendNotification.saga';
 import {buildShareLinkWatcher} from './buildShareLink.saga';
+import {feedbackWatcher} from './feedback.saga';
 import likedDrinks from './LikedDrinks';
 
 //***TODO*****//
@@ -25,5 +26,6 @@ export function* rootSaga() {
     call(updateUserDisplayNameWatcher),
     call(sendNotificationWatcher),
     call(buildShareLinkWatcher),
+    call(feedbackWatcher),
   ]);
 }

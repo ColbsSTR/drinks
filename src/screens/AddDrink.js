@@ -112,40 +112,28 @@ class AddDrink extends Component {
             <Label>Description</Label>
             <Input
               value={this.state.Description}
-              onChangeText={(description) =>
-                this.setState({Description: description})
-              }
+              onChangeText={(description) => this.setState({Description: description})}
             />
           </Item>
           <Item floatingLabel>
             <Label>Address</Label>
-            <Input
-              onChangeText={(address) => this.setState({Address: address})}
-            />
+            <Input onChangeText={(address) => this.setState({Address: address})} />
           </Item>
           <Item floatingLabel>
             <Label>Starting Time</Label>
             <Input
-              onChangeText={(startingTime) =>
-                this.setState({StartingTime: startingTime})
-              }
+              onChangeText={(startingTime) => this.setState({StartingTime: startingTime})}
             />
           </Item>
           <Item floatingLabel>
             <Label>Ending Time</Label>
             <Input
-              onChangeText={(endingTime) =>
-                this.setState({EndingTime: endingTime})
-              }
+              onChangeText={(endingTime) => this.setState({EndingTime: endingTime})}
             />
           </Item>
           <Item floatingLabel>
             <Label>Venue Name</Label>
-            <Input
-              onChangeText={(venueName) =>
-                this.setState({VenueName: venueName})
-              }
-            />
+            <Input onChangeText={(venueName) => this.setState({VenueName: venueName})} />
           </Item>
           <Item style={{marginTop: 30}}>
             <Label>Select Available Days</Label>
@@ -195,10 +183,7 @@ class AddDrink extends Component {
             <Picker.Item label="Local" value="Local" />
           </Picker>
         </Item>
-        <Button
-          full
-          style={{marginTop: 30}}
-          onPress={() => this.handleAddDrink()}>
+        <Button full style={{marginTop: 30}} onPress={() => this.handleAddDrink()}>
           <Text>Add Drink</Text>
         </Button>
       </ScrollView>
