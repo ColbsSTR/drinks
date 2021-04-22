@@ -1,21 +1,11 @@
 import React, {Component} from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-import {
-  Form,
-  Item,
-  Label,
-  Input,
-  Picker,
-  Icon,
-  CheckBox,
-  Body,
-  Text,
-  Button,
-  ListItem,
-} from 'native-base';
+import {Form, Item, Label, Input, Picker, Icon, Text, Button} from 'native-base';
 import {addDrink} from '../state/Actions/addDrink';
+import {getAllVenues} from '../state/Actions/getAllVenues';
+import {daysOfWeek} from '../models/daysOfWeek';
 
 const initialState = {
   Name: null,
@@ -24,10 +14,8 @@ const initialState = {
   Category: null,
   Description: null,
   Address: null,
-  StartingTime: null,
-  EndingTime: null,
-  VenueName: null,
-  Days: null,
+  Venue: null,
+  Availability: null,
 };
 class AddDrink extends Component {
   constructor(props) {
@@ -35,18 +23,9 @@ class AddDrink extends Component {
     this.state = initialState;
   }
 
-  toggleDays = (day) => {
-    const {Days} = this.state;
-    let updatedDays;
-    !Days ? (updatedDays = []) : (updatedDays = [...Days]);
-    if (Days !== null && Days.includes(day)) {
-      const dayIndex = updatedDays.indexOf(day);
-      updatedDays.splice(dayIndex, 1);
-    } else {
-      updatedDays.push(day);
-    }
-    this.setState({Days: updatedDays});
-  };
+  componentDidMount() {
+    this.props.getAllVenues();
+  }
 
   handleAddDrink = () => {
     const {
@@ -56,10 +35,8 @@ class AddDrink extends Component {
       Category,
       Description,
       Address,
-      StartingTime,
-      EndingTime,
-      VenueName,
-      Days,
+      Venue,
+      Availability,
     } = this.state;
     this.props.addDrink({
       Name,
@@ -68,32 +45,110 @@ class AddDrink extends Component {
       Category,
       Description,
       Address,
-      StartingTime: Number(StartingTime),
-      EndingTime: Number(EndingTime),
-      VenueName,
-      Days,
+      Venue,
+      Availability,
+      VenueDrinks: this.getSelectedVenueDrinks(),
     });
     this.setState({
       Description: null,
       Name: null,
       Price: null,
       Category: null,
+      Availability: null,
     });
   };
 
+  getSelectedVenueDrinks = () => {
+    let venueDrinks = [];
+    this.props.venues.forEach((venue) => {
+      if (venue.venueId === this.state.Venue.VenueId) {
+        venueDrinks = venue.Drinks;
+      }
+    });
+    return venueDrinks;
+  };
+
+  getCurrentTime = (day, startOrEnd) => {
+    const {Availability} = this.state;
+    let time = null;
+    Availability.forEach((availableDay) => {
+      if (availableDay.Day === day) {
+        time = availableDay.Times[startOrEnd];
+      }
+    });
+    return time ? time.toString() : time;
+  };
+
+  setEndTime = (day, time) => {
+    if (this.state.Availability) {
+      const {Availability} = this.state;
+      if (Availability.some((availableDay) => availableDay.Day === day)) {
+        const newAvailability = Availability.map((availableDay) => {
+          if (availableDay.Day === day) {
+            return {
+              ...availableDay,
+              Times: [availableDay.Times[0], Number(time)],
+            };
+          }
+          return availableDay;
+        });
+        this.setState({Availability: newAvailability});
+      } else {
+        const newDay = {
+          Day: day,
+          Times: [null, Number(time)],
+        };
+        const newAvailability = [...Availability, newDay];
+        this.setState({Availability: newAvailability});
+      }
+    } else {
+      const availableObject = {
+        Day: day,
+        Times: [null, Number(time)],
+      };
+      const availabilityArray = [availableObject];
+      this.setState({Availability: availabilityArray});
+    }
+  };
+
+  setStartTime = (day, time) => {
+    if (this.state.Availability) {
+      const {Availability} = this.state;
+      if (Availability.some((availableDay) => availableDay.Day === day)) {
+        const newAvailability = Availability.map((availableDay) => {
+          if (availableDay.Day === day) {
+            return {
+              ...availableDay,
+              Times: [Number(time), availableDay.Times[1]],
+            };
+          }
+          return availableDay;
+        });
+        this.setState({Availability: newAvailability});
+      } else {
+        const newDay = {
+          Day: day,
+          Times: [Number(time), null],
+        };
+        const newAvailability = [...Availability, newDay];
+        this.setState({Availability: newAvailability});
+      }
+    } else {
+      const availableObject = {
+        Day: day,
+        Times: [Number(time), null],
+      };
+      const availabilityArray = [availableObject];
+      this.setState({Availability: availabilityArray});
+    }
+  };
+
   render() {
-    const daysOfTheWeek = [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday',
-    ];
+    console.tron.log('state', this.state);
+    console.tron.log('props', this.props);
     return (
       <ScrollView>
-        <Form>
+        <Form style={{paddingBottom: 30}}>
           <Item floatingLabel>
             <Label>Name</Label>
             <Input
@@ -112,58 +167,47 @@ class AddDrink extends Component {
             <Label>Description</Label>
             <Input
               value={this.state.Description}
-              onChangeText={(description) =>
-                this.setState({Description: description})
-              }
+              onChangeText={(description) => this.setState({Description: description})}
             />
           </Item>
           <Item floatingLabel>
             <Label>Address</Label>
-            <Input
-              onChangeText={(address) => this.setState({Address: address})}
-            />
-          </Item>
-          <Item floatingLabel>
-            <Label>Starting Time</Label>
-            <Input
-              onChangeText={(startingTime) =>
-                this.setState({StartingTime: startingTime})
-              }
-            />
-          </Item>
-          <Item floatingLabel>
-            <Label>Ending Time</Label>
-            <Input
-              onChangeText={(endingTime) =>
-                this.setState({EndingTime: endingTime})
-              }
-            />
-          </Item>
-          <Item floatingLabel>
-            <Label>Venue Name</Label>
-            <Input
-              onChangeText={(venueName) =>
-                this.setState({VenueName: venueName})
-              }
-            />
-          </Item>
-          <Item style={{marginTop: 30}}>
-            <Label>Select Available Days</Label>
-            <Input disabled />
+            <Input onChangeText={(address) => this.setState({Address: address})} />
           </Item>
         </Form>
-        {_.map(daysOfTheWeek, (day) => (
-          <ListItem key={day}>
-            <CheckBox
-              onPress={() => this.toggleDays(day)}
-              checked={this.state.Days?.includes(day)}
+        {daysOfWeek.map((day) => (
+          <Item>
+            <Label>{day + ': '}</Label>
+            <Label style={styles.timeLabelText}>Start Time</Label>
+            <Input
+              value={this.state.Availability ? this.getCurrentTime(day, 0) : null}
+              onChangeText={(startTime) => this.setStartTime(day, startTime)}
             />
-            <Body>
-              <Text>{day}</Text>
-            </Body>
-          </ListItem>
+            <Label style={styles.timeLabelText}>End Time</Label>
+            <Input
+              value={this.state.Availability ? this.getCurrentTime(day, 1) : null}
+              onChangeText={(endTime) => this.setEndTime(day, endTime)}
+            />
+          </Item>
         ))}
         <Item picker style={{paddingTop: 20}}>
+          <Picker
+            mode="dropdown"
+            iosIcon={<Icon name="arrow-down" />}
+            style={{width: undefined}}
+            placeholder="Select the Venue"
+            placeholderIconColor="#007aff"
+            selectedValue={this.state.Venue}
+            onValueChange={(Venue) => {
+              this.setState({Venue});
+            }}>
+            {this.props.venues.map((venue) => {
+              const val = {VenueName: venue.Name, VenueId: venue.venueId};
+              return <Picker.Item label={venue.Name} value={val} />;
+            })}
+          </Picker>
+        </Item>
+        <Item picker>
           <Picker
             mode="dropdown"
             iosIcon={<Icon name="arrow-down" />}
@@ -195,10 +239,7 @@ class AddDrink extends Component {
             <Picker.Item label="Local" value="Local" />
           </Picker>
         </Item>
-        <Button
-          full
-          style={{marginTop: 30}}
-          onPress={() => this.handleAddDrink()}>
+        <Button full style={{marginTop: 30}} onPress={() => this.handleAddDrink()}>
           <Text>Add Drink</Text>
         </Button>
       </ScrollView>
@@ -206,8 +247,22 @@ class AddDrink extends Component {
   }
 }
 
-const mapDispatchToProps = {
-  addDrink,
+const styles = StyleSheet.create({
+  timeLabelText: {
+    fontSize: 14,
+    paddingRight: 10,
+  },
+});
+
+const mapStateToProps = (state) => {
+  return {
+    venues: state.venueInformation.venues,
+  };
 };
 
-export default connect(null, mapDispatchToProps)(AddDrink);
+const mapDispatchToProps = {
+  addDrink,
+  getAllVenues,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddDrink);

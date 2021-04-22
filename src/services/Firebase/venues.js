@@ -16,3 +16,14 @@ export const getVenue = async (docId) => {
     return err;
   }
 };
+
+export const getVenues = async () => {
+  const venuesArray = [];
+
+  const snap = await firestore().collection('Venues').get();
+  snap.forEach((doc) => {
+    const venue = {...doc.data(), ...{venueId: doc.id}};
+    venuesArray.push(venue);
+  });
+  return venuesArray;
+};
