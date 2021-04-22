@@ -2,39 +2,33 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 export const createNewUser = async (user) => {
-  try {
-    const userDoc = await firestore().collection('Users').doc(user.uid).set({
-      Email: user.email,
-      LikedDrinks: [],
-      Name: user.displayName,
-    });
-    return userDoc;
-  } catch (err) {
-    throw err;
-  }
+  const userDoc = await firestore().collection('Users').doc(user.uid).set({
+    Email: user.email,
+    LikedDrinks: [],
+    Name: user.displayName,
+    CheckIns: [],
+  });
+  return userDoc;
 };
 
 export const isNewUser = async (user) => {
-  try {
-    const userDoc = await firestore().collection('Users').doc(user.uid).get();
+  const userData = await getUserData(user);
 
-    if (!userDoc.data()) {
-      return true;
-    }
-    return false;
-  } catch (err) {
-    throw new Error('Could not retrieve user information.');
+  if (!userData) {
+    return true;
   }
+  return false;
 };
 
 export const updateDisplayName = async ({name}) => {
-  try {
-    await auth().currentUser.updateProfile({
-      displayName: name,
-    });
-    const updatedUser = await auth().currentUser;
-    return updatedUser;
-  } catch (err) {
-    throw new Error('Could not update display name...');
-  }
+  await auth().currentUser.updateProfile({
+    displayName: name,
+  });
+  const updatedUser = await auth().currentUser;
+  return updatedUser;
+};
+
+export const getUserData = async (user) => {
+  const userDoc = await firestore().collection('Users').doc(user.uid).get();
+  return userDoc.data();
 };

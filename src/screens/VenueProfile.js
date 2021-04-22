@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, StyleSheet, Platform, Image} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import {H2, H3, Button, Icon} from 'native-base';
+import {View, StyleSheet, Platform} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Drinks from '../components/VenueProfile/Drinks';
 import COLORS from '../assets/colors';
 import {deviceHeight} from '../assets/styles/dimensions/deviceDimensions';
 import {getVenueInformation} from '../state/Actions/venueInformation';
-import {Marleys} from '../assets/images/index';
+import {VenueProfileHeader} from '../components/VenueProfileHeader';
 
 const Tab = createMaterialTopTabNavigator();
 const ProfileTabs = ({selectedVenue}) => {
@@ -33,7 +31,7 @@ class VenueProfile extends Component {
     super(props);
     this.state = {
       dataInitialized: false,
-      selectedVenue: {},
+      selectedVenue: null,
     };
   }
 
@@ -81,28 +79,9 @@ class VenueProfile extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <LinearGradient
-          colors={[COLORS.orange, COLORS.lightOrange]}
-          style={{flex: 4, paddingBottom: 20}}>
-          <View style={styles.avatarContainer}>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrowleft" type="AntDesign" style={styles.arrow} />
-            </Button>
-            <Image style={styles.image} source={Marleys} resizeMode="contain" />
-          </View>
-          <View style={styles.nameContainer}>
-            <H2 style={{fontWeight: '400', color: COLORS.backgroundWhite}}>
-              {this.state.selectedVenue.Name}
-            </H2>
-            <H3 style={{fontWeight: '200', color: COLORS.backgroundWhite}}>
-              519 W Dickson St, Fayetteville
-            </H3>
-          </View>
-        </LinearGradient>
-        <View style={{flex: 10}}>
-          {this.state.dataInitialized && (
-            <ProfileTabs selectedVenue={this.state.selectedVenue} />
-          )}
+        <VenueProfileHeader selectedVenue={this.state.selectedVenue} />
+        <View style={styles.tabsContainer}>
+          <ProfileTabs selectedVenue={this.state.selectedVenue} />
         </View>
       </View>
     );
@@ -116,8 +95,7 @@ const styles = StyleSheet.create({
   avatarContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop:
-      Platform.OS === 'ios' ? deviceHeight * 0.04 : deviceHeight * 0.03,
+    paddingTop: Platform.OS === 'ios' ? deviceHeight * 0.04 : deviceHeight * 0.03,
   },
   arrow: {
     color: 'black',
@@ -130,6 +108,9 @@ const styles = StyleSheet.create({
   image: {
     width: 150,
     height: 75,
+  },
+  tabsContainer: {
+    flex: 10,
   },
 });
 

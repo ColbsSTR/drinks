@@ -1,18 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  View,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import {StyleSheet, FlatList, TouchableOpacity, View, ScrollView, Alert} from 'react-native';
 import {Header, Button, Segment, Text} from 'native-base';
 import Geolocation from 'react-native-geolocation-service';
 import requestUserPermission from '../services/Firebase/notifications';
 import isLocationAvailable from '../services/isLocationAvailable';
 import {getAllDrinks} from '../state/Actions/drinks';
+import {getUserData} from '../state/Actions/User/getUserData';
 import {removeLikedDrink} from '../state/Actions/LikedDrinks/removeLikedDrink';
 import {addLikedDrink} from '../state/Actions/LikedDrinks/addLikedDrink';
 import {setCurrentLocation} from '../state/Actions/location.js';
@@ -51,9 +45,7 @@ class TopDeals extends Component {
           this.props.setCurrentLocation({currentLocation: position});
         },
         () => {
-          Alert.alert(
-            'Sorry we had trouble accessing your location right now.',
-          );
+          Alert.alert('Sorry we had trouble accessing your location right now.');
         },
         {enableHighAccuracy: true},
       );
@@ -62,6 +54,7 @@ class TopDeals extends Component {
 
   componentDidMount() {
     this.props.getAllDrinks();
+    this.props.getUserData();
     this.requestNotifs();
     this.watchPosition();
   }
@@ -97,24 +90,14 @@ class TopDeals extends Component {
 
   reApplyFilters(drinkCategory) {
     const {filterByType, filterByPrice, filterByDistance} = this.state;
-    filterByType &&
-      this.filterDrinks({type: 'Type', value: filterByType}, drinkCategory);
-    filterByPrice &&
-      this.filterDrinks({type: 'Price', value: filterByPrice}, drinkCategory);
+    filterByType && this.filterDrinks({type: 'Type', value: filterByType}, drinkCategory);
+    filterByPrice && this.filterDrinks({type: 'Price', value: filterByPrice}, drinkCategory);
     filterByDistance &&
-      this.filterDrinks(
-        {type: 'Distance', value: filterByDistance},
-        drinkCategory,
-      );
+      this.filterDrinks({type: 'Distance', value: filterByDistance}, drinkCategory);
   }
 
   filterDrinks(filterObject, selectedCategory) {
-    const {
-      filterByPrice,
-      filterByType,
-      filterByRating,
-      selectedTab,
-    } = this.state;
+    const {filterByPrice, filterByType, filterByRating, selectedTab} = this.state;
     const selectedDrinkCategory = selectedCategory
       ? selectedCategory
       : this.getSelectedCategoryOfDrinks(selectedTab);
@@ -199,11 +182,7 @@ class TopDeals extends Component {
         onPress={() => this.onSegmentButtonPress(tab)}
         first={first}
         last={last}>
-        <Text
-          style={[
-            styles.segmentButtonText,
-            selected && styles.activeSegmentButtonText,
-          ]}>
+        <Text style={[styles.segmentButtonText, selected && styles.activeSegmentButtonText]}>
           {buttonName}
         </Text>
       </Button>
@@ -234,11 +213,7 @@ class TopDeals extends Component {
             <FlatList
               data={this.state.drinks}
               renderItem={({item}) =>
-                dataInitialized ? (
-                  this.renderDrinkCards(item)
-                ) : (
-                  <DrinkCardPlaceholder />
-                )
+                dataInitialized ? this.renderDrinkCards(item) : <DrinkCardPlaceholder />
               }
               keyExtractor={(item) => item.docId}
             />
@@ -293,6 +268,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   getAllDrinks,
+  getUserData,
   removeLikedDrink,
   addLikedDrink,
   setCurrentLocation,
