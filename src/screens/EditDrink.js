@@ -9,13 +9,7 @@ import {daysOfWeek} from '../models/daysOfWeek';
 class EditDrink extends Component {
   constructor(props) {
     super(props);
-    const {
-      Name,
-      Price,
-      Description,
-      Availability,
-      docId,
-    } = this.props.route.params.drink;
+    const {Name, Price, Description, Availability, docId} = this.props.route.params.drink;
     this.state = {
       Name: Name,
       Price: Price,
@@ -133,9 +127,7 @@ class EditDrink extends Component {
             <Label>Drink Description</Label>
             <Input
               value={this.state.Description}
-              onChangeText={(description) =>
-                this.setState({Description: description})
-              }
+              onChangeText={(description) => this.setState({Description: description})}
             />
           </Item>
           {daysOfWeek.map((day) => (
@@ -143,16 +135,12 @@ class EditDrink extends Component {
               <Label>{day + ': '}</Label>
               <Label style={styles.timeLabelText}>Start Time</Label>
               <Input
-                value={
-                  this.state.Availability ? this.getCurrentTime(day, 0) : null
-                }
+                value={this.state.Availability ? this.getCurrentTime(day, 0) : null}
                 onChangeText={(startTime) => this.setStartTime(day, startTime)}
               />
               <Label style={styles.timeLabelText}>End Time</Label>
               <Input
-                value={
-                  this.state.Availability ? this.getCurrentTime(day, 1) : null
-                }
+                value={this.state.Availability ? this.getCurrentTime(day, 1) : null}
                 onChangeText={(endTime) => this.setEndTime(day, endTime)}
               />
             </Item>

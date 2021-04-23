@@ -1,5 +1,5 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
-import { getVenue } from '../../services/Firebase/venueInformation';
+import { getVenue } from '../../services/Firebase/venues';
 import { start, succeed, fail } from '../Actions/venueInformation';
 import { GET_VENUEINFORMATION } from '../Actions/actionTypes';
 
