@@ -55,6 +55,8 @@ class AddDrink extends Component {
       Price: null,
       Category: null,
       Availability: null,
+      Venue: null,
+      Type: null,
     });
   };
 
