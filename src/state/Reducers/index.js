@@ -1,4 +1,5 @@
-import { combineReducers, createStore, applyMiddleware } from 'redux';
+import {combineReducers, createStore, applyMiddleware} from 'redux';
+import Reactotron from 'reactotron-react-native';
 import createSagaMiddleware from 'redux-saga';
 import modals from './modals.reducer';
 import drinks from './drinks.reducer';
@@ -8,28 +9,25 @@ import reviews from './reviews.reducer';
 import likedDrinks from './LikedDrinks';
 import location from './location.reducer';
 import updateDisplayName from './User/updateDisplayName.reducer';
-import { rootSaga } from '../Sagas/index';
+import {rootSaga} from '../Sagas/index';
 
 const AppReducers = combineReducers({
-    //where the reducers go
-    modals,
-    drinks,
-    venueInformation,
-    authentication,
-    reviews,
-    likedDrinks,
-    location,
-    updateDisplayName,
+  //where the reducers go
+  modals,
+  drinks,
+  venueInformation,
+  authentication,
+  reviews,
+  likedDrinks,
+  location,
+  updateDisplayName,
 });
 
-const sagaMiddleware = createSagaMiddleware();
+const sagaMonitor = Reactotron.createSagaMonitor();
 
-const appStore = createStore(
-    AppReducers,  
-    applyMiddleware(
-        sagaMiddleware,
-    )
-);
+const sagaMiddleware = createSagaMiddleware({sagaMonitor});
+
+const appStore = createStore(AppReducers, applyMiddleware(sagaMiddleware));
 
 sagaMiddleware.run(rootSaga);
 
