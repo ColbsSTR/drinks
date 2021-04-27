@@ -17,6 +17,7 @@ import COLORS from '../assets/colors';
 import {currentAvailability} from '../utilities/drinkAvailability';
 import {militaryToStandard} from '../utilities/time';
 import {buildShareLink} from '../state/Actions/buildShareLink';
+import { TouchableOpacity } from 'react-native';
 
 export const DrinksHours = ({drink}) => {
   return drink.Availability.map((day) => {
@@ -52,11 +53,11 @@ export default DrinkDetailCard = (props) => {
         <View style={styles.header}>
           <View style={{flex: 1}} />
           <Text style={styles.headerText}>{drink.Name}</Text>
-          <Button
+          <TouchableOpacity
             style={styles.shareButton}
             onPress={() => dispatch(buildShareLink(props.docId))}>
-            <Icon type="FontAwesome" name="share-square" />
-          </Button>
+            <Icon type="FontAwesome" name="share" style={{alignSelf: 'flex-end'}}/>
+          </TouchableOpacity>
         </View>
       </CardItem>
       <ListItem icon>
@@ -136,11 +137,10 @@ const styles = StyleSheet.create({
     fontSize: 17,
     alignSelf: 'center',
     textAlign: 'center',
-    flex: 4,
+    flex: 3,
   },
   shareButton: {
     flex: 1,
-    justifyContent: 'center',
   },
   descriptionText: {
     color: COLORS.darkGrey,

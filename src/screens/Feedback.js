@@ -4,16 +4,13 @@ import {connect} from 'react-redux';
 import {
   Form,
   Item,
-  Label,
-  Input,
   Picker,
   Icon,
-  CheckBox,
-  Body,
   Text,
   Button,
-  ListItem,
   Textarea,
+  Card,
+  CardItem,
 } from 'native-base';
 import {AirbnbRating} from 'react-native-elements';
 import {getFeedbackUser} from '../state/Actions/feedback';
@@ -35,16 +32,9 @@ class Feedback extends Component {
     const {Message, Rating, Type} = this.state;
     return (
       <ScrollView style={{margin: 10}}>
-        <Form>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 20,
-              color: COLORS.darkGrey,
-              padding: 10,
-            }}>
-            How is the app?
-          </Text>
+        <Card style={{paddingTop: 20}}>
+          <Text style={styles.textStyle}>How is the app?</Text>
+          <Text style={styles.textStyle}>Feel free to submit any feedback below.</Text>
           <AirbnbRating
             count={5}
             defaultRating={0}
@@ -52,7 +42,7 @@ class Feedback extends Component {
             onFinishRating={(rating) => this.setState({Rating: rating})}
             showRating
           />
-          <Item picker style={{paddingTop: 20, justifyContent: 'center'}}>
+          <CardItem picker style={{paddingTop: 40, justifyContent: 'center'}}>
             <Picker
               mode="dropdown"
               iosIcon={<Icon name="arrow-down" />}
@@ -68,20 +58,21 @@ class Feedback extends Component {
               <Picker.Item label="Report a bug" value="reportBug" />
               <Picker.Item label="General" value="feedbackGeneral" />
             </Picker>
-          </Item>
+          </CardItem>
           <Textarea
             rowSpan={3}
             bordered
             placeholder="Feedback"
             onChangeText={(message) => this.setState({Message: message})}
           />
-        </Form>
-        <Button
-          full
-          style={{marginTop: 30}}
-          onPress={() => this.props.getFeedbackUser({Message, Rating, Type})}>
-          <Text>Submit Feedback</Text>
-        </Button>
+        </Card>
+        <View style={styles.submitButton}>
+          <Button
+            style={{flex: 1, alignSelf: 'center'}}
+            onPress={() => this.props.getFeedbackUser({Message, Rating, Type})}>
+            <Text>Submit Feedback</Text>
+          </Button>
+        </View>
       </ScrollView>
     );
   }
@@ -92,6 +83,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  submitButton: {
+    flex: 1,
+    marginTop: 30,
+  },
+  textStyle: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: COLORS.darkGrey,
+    padding: 10,
   },
 });
 
