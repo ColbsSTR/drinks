@@ -5,7 +5,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import Drinks from '../components/VenueProfile/Drinks';
 import COLORS from '../assets/colors';
 import {deviceHeight} from '../assets/styles/dimensions/deviceDimensions';
-import {getVenueInformation} from '../state/Actions/venueInformation';
+import {getAllVenues} from '../state/Actions/getAllVenues';
 import {VenueProfileHeader} from '../components/VenueProfileHeader';
 
 const Tab = createMaterialTopTabNavigator();
@@ -37,8 +37,9 @@ class VenueProfile extends Component {
 
   componentDidMount() {
     const {drink} = this.props.route.params;
-    if (this.isVenueNull(drink.docId)) {
-      this.props.getVenueInformation(drink.docId);
+    const {venues} = this.props;
+    if (venues.length === 0) {
+      this.props.getAllVenues();
     } else {
       this.setSelectedVenue(drink.VenueId);
     }
@@ -51,25 +52,10 @@ class VenueProfile extends Component {
     }
   }
 
-  isVenueNull = (docId) => {
-    const {venues} = this.props;
-    let isNull = true;
-    if (venues.length === 0) {
-      return isNull;
-    }
-    venues.forEach((venue) => {
-      if (venue.Drinks.some((drink) => drink.docId === docId)) {
-        isNull = false;
-        return isNull;
-      }
-    });
-    return isNull;
-  };
-
   setSelectedVenue = (selectedVenueId) => {
     const {venues} = this.props;
     venues.forEach((venue) => {
-      if (venue.docId === selectedVenueId) {
+      if (venue.venueId === selectedVenueId) {
         this.setState({selectedVenue: venue, dataInitialized: true});
         return;
       }
@@ -122,7 +108,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  getVenueInformation,
+  getAllVenues,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(VenueProfile);

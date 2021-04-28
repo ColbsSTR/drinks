@@ -14,6 +14,7 @@ import DrinkCard from '../components/DrinkCard';
 import {DrinkCardPlaceholder} from '../placeholders/DrinkCardPlaceholder';
 import Filters from '../components/Filters/Filters';
 import filter from '../utilities/filter';
+import {SortDrinksByAvailability} from '../utilities/sortDrinks';
 import COLORS from '../assets/colors';
 
 class TopDeals extends Component {
@@ -72,7 +73,8 @@ class TopDeals extends Component {
   updateDrinksState() {
     const {selectedTab} = this.state;
     const currentSelectedDrinks = this.getSelectedCategoryOfDrinks(selectedTab);
-    this.setState({drinks: currentSelectedDrinks, dataInitialized: true});
+    const drinksSortedByAvailability = SortDrinksByAvailability(currentSelectedDrinks);
+    this.setState({drinks: drinksSortedByAvailability, dataInitialized: true});
     this.reApplyFilters(currentSelectedDrinks);
   }
 
@@ -102,6 +104,7 @@ class TopDeals extends Component {
       ? selectedCategory
       : this.getSelectedCategoryOfDrinks(selectedTab);
     let filteredDrinks = [];
+    let drinksSortedByAvailability;
 
     switch (filterObject.type) {
       case 'Type':
@@ -110,9 +113,10 @@ class TopDeals extends Component {
           drinkPrice: filterByPrice,
           drinkRating: filterByRating,
         });
+        drinksSortedByAvailability = SortDrinksByAvailability(filteredDrinks);
         this.setState({
           filterByType: filterObject.value,
-          drinks: filteredDrinks,
+          drinks: drinksSortedByAvailability,
         });
         break;
       case 'Price':
@@ -121,9 +125,10 @@ class TopDeals extends Component {
           drinkPrice: filterObject.value,
           drinkRating: filterByRating,
         });
+        drinksSortedByAvailability = SortDrinksByAvailability(filteredDrinks);
         this.setState({
           filterByPrice: filterObject.value,
-          drinks: filteredDrinks,
+          drinks: drinksSortedByAvailability,
         });
         break;
       case 'Distance':
@@ -137,9 +142,10 @@ class TopDeals extends Component {
           },
           currentLocation,
         );
+        drinksSortedByAvailability = SortDrinksByAvailability(filteredDrinks);
         this.setState({
           filterByDistance: filterObject.value,
-          drinks: filteredDrinks,
+          drinks: drinksSortedByAvailability,
         });
         break;
       default:
@@ -170,7 +176,8 @@ class TopDeals extends Component {
 
   onSegmentButtonPress(tab) {
     const drinkCategory = this.getSelectedCategoryOfDrinks(tab);
-    this.setState({selectedTab: tab, drinks: drinkCategory});
+    const drinksSortedByAvailability = SortDrinksByAvailability(drinkCategory);
+    this.setState({selectedTab: tab, drinks: drinksSortedByAvailability});
     this.reApplyFilters(drinkCategory);
   }
 

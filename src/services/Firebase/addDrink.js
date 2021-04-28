@@ -9,33 +9,36 @@ export const addDrink = async (data) => {
     Category,
     Description,
     Address,
-    StartingTime,
-    EndingTime,
-    VenueName,
-    Days,
+    Venue,
+    Availability,
+    VenueDrinks,
   } = data;
   try {
     const coords = await getCoordsFromAddress(Address);
+    const {VenueId, VenueName} = Venue;
     const {lat, lng} = coords.results[0].geometry.location;
-    await firestore()
+    firestore()
       .collection('Drinks')
       .add({
         Name,
-        Price,
+        Price: Number(Price),
         Type,
         Description,
         Location: new firestore.GeoPoint(lat, lng),
         Category,
-        Hours: {
-          Beginning: StartingTime,
-          End: EndingTime,
-        },
+        Availability,
         Rating: {
           Total: 0,
           Average: 0,
         },
         Venue: VenueName,
-        Days,
+        VenueId,
+      })
+      .then(async (docRef) => {
+        const UpdatedVenueDrinks = VenueDrinks.concat(docRef.id);
+        await firestore().collection('Venues').doc(VenueId).update({
+          Drinks: UpdatedVenueDrinks,
+        });
       });
   } catch (err) {
     throw err;

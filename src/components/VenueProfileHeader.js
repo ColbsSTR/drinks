@@ -22,11 +22,13 @@ export const VenueProfileHeader = (props) => {
   const handleCheckIn = () => {
     if (currentLocation) {
       const {latitude, longitude} = currentLocation.coords;
-      const {Location} = selectedVenue;
+      const {Address} = selectedVenue;
       const distanceFromVenue = distanceBetweenCoordinates(
         {latitude, longitude},
-        {latitude: Location._latitude, longitude: Location._longitude},
+        {latitude: Address._latitude, longitude: Address._longitude},
       );
+      console.tron.log('distanceFromVenue', distanceFromVenue);
+      console.tron.log('adrress.lat', Address._latitude);
       distanceFromVenue >= 20
         ? Alert.alert('Sorry, move closer to the venue.')
         : dispatch(checkIn({docId: selectedVenue.docId, checkIns: selectedVenue.CheckInCount}));
@@ -51,7 +53,7 @@ export const VenueProfileHeader = (props) => {
           </View>
           <View style={styles.nameContainer}>
             <H2 style={styles.name}>{selectedVenue.Name}</H2>
-            <H3 style={styles.address}>{selectedVenue.Location}</H3>
+            <H3 style={styles.address}>{selectedVenue.Address}</H3>
           </View>
           <View style={styles.checkInContainer}>
             <Button block style={styles.checkInButton} success onPress={() => handleCheckIn()}>

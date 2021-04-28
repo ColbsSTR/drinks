@@ -1,7 +1,7 @@
 import {
-  GET_VENUEINFORMATION_START,
-  GET_VENUEINFORMATION_SUCCEED,
-  GET_VENUEINFORMATION_FAIL,
+  GET_ALL_VENUES_START,
+  GET_ALL_VENUES_FAIL,
+  GET_ALL_VENUES_SUCCEED,
   CHECK_IN_TO_VENUE_START,
   CHECK_IN_TO_VENUE_SUCCEED,
   CHECK_IN_TO_VENUE_FAIL,
@@ -15,17 +15,12 @@ const initialState = {
 
 const venues = (state = initialState, action) => {
   switch (action.type) {
-    case GET_VENUEINFORMATION_START:
+    case GET_ALL_VENUES_START:
       return {...state, isWaiting: true};
-    case GET_VENUEINFORMATION_SUCCEED:
-      const transformedVenueObject = TransformVenueDrinks(action.payload);
-      return {
-        ...state,
-        isWaiting: false,
-        allVenues: [...state.allVenues, transformedVenueObject],
-      };
-    case GET_VENUEINFORMATION_FAIL:
-      return {...state, isWaiting: false};
+    case GET_ALL_VENUES_SUCCEED:
+      return {...state, allVenues: action.payload, isWaiting: false};
+    case GET_ALL_VENUES_FAIL:
+      return {...state, allVenues: [], isWaiting: false};
     case CHECK_IN_TO_VENUE_START:
       return {...state, isWaiting: true};
     case CHECK_IN_TO_VENUE_SUCCEED:

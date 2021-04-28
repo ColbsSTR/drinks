@@ -1,4 +1,5 @@
 import {combineReducers, createStore, applyMiddleware} from 'redux';
+import Reactotron from 'reactotron-react-native';
 import createSagaMiddleware from 'redux-saga';
 import modals from './modals.reducer';
 import drinks from './drinks.reducer';
@@ -22,7 +23,9 @@ const AppReducers = combineReducers({
   updateDisplayName,
 });
 
-const sagaMiddleware = createSagaMiddleware();
+const sagaMonitor = Reactotron.createSagaMonitor();
+
+const sagaMiddleware = createSagaMiddleware({sagaMonitor});
 
 const appStore = createStore(AppReducers, applyMiddleware(sagaMiddleware));
 

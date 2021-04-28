@@ -1,5 +1,32 @@
 import firestore from '@react-native-firebase/firestore';
 
+export const getVenue = async (docId) => {
+  let venueInfo;
+  try {
+    const snap = await firestore()
+      .collection('Venues')
+      .where('Drinks', 'array-contains', docId)
+      .get();
+    snap.forEach((doc) => {
+      venueInfo = {...doc.data(), ...{docId: doc.id}};
+    });
+    return venueInfo;
+  } catch (err) {
+    return err;
+  }
+};
+
+export const getVenues = async () => {
+  const venuesArray = [];
+
+  const snap = await firestore().collection('Venues').get();
+  snap.forEach((doc) => {
+    const venue = {...doc.data(), ...{venueId: doc.id}};
+    venuesArray.push(venue);
+  });
+  return venuesArray;
+};
+
 export const checkInToVenue = async (props) => {
   const {selectedVenueDocId, checkIns, user} = props;
   let updatedUserCheckIns = [];

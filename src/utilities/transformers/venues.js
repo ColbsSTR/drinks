@@ -1,15 +1,20 @@
-export const TransformVenueDrinks = ({venue, allDrinks}) => {
-  const {Drinks} = venue;
-  const updatedDrinks = [];
-  allDrinks.forEach((drink) => {
-    const {docId} = drink;
-    if (Drinks.includes(docId)) {
-      updatedDrinks.push(drink);
-    }
+export const TransformVenueDrinks = ({venues, allDrinks}) => {
+  let transformedVenues = [];
+
+  venues.forEach((venue) => {
+    const {Drinks} = venue;
+    const updatedDrinks = [];
+    allDrinks.forEach((drink) => {
+      const {docId} = drink;
+      if (Drinks.includes(docId)) {
+        updatedDrinks.push(drink);
+      }
+    });
+    const transformedObject = {
+      ...venue,
+      Drinks: updatedDrinks,
+    };
+    transformedVenues.push(transformedObject);
   });
-  const transformedObject = {
-    ...venue,
-    Drinks: updatedDrinks,
-  };
-  return transformedObject;
+  return transformedVenues;
 };

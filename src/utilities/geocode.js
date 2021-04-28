@@ -5,7 +5,7 @@ export const getCoordsFromAddress = async (address) => {
   try {
     const coords = await Geocoder.from(address);
     return coords;
-  } catch(err) {
+  } catch (err) {
     throw err;
   }
-}
+};
