@@ -23,9 +23,12 @@ const AppReducers = combineReducers({
   updateDisplayName,
 });
 
-const sagaMonitor = Reactotron.createSagaMonitor();
+let sagaMiddleware = createSagaMiddleware();
 
-const sagaMiddleware = createSagaMiddleware({sagaMonitor});
+if (__DEV__) {
+  const sagaMonitor = Reactotron.createSagaMonitor();
+  sagaMiddleware = createSagaMiddleware({sagaMonitor});
+}
 
 const appStore = createStore(AppReducers, applyMiddleware(sagaMiddleware));
 
