@@ -28,17 +28,15 @@ export const getVenues = async () => {
 };
 
 export const checkInToVenue = async (props) => {
-  const {selectedVenueDocId, checkIns, user} = props;
+  const {selectedVenueId, checkIns, user} = props;
   let updatedUserCheckIns = [];
   if (user.CheckIns.length === 0) {
-    updatedUserCheckIns.push({Count: 1, VenueId: selectedVenueDocId});
+    updatedUserCheckIns.push({Count: 1, VenueId: selectedVenueId});
   } else {
-    const venueExists = user.CheckIns.some(
-      (checkInObj) => checkInObj.VenueId === selectedVenueDocId,
-    );
+    const venueExists = user.CheckIns.some((checkInObj) => checkInObj.VenueId === selectedVenueId);
     if (venueExists) {
       user.CheckIns.forEach((checkInObj) => {
-        if (checkInObj.VenueId === selectedVenueDocId) {
+        if (checkInObj.VenueId === selectedVenueId) {
           let updatedCheckInObj = {...checkInObj, Count: checkInObj.Count + 1};
           updatedUserCheckIns.push(updatedCheckInObj);
         } else {
@@ -46,13 +44,13 @@ export const checkInToVenue = async (props) => {
         }
       });
     } else {
-      updatedUserCheckIns = [...user.CheckIns, {Count: 1, VenueId: selectedVenueDocId}];
+      updatedUserCheckIns = [...user.CheckIns, {Count: 1, VenueId: selectedVenueId}];
     }
   }
   try {
     await firestore()
       .collection('Venues')
-      .doc(selectedVenueDocId)
+      .doc(selectedVenueId)
       .update({CheckInCount: checkIns ? checkIns + 1 : 1});
     await firestore().collection('Users').doc(user.uid).update({
       CheckIns: updatedUserCheckIns,

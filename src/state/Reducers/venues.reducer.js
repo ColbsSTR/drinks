@@ -6,7 +6,7 @@ import {
   CHECK_IN_TO_VENUE_SUCCEED,
   CHECK_IN_TO_VENUE_FAIL,
 } from '../Actions/actionTypes';
-import {TransformVenueDrinks} from '../../utilities/transformers/venues';
+import {updateCheckInCount} from '../../utilities/transformers/venues';
 
 const initialState = {
   isWaiting: false,
@@ -24,7 +24,8 @@ const venues = (state = initialState, action) => {
     case CHECK_IN_TO_VENUE_START:
       return {...state, isWaiting: true};
     case CHECK_IN_TO_VENUE_SUCCEED:
-      return {...state, isWaiting: false};
+      const updatedVenues = updateCheckInCount(action.payload); //retain parity with db
+      return {...state, isWaiting: false, allVenues: updatedVenues};
     case CHECK_IN_TO_VENUE_FAIL:
       return {...state, isWaiting: false};
     default:

@@ -19,32 +19,29 @@ export const renderDrink = (drink, navigation) => {
   );
 };
 
-export const getVenueDrinks = (venue, allDrinks) => {
-  console.tron.log(venue);
-  // const venueDrinks = [];
-  // const {Drinks} = venue;
-  // allDrinks.forEach((drink) => {
-  //   const {docId} = drink;
-  //   if (Drinks.includes(docId)) {
-  //     venueDrinks.push(drink);
-  //   }
-  // });
-  // return venueDrinks;
+export const getVenueDrinks = (selectedVenue, allDrinks) => {
+  const venueDrinks = [];
+  allDrinks.forEach((drink) => {
+    const {docId} = drink;
+    if (selectedVenue.Drinks.includes(docId)) {
+      venueDrinks.push(drink);
+    }
+  });
+  return venueDrinks;
 };
 
 // eslint-disable-next-line no-undef
 export default Drinks = (props) => {
   const {selectedVenue} = props;
-  console.tron.log(selectedVenue);
   const navigation = useNavigation();
   const allDrinks = useSelector(getDrinks);
-  //const venueDrinks = getVenueDrinks(selectedVenue, allDrinks);
+  const venueDrinks = selectedVenue ? getVenueDrinks(selectedVenue, allDrinks) : [];
   return (
     <View>
       {selectedVenue ? (
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={[]}
+          data={venueDrinks}
           renderItem={({item}) => renderDrink(item, navigation)}
           keyExtractor={(item) => item.docId}
         />

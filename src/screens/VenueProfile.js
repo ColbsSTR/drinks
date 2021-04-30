@@ -63,9 +63,10 @@ class VenueProfile extends Component {
   };
 
   render() {
+    const {drink} = this.props.route.params;
     return (
       <View style={styles.container}>
-        <VenueProfileHeader selectedVenue={this.state.selectedVenue} />
+        <VenueProfileHeader selectedVenue={this.state.selectedVenue} drink={drink} />
         <View style={styles.tabsContainer}>
           <ProfileTabs selectedVenue={this.state.selectedVenue} />
         </View>
@@ -103,6 +104,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     venues: state.venues.allVenues,
+    allDrinks: state.drinks.allDrinks,
     isWaiting: state.venues.isWaiting,
   };
 };

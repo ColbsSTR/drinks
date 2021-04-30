@@ -12,30 +12,29 @@ import {getLocation} from '../state/Selectors/getLocationState';
 import {distanceBetweenCoordinates} from '../utilities/distanceBetweenCoordinates';
 import {Spinner} from './Spinner';
 
+export const handleCheckIn = (selectedVenue, venueLocation, currentLocation, dispatch) => {
+  if (currentLocation) {
+    const {latitude, longitude} = currentLocation.coords;
+    const {_latitude, _longitude} = venueLocation;
+    const distanceFromVenue = distanceBetweenCoordinates(
+      {latitude, longitude},
+      {latitude: _latitude, longitude: _longitude},
+    );
+    distanceFromVenue >= 30
+      ? Alert.alert('Sorry, move closer to the venue.')
+      : dispatch(checkIn({venueId: selectedVenue.venueId, checkIns: selectedVenue.CheckInCount}));
+  } else {
+    Alert.alert('Sorry, Location Must Be Enabled To Check-In To A Venue.');
+  }
+};
+
 export const VenueProfileHeader = (props) => {
-  const {selectedVenue} = props;
+  const {selectedVenue, drink} = props;
+  const {Location} = drink;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const currentLocation = useSelector(getLocation);
   const checkInWaiting = useSelector((state) => state.venues.isWaiting);
-
-  const handleCheckIn = () => {
-    if (currentLocation) {
-      const {latitude, longitude} = currentLocation.coords;
-      const {Address} = selectedVenue;
-      const distanceFromVenue = distanceBetweenCoordinates(
-        {latitude, longitude},
-        {latitude: Address._latitude, longitude: Address._longitude},
-      );
-      console.tron.log('distanceFromVenue', distanceFromVenue);
-      console.tron.log('adrress.lat', Address._latitude);
-      distanceFromVenue >= 20
-        ? Alert.alert('Sorry, move closer to the venue.')
-        : dispatch(checkIn({docId: selectedVenue.docId, checkIns: selectedVenue.CheckInCount}));
-    } else {
-      Alert.alert('Sorry, Location Must Be Enabled To Check-In To A Venue.');
-    }
-  };
 
   return (
     <LinearGradient colors={[COLORS.orange, COLORS.lightOrange]} style={styles.container}>
@@ -49,14 +48,18 @@ export const VenueProfileHeader = (props) => {
             <Button transparent onPress={() => navigation.goBack()}>
               <Icon name="arrowleft" type="AntDesign" style={styles.arrow} />
             </Button>
-            <Image style={styles.image} source={Marleys} resizeMode="contain" />
+            {/* <Image style={styles.image} source={Marleys} resizeMode="contain" /> */}
           </View>
           <View style={styles.nameContainer}>
             <H2 style={styles.name}>{selectedVenue.Name}</H2>
             <H3 style={styles.address}>{selectedVenue.Address}</H3>
           </View>
           <View style={styles.checkInContainer}>
-            <Button block style={styles.checkInButton} success onPress={() => handleCheckIn()}>
+            <Button
+              block
+              style={styles.checkInButton}
+              success
+              onPress={() => handleCheckIn(selectedVenue, Location, currentLocation, dispatch)}>
               {checkInWaiting ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
@@ -72,7 +75,7 @@ export const VenueProfileHeader = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 5,
+    flex: 4,
     paddingBottom: 20,
   },
   imageContainer: {
@@ -101,6 +104,7 @@ const styles = StyleSheet.create({
     height: 75,
   },
   checkInContainer: {
+    paddingTop: 10,
     paddingBottom: 20,
   },
   checkInButton: {
