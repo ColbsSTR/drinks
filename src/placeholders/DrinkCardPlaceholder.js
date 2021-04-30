@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Placeholder,
-  PlaceholderLine,
-  ShineOverlay,
-  PlaceholderMedia,
-} from 'rn-placeholder';
+import {Placeholder, PlaceholderLine, ShineOverlay, PlaceholderMedia} from 'rn-placeholder';
 import {Card, CardItem} from 'native-base';
 import {View} from 'react-native';
 import {styles} from '../components/DrinkCard';

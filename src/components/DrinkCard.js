@@ -60,18 +60,20 @@ export default DrinkCard = (props) => {
               )}
             </Body>
           </Left>
-          <TouchableOpacity
-            onPress={() => {
-              onHeartPress(drink, LottieRef);
-            }}>
-            <LottieView
-              source={heart}
-              loop={false}
-              ref={LottieRef}
-              progress={drink.liked ? 0.4 : 0}
-              style={{width: 50, height: 50}}
-            />
-          </TouchableOpacity>
+          {onHeartPress && (
+            <TouchableOpacity
+              onPress={() => {
+                onHeartPress(drink, LottieRef);
+              }}>
+              <LottieView
+                source={heart}
+                loop={false}
+                ref={LottieRef}
+                progress={drink.liked ? 0.4 : 0}
+                style={{width: 50, height: 50}}
+              />
+            </TouchableOpacity>
+          )}
         </CardItem>
         <CardItem style={styles.cardItem}>
           <Body>

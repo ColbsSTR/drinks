@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    venues: state.venueInformation.venues,
+    venues: state.venues.allVenues,
   };
 };
 

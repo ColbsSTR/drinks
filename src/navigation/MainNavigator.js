@@ -18,6 +18,7 @@ import {UpdateFormField} from '../components/UpdateFormField';
 import {loginSucceeded} from '../state/Actions/authentication';
 import COLORS from '../assets/colors';
 import EditDrink from '../screens/EditDrink';
+import VenueProfile from '../screens/VenueProfile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -48,6 +49,13 @@ function MapStack() {
           headerTintColor: 'black',
         }}
       />
+      <MainStack.Screen
+        name="VenueProfile"
+        component={VenueProfile}
+        options={{
+          headerShown: false,
+        }}
+      />
     </MainStack.Navigator>
   );
 }
@@ -75,6 +83,13 @@ function HomeStack() {
         options={{
           title: '',
           headerTintColor: 'black',
+        }}
+      />
+      <MainStack.Screen
+        name="VenueProfile"
+        component={VenueProfile}
+        options={{
+          headerShown: false,
         }}
       />
     </MainStack.Navigator>
@@ -123,6 +138,13 @@ function ProfileStack() {
         options={{
           title: '',
           headerTintColor: 'black',
+        }}
+      />
+      <MainStack.Screen
+        name="VenueProfile"
+        component={VenueProfile}
+        options={{
+          headerShown: false,
         }}
       />
     </MainStack.Navigator>

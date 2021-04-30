@@ -1,18 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  View,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import {StyleSheet, FlatList, TouchableOpacity, View, ScrollView, Alert} from 'react-native';
 import {Header, Button, Segment, Text} from 'native-base';
 import Geolocation from 'react-native-geolocation-service';
 import requestUserPermission from '../services/Firebase/notifications';
 import isLocationAvailable from '../services/isLocationAvailable';
 import {getAllDrinks} from '../state/Actions/drinks';
+import {getUserData} from '../state/Actions/User/getUserData';
 import {removeLikedDrink} from '../state/Actions/LikedDrinks/removeLikedDrink';
 import {addLikedDrink} from '../state/Actions/LikedDrinks/addLikedDrink';
 import {setCurrentLocation} from '../state/Actions/location.js';
@@ -41,7 +35,7 @@ class TopDeals extends Component {
   }
 
   requestNotifs = async () => {
-    const requestNotifs = await requestUserPermission();
+    await requestUserPermission();
   };
 
   watchPosition = async () => {
@@ -61,6 +55,7 @@ class TopDeals extends Component {
 
   componentDidMount() {
     this.props.getAllDrinks();
+    this.props.getUserData();
     this.requestNotifs();
     this.watchPosition();
   }
@@ -98,8 +93,7 @@ class TopDeals extends Component {
   reApplyFilters(drinkCategory) {
     const {filterByType, filterByPrice, filterByDistance} = this.state;
     filterByType && this.filterDrinks({type: 'Type', value: filterByType}, drinkCategory);
-    filterByPrice &&
-      this.filterDrinks({type: 'Price', value: filterByPrice}, drinkCategory);
+    filterByPrice && this.filterDrinks({type: 'Price', value: filterByPrice}, drinkCategory);
     filterByDistance &&
       this.filterDrinks({type: 'Distance', value: filterByDistance}, drinkCategory);
   }
@@ -195,8 +189,7 @@ class TopDeals extends Component {
         onPress={() => this.onSegmentButtonPress(tab)}
         first={first}
         last={last}>
-        <Text
-          style={[styles.segmentButtonText, selected && styles.activeSegmentButtonText]}>
+        <Text style={[styles.segmentButtonText, selected && styles.activeSegmentButtonText]}>
           {buttonName}
         </Text>
       </Button>
@@ -282,6 +275,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   getAllDrinks,
+  getUserData,
   removeLikedDrink,
   addLikedDrink,
   setCurrentLocation,
