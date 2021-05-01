@@ -1,12 +1,6 @@
 import React, {useRef, useEffect, useState} from 'react';
 import {Card, CardItem, Left, Body, Icon} from 'native-base';
-import {
-  View,
-  Text,
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import LottieView from 'lottie-react-native';
 import {useIsFocused} from '@react-navigation/native';
 import COLORS from '../assets/colors';
@@ -29,9 +23,7 @@ export default DrinkCard = (props) => {
   const [drinkAvailable, setDrinkAvailability] = useState(false);
 
   useEffect(() => {
-    currentAvailability(drink)
-      ? setDrinkAvailability(true)
-      : setDrinkAvailability(false);
+    currentAvailability(drink) ? setDrinkAvailability(true) : setDrinkAvailability(false);
   }, [isFocused]);
 
   return (
@@ -55,9 +47,7 @@ export default DrinkCard = (props) => {
                 </Text>
               </View>
               <Text style={styles.venueName}>{drink.Venue}</Text>
-              {drinkAvailable && (
-                <Text style={styles.availableText}>Available</Text>
-              )}
+              {drinkAvailable && <Text style={styles.availableText}>Available</Text>}
             </Body>
           </Left>
           {onHeartPress && (

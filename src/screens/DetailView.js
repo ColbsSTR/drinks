@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Share} from 'react-native';
 import {Text} from 'native-base';
 import _ from 'lodash';
 import MapView, {Marker} from 'react-native-maps';
@@ -49,7 +49,7 @@ class Detailview extends Component {
 
     return (
       <ScrollView style={styles.container}>
-        <DrinkDetailCard drink={drink} />
+        <DrinkDetailCard drink={drink} docId={this.props.route.params.docId} />
         <MapView
           style={styles.map}
           initialRegion={{
@@ -70,7 +70,7 @@ class Detailview extends Component {
         <View style={{paddingTop: 30, paddingBottom: 15}}>
           <Rating imageSize={30} readonly startingValue={rating} />
           <TouchableOpacity onPress={() => this.props.showModal()}>
-            <Text style={styles.reviewText}>Add a review</Text>
+            <Text style={styles.reviewText}>Add Review</Text>
           </TouchableOpacity>
         </View>
         <ReviewModal docID={drink.docId} currentRating={drink.Rating} />

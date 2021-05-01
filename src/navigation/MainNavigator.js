@@ -153,8 +153,8 @@ function ProfileStack() {
 
 export const getTabBarLabel = (route) => {
   return {
-    TopDeals: 'Top Deals',
-    DrinkMap: 'Drink Map',
+    TopDeals: 'TopDeals',
+    DrinkMap: 'DrinkMap',
     Profile: 'Profile',
   }[route];
 };
@@ -196,8 +196,16 @@ function Tabs() {
         inactiveTintColor: 'gray',
       }}
       initialRouteName="TopDeals">
-      <Tab.Screen name="DrinkMap" component={MapStack} />
-      <Tab.Screen name="TopDeals" component={HomeStack} />
+      <Tab.Screen
+        name="DrinkMap"
+        component={MapStack}
+        options={{tabBarLabel: 'Drink Map'}}
+      />
+      <Tab.Screen
+        name="TopDeals"
+        component={HomeStack}
+        options={{tabBarLabel: 'Top Deals'}}
+      />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );

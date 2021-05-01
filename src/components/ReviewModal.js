@@ -39,16 +39,10 @@ export default ReviewModal = (props) => {
                 paddingTop: 15,
                 flexDirection: 'row',
               }}>
-              <Button
-                bordered
-                onPress={() => dispatch(closeModal())}
-                style={{margin: 5}}>
+              <Button bordered onPress={() => dispatch(closeModal())} style={{margin: 5}}>
                 <Text>Cancel</Text>
               </Button>
-              <Button
-                bordered
-                onPress={() => submitReview(rating)}
-                style={{margin: 5}}>
+              <Button bordered onPress={() => submitReview(rating)} style={{margin: 5}}>
                 <Text>Submit</Text>
               </Button>
             </View>

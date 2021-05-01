@@ -1,20 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {
-  Button,
-  Card,
-  CardItem,
-  Text,
-  Body,
-  ListItem,
-  Left,
-  Right,
-  Icon,
-} from 'native-base';
+import {Button, Card, CardItem, Text, Body, ListItem, Left, Right, Icon} from 'native-base';
 import {StyleSheet, View} from 'react-native';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
 import COLORS from '../assets/colors';
 import {currentAvailability} from '../utilities/drinkAvailability';
 import {militaryToStandard} from '../utilities/time';
+import {buildShareLink} from '../state/Actions/buildShareLink';
+import {TouchableOpacity} from 'react-native';
 
 export const DrinksHours = ({drink}) => {
   return drink.Availability.map((day) => {
@@ -24,9 +17,7 @@ export const DrinksHours = ({drink}) => {
       <ListItem>
         <Text style={{fontSize: 14}}>{day.Day}</Text>
         <View style={{marginLeft: 12}}>
-          <Text style={{fontSize: 14}}>
-            {standardTimeBegin + ' - ' + standardTimeEnd}
-          </Text>
+          <Text style={{fontSize: 14}}>{standardTimeBegin + ' - ' + standardTimeEnd}</Text>
         </View>
       </ListItem>
     );
@@ -39,6 +30,7 @@ export default DrinkDetailCard = (props) => {
   const [hoursShown, setHoursShown] = useState(false);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     currentAvailability(drink) ? setDrinkStatus(true) : setDrinkStatus(false);
@@ -47,7 +39,19 @@ export default DrinkDetailCard = (props) => {
   return (
     <Card style={styles.card1}>
       <CardItem header bordered style={styles.center}>
-        <Text style={styles.headerText}>{drink.Name}</Text>
+        <View style={styles.header}>
+          <View style={{flex: 1}} />
+          <Text style={styles.headerText}>{drink.Name}</Text>
+          <TouchableOpacity
+            style={styles.shareButton}
+            onPress={() => dispatch(buildShareLink(props.docId))}>
+            <Icon
+              type="Ionicons"
+              name="share-outline"
+              style={{alignSelf: 'flex-end', color: COLORS.blue}}
+            />
+          </TouchableOpacity>
+        </View>
       </CardItem>
       <ListItem icon>
         <Left>
@@ -59,9 +63,7 @@ export default DrinkDetailCard = (props) => {
           <Text>Price</Text>
         </Body>
         <Right>
-          <Text>
-            {typeof drink.Price === 'number' ? '$' + drink.Price : drink.Price}
-          </Text>
+          <Text>{typeof drink.Price === 'number' ? '$' + drink.Price : drink.Price}</Text>
         </Right>
       </ListItem>
       <ListItem icon>
@@ -83,15 +85,12 @@ export default DrinkDetailCard = (props) => {
       </ListItem>
       <ListItem icon>
         <Left>
-          <Button
-            style={{backgroundColor: isDrinkLive ? COLORS.orange : COLORS.red}}>
+          <Button style={{backgroundColor: isDrinkLive ? COLORS.orange : COLORS.red}}>
             <Icon type="FontAwesome" name={isDrinkLive ? 'check' : 'times'} />
           </Button>
         </Left>
         <Body>
-          <Text>
-            {isDrinkLive ? 'Available Currently' : 'Not Available Currently'}
-          </Text>
+          <Text>{isDrinkLive ? 'Available Currently' : 'Not Available Currently'}</Text>
         </Body>
         <Right>
           <Text
@@ -119,10 +118,21 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
   },
+  header: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
   headerText: {
     color: COLORS.orange,
     fontWeight: 'bold',
     fontSize: 17,
+    alignSelf: 'center',
+    textAlign: 'center',
+    flex: 3,
+  },
+  shareButton: {
+    flex: 1,
   },
   descriptionText: {
     color: COLORS.darkGrey,

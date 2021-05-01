@@ -8,11 +8,11 @@ import {deviceHeight} from '../assets/styles/dimensions/deviceDimensions';
 import COLORS from '../assets/colors';
 import TopBarNavigation from '../navigation/TopBarNavigation';
 import LikedDrinks from '../screens/LikedDrinks';
-import Share from '../screens/Share';
+import Feedback from './Feedback';
 
 const tabs = [
   {name: 'likedDrinks', component: LikedDrinks, title: 'Liked Drinks'},
-  {name: 'share', component: Share, title: 'Share this App'},
+  {name: 'feedback', component: Feedback, title: 'Send Feedback'},
 ];
 const ProfileTabs = () => TopBarNavigation({tabs});
 

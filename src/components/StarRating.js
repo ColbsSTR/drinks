@@ -10,15 +10,9 @@ export const StarRating = ({value, size = 25}) => {
       spacing={25}
       count={5}
       starSize={size}
-      fullStar={
-        <Icon type="FontAwesome" name={'star'} style={[styles.myStarStyle]} />
-      }
+      fullStar={<Icon type="FontAwesome" name={'star'} style={[styles.myStarStyle]} />}
       emptyStar={
-        <Icon
-          type="FontAwesome"
-          name={'star'}
-          style={[styles.myEmptyStarStyle]}
-        />
+        <Icon type="FontAwesome" name={'star'} style={[styles.myEmptyStarStyle]} />
       }
     />
   );
