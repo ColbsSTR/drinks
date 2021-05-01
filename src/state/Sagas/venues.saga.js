@@ -6,7 +6,7 @@ import {CHECK_IN_TO_VENUE, GET_ALL_VENUES} from '../Actions/actionTypes';
 import {showToast} from '../../components/Toast';
 import {getUser} from '../Selectors/getUserState';
 import {getUserData} from '../Actions/User/getUserData';
-import { selectAllVenues } from '../Selectors/getVenuesState';
+import {selectAllVenues} from '../Selectors/getVenuesState';
 
 export function* venuesWatcher() {
   yield takeLatest(GET_ALL_VENUES, getAllVenuesWorker);
@@ -30,7 +30,7 @@ export function* venueCheckInWorker(action) {
   try {
     const user = yield select(getUser);
     const {venueId, checkIns} = action.payload;
-    yield call(checkInToVenue, {selectedVenueId: venueId, checkIns, user});
+    yield call(checkInToVenue, {selectedVenueId: venueId, checkIns: checkIns ? checkIns : 0, user});
     const allVenues = yield select(selectAllVenues);
     yield put(checkInSucceed({allVenues, venueId}));
     yield put(getUserData()); // Refresh user data since the document has been updated with their check ins

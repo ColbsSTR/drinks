@@ -23,7 +23,10 @@ export const updateCheckInCount = ({allVenues, venueId}) => {
   const updatedVenues = [];
   allVenues.forEach((venue) => {
     if (venue.venueId === venueId) {
-      const modifiedVenue = {...venue, CheckInCount: venue.CheckInCount + 1};
+      const modifiedVenue = {
+        ...venue,
+        CheckInCount: venue.CheckInCount ? venue.CheckInCount + 1 : 1,
+      };
       updatedVenues.push(modifiedVenue);
     } else {
       updatedVenues.push({...venue});

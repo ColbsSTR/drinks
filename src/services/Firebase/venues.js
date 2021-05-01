@@ -51,7 +51,7 @@ export const checkInToVenue = async (props) => {
     await firestore()
       .collection('Venues')
       .doc(selectedVenueId)
-      .update({CheckInCount: checkIns ? checkIns + 1 : 1});
+      .update({CheckInCount: checkIns + 1});
     await firestore().collection('Users').doc(user.uid).update({
       CheckIns: updatedUserCheckIns,
     });
