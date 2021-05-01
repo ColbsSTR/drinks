@@ -1,17 +1,7 @@
 import React, {Component} from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {
-  Form,
-  Item,
-  Picker,
-  Icon,
-  Text,
-  Button,
-  Textarea,
-  Card,
-  CardItem,
-} from 'native-base';
+import {Picker, Icon, Text, Button, Textarea, Card, CardItem} from 'native-base';
 import {AirbnbRating} from 'react-native-elements';
 import {getFeedbackUser} from '../state/Actions/feedback';
 import COLORS from '../assets/colors';
@@ -32,9 +22,10 @@ class Feedback extends Component {
     const {Message, Rating, Type} = this.state;
     return (
       <ScrollView style={{margin: 10}}>
-        <Card style={{paddingTop: 20}}>
+        <Card style={{paddingTop: 20, paddingHorizontal: 10, paddingBottom: 10}}>
           <Text style={styles.textStyle}>How is the app?</Text>
           <Text style={styles.textStyle}>Feel free to submit any feedback below.</Text>
+          <View style={styles.hr} />
           <AirbnbRating
             count={5}
             defaultRating={0}
@@ -42,7 +33,7 @@ class Feedback extends Component {
             onFinishRating={(rating) => this.setState({Rating: rating})}
             showRating
           />
-          <CardItem picker style={{paddingTop: 40, justifyContent: 'center'}}>
+          <CardItem picker style={{paddingTop: 10, justifyContent: 'center'}}>
             <Picker
               mode="dropdown"
               iosIcon={<Icon name="arrow-down" />}
@@ -61,8 +52,8 @@ class Feedback extends Component {
           </CardItem>
           <Textarea
             rowSpan={3}
-            bordered
-            placeholder="Feedback"
+            placeholder="Let us know what you think...."
+            style={styles.textArea}
             onChangeText={(message) => this.setState({Message: message})}
           />
         </Card>
@@ -86,13 +77,26 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     flex: 1,
-    marginTop: 30,
+    marginTop: 20,
+    marginBottom: 30,
   },
   textStyle: {
     textAlign: 'center',
-    fontSize: 16,
-    color: COLORS.darkGrey,
-    padding: 10,
+    fontSize: 15,
+    color: COLORS.mediumGrey,
+    padding: 7,
+  },
+  textArea: {
+    borderColor: COLORS.lightGrey,
+    borderWidth: 1,
+    borderRadius: 10,
+  },
+  hr: {
+    alignSelf: 'center',
+    borderBottomColor: COLORS.lightGrey,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    width: 300,
+    paddingTop: 10,
   },
 });
 

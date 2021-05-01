@@ -56,7 +56,11 @@ export default DrinkDetailCard = (props) => {
           <TouchableOpacity
             style={styles.shareButton}
             onPress={() => dispatch(buildShareLink(props.docId))}>
-            <Icon type="FontAwesome" name="share" style={{alignSelf: 'flex-end'}}/>
+            <Icon
+              type="Ionicons"
+              name="share-outline"
+              style={{alignSelf: 'flex-end', color: COLORS.blue}}
+            />
           </TouchableOpacity>
         </View>
       </CardItem>
