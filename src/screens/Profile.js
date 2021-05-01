@@ -22,7 +22,7 @@ class Profile extends Component {
   }
 
   render() {
-    const {photoURL, displayName} = this.props.user;
+    const {photoURL, displayName, TotalCheckInCount} = this.props.user;
     return (
       <View style={styles.container}>
         <LinearGradient
@@ -50,11 +50,9 @@ class Profile extends Component {
               }}
             />
             <View style={styles.nameContainer}>
-              <H2 style={{fontWeight: '400', color: COLORS.backgroundWhite}}>
-                {displayName}
-              </H2>
+              <H2 style={{fontWeight: '400', color: COLORS.backgroundWhite}}>{displayName}</H2>
               <H3 style={{fontWeight: '200', color: COLORS.backgroundWhite}}>
-                0 Points
+                {TotalCheckInCount + ' Check-Ins'}
               </H3>
             </View>
           </View>
