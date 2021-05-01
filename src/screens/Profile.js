@@ -52,7 +52,7 @@ class Profile extends Component {
             <View style={styles.nameContainer}>
               <H2 style={{fontWeight: '400', color: COLORS.backgroundWhite}}>{displayName}</H2>
               <H3 style={{fontWeight: '200', color: COLORS.backgroundWhite}}>
-                {TotalCheckInCount + ' Check-Ins'}
+                {TotalCheckInCount ? TotalCheckInCount + ' Check-Ins' : 0 + ' Check-Ins'}
               </H3>
             </View>
           </View>

@@ -30,21 +30,28 @@ export const getVenues = async () => {
 export const checkInToVenue = async (props) => {
   const {selectedVenueId, checkIns, user} = props;
   let updatedUserCheckIns = [];
-  if (user.CheckIns.length === 0) {
-    updatedUserCheckIns.push({Count: 1, VenueId: selectedVenueId});
+  if (!user.CheckIns) {
+    updatedUserCheckIns.push({Count: 1, VenueId: selectedVenueId, LastCheckInTime: Date.now()});
   } else {
     const venueExists = user.CheckIns.some((checkInObj) => checkInObj.VenueId === selectedVenueId);
     if (venueExists) {
       user.CheckIns.forEach((checkInObj) => {
         if (checkInObj.VenueId === selectedVenueId) {
-          let updatedCheckInObj = {...checkInObj, Count: checkInObj.Count + 1};
+          let updatedCheckInObj = {
+            ...checkInObj,
+            Count: checkInObj.Count + 1,
+            LastCheckInTime: Date.now(),
+          };
           updatedUserCheckIns.push(updatedCheckInObj);
         } else {
           updatedUserCheckIns.push(checkInObj);
         }
       });
     } else {
-      updatedUserCheckIns = [...user.CheckIns, {Count: 1, VenueId: selectedVenueId}];
+      updatedUserCheckIns = [
+        ...user.CheckIns,
+        {Count: 1, VenueId: selectedVenueId, LastCheckInTime: Date.now()},
+      ];
     }
   }
   try {

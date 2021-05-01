@@ -11,21 +11,46 @@ import {checkIn} from '../state/Actions/checkIn';
 import {getLocation} from '../state/Selectors/getLocationState';
 import {distanceBetweenCoordinates} from '../utilities/distanceBetweenCoordinates';
 import {Spinner} from './Spinner';
+import {getUser} from '../state/Selectors/getUserState';
 
-export const handleCheckIn = (selectedVenue, venueLocation, currentLocation, dispatch) => {
+export const handleCheckIn = (selectedVenue, venueLocation, currentLocation, user, dispatch) => {
   if (currentLocation) {
+    const lastUserCheckIn = getLastUserCheckIn(user, selectedVenue);
+    const millisecSinceLastCheckIn = Date.now() - lastUserCheckIn;
     const {latitude, longitude} = currentLocation.coords;
     const {_latitude, _longitude} = venueLocation;
+
     const distanceFromVenue = distanceBetweenCoordinates(
       {latitude, longitude},
       {latitude: _latitude, longitude: _longitude},
     );
-    distanceFromVenue >= 30
-      ? Alert.alert('Sorry, move closer to the venue.')
-      : dispatch(checkIn({venueId: selectedVenue.venueId, checkIns: selectedVenue.CheckInCount}));
+
+    if (distanceFromVenue <= 30) {
+      if (!lastUserCheckIn || millisecSinceLastCheckIn >= 14400000) {
+        dispatch(checkIn({venueId: selectedVenue.venueId, checkIns: selectedVenue.CheckInCount}));
+      } else {
+        Alert.alert('Sorry, You Must Wait Four Hours Before Checking In Again.');
+      }
+    } else {
+      Alert.alert('Please Move Closer To The Venue.');
+    }
   } else {
-    Alert.alert('Sorry, Location Must Be Enabled To Check-In To A Venue.');
+    Alert.alert('Please Enable Location To Check-In To A Venue.');
   }
+};
+
+export const getLastUserCheckIn = (user, selectedVenue) => {
+  const {CheckIns} = user;
+  let lastCheckIn;
+  if (CheckIns) {
+    CheckIns.forEach((venueCheckInObj) => {
+      if (venueCheckInObj.VenueId === selectedVenue.venueId) {
+        lastCheckIn = venueCheckInObj.LastCheckInTime;
+      }
+    });
+    return lastCheckIn;
+  }
+  return null;
 };
 
 export const VenueProfileHeader = (props) => {
@@ -35,6 +60,7 @@ export const VenueProfileHeader = (props) => {
   const dispatch = useDispatch();
   const currentLocation = useSelector(getLocation);
   const checkInWaiting = useSelector((state) => state.venues.isWaiting);
+  const user = useSelector(getUser);
 
   return (
     <LinearGradient colors={[COLORS.orange, COLORS.lightOrange]} style={styles.container}>
@@ -59,7 +85,9 @@ export const VenueProfileHeader = (props) => {
               block
               style={styles.checkInButton}
               success
-              onPress={() => handleCheckIn(selectedVenue, Location, currentLocation, dispatch)}>
+              onPress={() =>
+                handleCheckIn(selectedVenue, Location, currentLocation, user, dispatch)
+              }>
               {checkInWaiting ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
