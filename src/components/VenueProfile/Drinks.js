@@ -11,7 +11,7 @@ export const renderDrink = (drink, navigation) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('DetailView', {drink: drink});
+        navigation.navigate('DetailView', {docId: drink.docId});
       }}
       style={{backgroundColor: COLORS.backgroundWhite}}>
       <DrinkCard drink={drink} />

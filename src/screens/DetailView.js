@@ -34,14 +34,10 @@ class Detailview extends Component {
   };
 
   getSelectedDrink = (docId) => {
-    if (this.props.route.params.drink) {
-      return this.props.route.params.drink;
-    } else {
-      const {drinks} = this.props;
-      for (let i = 0; i < drinks.length; i++) {
-        if (drinks[i].docId === docId) {
-          return drinks[i];
-        }
+    const {drinks} = this.props;
+    for (let i = 0; i < drinks.length; i++) {
+      if (drinks[i].docId === docId) {
+        return drinks[i];
       }
     }
   };
