@@ -4,7 +4,7 @@ import {View, Text, Dimensions, StyleSheet, TouchableOpacity} from 'react-native
 import LottieView from 'lottie-react-native';
 import {useIsFocused} from '@react-navigation/native';
 import COLORS from '../assets/colors';
-import {heart} from '../assets/animations/index';
+import {heart, giftBox} from '../assets/animations/index';
 import {currentAvailability} from '../utilities/drinkAvailability';
 
 export const getDrinkIcon = (type) => {
@@ -31,38 +31,42 @@ export default DrinkCard = (props) => {
       <Card style={styles.card}>
         <CardItem bordered style={styles.cardItem}>
           <Left>
-            <Icon
-              name={getDrinkIcon(drink.Type)}
-              type="FontAwesome5"
-              style={styles.icon}
-            />
+            <Icon name={getDrinkIcon(drink.Type)} type="FontAwesome5" style={styles.icon} />
             <Body>
               <View style={styles.rowView}>
                 <Text style={styles.header}>{drink.Name}</Text>
                 <Text> - </Text>
                 <Text>
-                  {typeof drink.Price === 'number'
-                    ? '$' + drink.Price
-                    : drink.Price + ' Off'}
+                  {typeof drink.Price === 'number' ? '$' + drink.Price : drink.Price + ' Off'}
                 </Text>
               </View>
               <Text style={styles.venueName}>{drink.Venue}</Text>
               {drinkAvailable && <Text style={styles.availableText}>Available</Text>}
             </Body>
           </Left>
-          {onHeartPress && (
-            <TouchableOpacity
-              onPress={() => {
-                onHeartPress(drink, LottieRef);
-              }}>
-              <LottieView
-                source={heart}
-                loop={false}
-                ref={LottieRef}
-                progress={drink.liked ? 0.4 : 0}
-                style={{width: 50, height: 50}}
-              />
-            </TouchableOpacity>
+          {drink.Exclusive ? (
+            <LottieView
+              source={giftBox}
+              loop={true}
+              autoPlay
+              ref={LottieRef}
+              style={{width: 40, height: 40}}
+            />
+          ) : (
+            onHeartPress && (
+              <TouchableOpacity
+                onPress={() => {
+                  onHeartPress(drink, LottieRef);
+                }}>
+                <LottieView
+                  source={heart}
+                  loop={false}
+                  ref={LottieRef}
+                  progress={drink.liked ? 0.4 : 0}
+                  style={{width: 50, height: 50}}
+                />
+              </TouchableOpacity>
+            )
           )}
         </CardItem>
         <CardItem style={styles.cardItem}>

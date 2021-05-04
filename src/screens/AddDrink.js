@@ -146,8 +146,6 @@ class AddDrink extends Component {
   };
 
   render() {
-    console.tron.log('state', this.state);
-    console.tron.log('props', this.props);
     return (
       <ScrollView>
         <Form style={{paddingBottom: 30}}>
