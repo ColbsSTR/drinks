@@ -23,25 +23,10 @@ export const currentAvailability = (drink) => {
             available = true;
           }
         }
-      } else if (
-        Day === currentDay &&
-        currentTime >= Times[0] &&
-        currentTime < Times[1]
-      ) {
+      } else if (Day === currentDay && currentTime >= Times[0] && currentTime < Times[1]) {
         available = true;
       }
     });
     return available;
-  } else {
-    const {Days, Hours} = drink;
-    if (
-      Days.includes(currentDay) &&
-      currentTime >= Hours.Beginning &&
-      currentTime < Hours.End
-    ) {
-      return true;
-    } else {
-      return false;
-    }
   }
 };

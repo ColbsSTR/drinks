@@ -12,8 +12,11 @@ import {getLocation} from '../state/Selectors/getLocationState';
 import {distanceBetweenCoordinates} from '../utilities/distanceBetweenCoordinates';
 import {Spinner} from './Spinner';
 import {getUser} from '../state/Selectors/getUserState';
+import {sendAnalytic} from '../services/Firebase/sendAnalytic';
 
 export const handleCheckIn = (selectedVenue, venueLocation, currentLocation, user, dispatch) => {
+  sendAnalytic('venue_check_in', {venueName: selectedVenue.Name, time: Date.UTC()});
+
   if (currentLocation) {
     const lastUserCheckIn = getLastUserCheckIn(user, selectedVenue);
     const millisecSinceLastCheckIn = Date.now() - lastUserCheckIn;

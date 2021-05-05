@@ -13,6 +13,7 @@ import {connect} from 'react-redux';
 import {formatRating} from '../utilities/formatRating';
 import COLORS from '../assets/colors';
 import {GetRide} from '../components/GetRide';
+import {sendAnalytic} from '../services/Firebase/sendAnalytic';
 
 class Detailview extends Component {
   constructor(props) {
@@ -20,6 +21,15 @@ class Detailview extends Component {
     this.state = {
       isDrinkLive: false,
     };
+  }
+
+  componentDidMount() {
+    const {docId} = this.props.route.params;
+    const drink = this.getSelectedDrink(docId);
+    sendAnalytic({
+      eventName: 'drink_card_pressed',
+      payload: {name: drink.Name, venue: drink.Venue},
+    });
   }
 
   getDirections = () => {

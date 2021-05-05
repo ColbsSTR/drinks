@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {StyleSheet, FlatList, TouchableOpacity, View, ScrollView, Alert} from 'react-native';
 import {Header, Button, Segment, Text} from 'native-base';
 import Geolocation from 'react-native-geolocation-service';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 import requestUserPermission from '../services/Firebase/notifications';
 import isLocationAvailable from '../services/isLocationAvailable';
 import {getAllDrinks} from '../state/Actions/drinks';
@@ -16,8 +17,7 @@ import Filters from '../components/Filters/Filters';
 import filter from '../utilities/filter';
 import {SortDrinksByAvailability} from '../utilities/sortDrinks';
 import COLORS from '../assets/colors';
-
-import dynamicLinks from '@react-native-firebase/dynamic-links';
+import {sendAnalytic} from '../services/Firebase/sendAnalytic';
 
 class TopDeals extends Component {
   constructor(props) {
@@ -177,6 +177,7 @@ class TopDeals extends Component {
   }
 
   onHeartPress(drink, lottieRef) {
+    sendAnalytic('heart_press', {drink: drink.Name, venue: drink.Venue});
     const {docId} = drink;
     const liked = this.props.likedDrinks.includes(docId);
     if (liked) {
@@ -198,6 +199,7 @@ class TopDeals extends Component {
   }
 
   onSegmentButtonPress(tab) {
+    sendAnalytic('header_tab_press', {tabName: tab});
     const drinkCategory = this.getSelectedCategoryOfDrinks(tab);
     const drinksSortedByAvailability = SortDrinksByAvailability(drinkCategory);
     this.setState({selectedTab: tab, drinks: drinksSortedByAvailability});
