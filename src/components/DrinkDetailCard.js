@@ -8,6 +8,7 @@ import {currentAvailability} from '../utilities/drinkAvailability';
 import {militaryToStandard} from '../utilities/time';
 import {buildShareLink} from '../state/Actions/buildShareLink';
 import {TouchableOpacity} from 'react-native';
+import { sendAnalytic } from '../services/Firebase/sendAnalytic';
 
 export const DrinksHours = ({drink}) => {
   return drink.Availability.map((day) => {
@@ -35,6 +36,11 @@ export default DrinkDetailCard = (props) => {
   useEffect(() => {
     currentAvailability(drink) ? setDrinkStatus(true) : setDrinkStatus(false);
   }, [isFocused]);
+
+  const navToVenueProfile = () => {
+    sendAnalytic('nav_to_venue_profile', {venueName: drink.Venue});
+    navigation.navigate('VenueProfile', {drink: drink});
+  };
 
   return (
     <Card style={styles.card1}>
@@ -76,9 +82,7 @@ export default DrinkDetailCard = (props) => {
           <Text>Venue</Text>
         </Body>
         <Right>
-          <Text
-            style={{color: COLORS.blue, fontSize: 15}}
-            onPress={() => navigation.navigate('VenueProfile', {drink: drink})}>
+          <Text style={{color: COLORS.blue, fontSize: 15}} onPress={() => navToVenueProfile()}>
             {drink.Venue}
           </Text>
         </Right>

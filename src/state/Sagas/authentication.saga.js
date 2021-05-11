@@ -1,20 +1,12 @@
 import {Alert} from 'react-native';
 import {takeLatest, put, call} from 'redux-saga/effects';
-import {
-  LOGIN_START,
-  LOGOUT_START,
-  LOGOUT_SUCCEED,
-  RESET_DEALS,
-} from '../Actions/actionTypes';
-import {
-  loginSucceeded,
-  loginFail,
-  loginCancelled,
-} from '../Actions/authentication';
+import {LOGIN_START, LOGOUT_START, LOGOUT_SUCCEED, RESET_DEALS} from '../Actions/actionTypes';
+import {loginSucceeded, loginFail, loginCancelled} from '../Actions/authentication';
 import {login, logout} from '../../services/Firebase/authentication';
 import {createNewUser, isNewUser} from '../../services/Firebase/users';
 import {emailInUse} from '../../language/keys/authentication/errorCodes';
 import {errors} from '../../language/locales/login/errorStrings';
+import {sendAnalytic} from '../../services/Firebase/sendAnalytic';
 
 export function* authenticationWatcher() {
   yield takeLatest(LOGIN_START, loginWorker);
@@ -32,11 +24,13 @@ export function* loginWorker(action) {
         yield call(createNewUser, user.user);
       }
       yield put(loginSucceeded(user.user));
+      sendAnalytic('login_succeeded');
     } else {
       yield put(loginCancelled());
     }
   } catch (err) {
     yield put(loginFail(err));
+    sendAnalytic('login_failed');
     //***TODO*** modal
     if (err.code.toString() === emailInUse) {
       Alert.alert(errors.emailInUseHeader, errors.emailInUseDescription);

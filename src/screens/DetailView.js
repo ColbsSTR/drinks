@@ -15,6 +15,7 @@ import COLORS from '../assets/colors';
 import {GetRide} from '../components/GetRide';
 import {present} from '../assets/animations';
 import RedeemDealModal from '../components/RedeemDealModal';
+import {sendAnalytic} from '../services/Firebase/sendAnalytic';
 
 class Detailview extends Component {
   constructor(props) {
@@ -30,6 +31,10 @@ class Detailview extends Component {
     if (drink.Exclusive) {
       this.animation.play();
     }
+    sendAnalytic({
+      eventName: 'drink_card_pressed',
+      payload: {name: drink.Name, venue: drink.Venue},
+    });
   }
 
   getDirections = () => {
