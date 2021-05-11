@@ -20,7 +20,8 @@ export default RedeemDealModal = (props) => {
 
   const redeemNow = () => {
     dispatch(closeModal());
-    navigation.navigate('RedeemedDrink');
+    // dispatch(redeemDrink());
+    navigation.navigate('RedeemedDrink', {drink: drink});
   };
 
   return (
@@ -28,31 +29,25 @@ export default RedeemDealModal = (props) => {
       <Modal animationType="slide" transparent={true} visible={modalShown}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <View style={{paddingBottom: 15, justifyContent: 'center', alignItems: 'center'}}>
+            <View style={styles.mainContentContainer}>
               <H2 style={{fontWeight: '400', color: COLORS.backgroundWhite, paddingBottom: 10}}>
                 {drink.Name}
               </H2>
-              <H3 style={{fontWeight: '200', color: COLORS.backgroundWhite}}>
-                {'Original Price - $' + OriginalPrice}
-              </H3>
-              <H3 style={{fontWeight: '200', color: COLORS.backgroundWhite}}>
-                {'With Drinks - $' + drink.Price}
-              </H3>
-              <H3 style={{fontWeight: '200', color: COLORS.backgroundWhite, textAlign: 'center', paddingTop: 15}}>
-                {getDescription(Uses)}
-              </H3>
+              <H3 style={styles.priceText}>{'Original Price - $' + OriginalPrice}</H3>
+              <H3 style={styles.priceText}>{'With Drinks - $' + drink.Price}</H3>
+              <H3 style={styles.useDescriptionText}>{getDescription(Uses)}</H3>
             </View>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingTop: 15,
-                flexDirection: 'row',
-              }}>
-              <Button bordered onPress={() => dispatch(closeModal())} style={{margin: 5, borderColor: 'white'}}>
+            <View style={styles.buttonsContainer}>
+              <Button
+                bordered
+                onPress={() => dispatch(closeModal())}
+                style={{margin: 5, borderColor: 'white'}}>
                 <Text style={{color: 'white'}}>Save For Later</Text>
               </Button>
-              <Button bordered onPress={() => redeemNow()} style={{margin: 5, borderColor: 'white'}}>
+              <Button
+                bordered
+                onPress={() => redeemNow()}
+                style={{margin: 5, borderColor: 'white'}}>
                 <Text style={{color: 'white'}}>Redeem Now</Text>
               </Button>
             </View>
@@ -109,5 +104,26 @@ const styles = StyleSheet.create({
   },
   myEmptyStarStyle: {
     color: 'grey',
+  },
+  mainContentContainer: {
+    paddingBottom: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  priceText: {
+    fontWeight: '200',
+    color: COLORS.backgroundWhite,
+  },
+  useDescriptionText: {
+    fontWeight: '200',
+    color: COLORS.backgroundWhite,
+    textAlign: 'center',
+    paddingTop: 15,
+  },
+  buttonsContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 15,
+    flexDirection: 'row',
   },
 });

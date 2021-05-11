@@ -28,7 +28,7 @@ export default DrinkCard = (props) => {
 
   return (
     <View style={styles.container}>
-      <Card style={styles.card}>
+      <Card style={drink.Exclusive ? [styles.card, styles.exclusiveCard] : styles.card}>
         <CardItem bordered style={styles.cardItem}>
           <Left>
             <Icon name={getDrinkIcon(drink.Type)} type="FontAwesome5" style={styles.icon} />
@@ -95,6 +95,10 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: COLORS.white,
     width: Dimensions.get('window').width - 20,
+  },
+  exclusiveCard: {
+    borderWidth: 5,
+    borderColor: COLORS.orange,
   },
   cardItem: {
     borderRadius: 6,
