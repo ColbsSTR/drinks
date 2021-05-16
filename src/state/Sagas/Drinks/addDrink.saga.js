@@ -1,7 +1,7 @@
 import {takeLatest, call} from 'redux-saga/effects';
-import {addDrink} from '../../services/Firebase/addDrink';
-import {ADD_DRINK} from '../Actions/actionTypes';
-import {showToast} from '../../components/Toast';
+import {addDrink} from '../../../services/Firebase/addDrink';
+import {ADD_DRINK} from '../../Actions/actionTypes';
+import {showToast} from '../../../components/Toast';
 
 export function* addDrinkWatcher() {
   yield takeLatest(ADD_DRINK, addDrinkWorker);

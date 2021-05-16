@@ -87,6 +87,11 @@ export const CHECK_IN_TO_VENUE_START = 'CHECK_IN_TO_VENUE_START';
 export const CHECK_IN_TO_VENUE_SUCCEED = 'CHECK_IN_TO_VENUE_SUCCEED';
 export const CHECK_IN_TO_VENUE_FAIL = 'CHECK_IN_TO_VENUE_FAIL';
 
+//Share Link
 export const BUILD_SHARE_LINK = 'BUILD_SHARE_LINK';
 
+//User Feedback
 export const GET_FEEDBACK_USER = 'GET_FEEDBACK_USER';
+
+//Redeem Drink
+export const REDEEM_DRINK = 'REDEEM_DRINK';

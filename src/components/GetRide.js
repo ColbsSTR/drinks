@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: deviceHeight * 0.05,
+    paddingTop: 10,
   },
   text: {
     color: COLORS.blue,

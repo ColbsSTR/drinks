@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {Icon} from 'react-native-elements';
@@ -19,6 +19,7 @@ import {loginSucceeded} from '../state/Actions/authentication';
 import COLORS from '../assets/colors';
 import EditDrink from '../screens/EditDrink';
 import VenueProfile from '../screens/VenueProfile';
+import RedeemedDrink from '../screens/RedeemedDrink';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -56,6 +57,14 @@ function MapStack() {
           headerShown: false,
         }}
       />
+      <MainStack.Screen
+        name="RedeemedDrink"
+        component={RedeemedDrink}
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+        }}
+      />
     </MainStack.Navigator>
   );
 }
@@ -90,6 +99,14 @@ function HomeStack() {
         component={VenueProfile}
         options={{
           headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name="RedeemedDrink"
+        component={RedeemedDrink}
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
         }}
       />
     </MainStack.Navigator>
@@ -145,6 +162,14 @@ function ProfileStack() {
         component={VenueProfile}
         options={{
           headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        name="RedeemedDrink"
+        component={RedeemedDrink}
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
         }}
       />
     </MainStack.Navigator>

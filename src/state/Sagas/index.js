@@ -1,23 +1,24 @@
 import {all, call} from 'redux-saga/effects';
-import {drinksWatcher} from './drinks.saga';
+import {getDrinksWatcher} from './Drinks/getDrinks.saga';
 import {venuesWatcher} from './venues.saga';
 import {reviewsWatcher} from './reviews.saga';
 import {authenticationWatcher} from './authentication.saga';
 import {updateUserDisplayNameWatcher} from './User/updateDisplayName.saga';
 import {getUserDataWatcher} from './User/getUserData.saga';
-import {addDrinkWatcher} from './addDrink.saga';
-import {editDrinkWatcher} from './editDrink.saga';
+import {addDrinkWatcher} from './Drinks/addDrink.saga';
+import {editDrinkWatcher} from './Drinks/editDrink.saga';
 import {sendNotificationWatcher} from './sendNotification.saga';
 import {buildShareLinkWatcher} from './buildShareLink.saga';
 import {feedbackWatcher} from './feedback.saga';
 import likedDrinks from './LikedDrinks';
+import {redeemDrinkWatcher} from './Drinks/redeemDrink.saga';
 
 //***TODO*****//
 // RESEARCH BEST WAY TO SET THIS UP
 //************//
 export function* rootSaga() {
   yield all([
-    call(drinksWatcher),
+    call(getDrinksWatcher),
     call(venuesWatcher),
     call(reviewsWatcher),
     call(likedDrinks),
@@ -29,5 +30,6 @@ export function* rootSaga() {
     call(sendNotificationWatcher),
     call(buildShareLinkWatcher),
     call(feedbackWatcher),
+    call(redeemDrinkWatcher),
   ]);
 }
