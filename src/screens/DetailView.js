@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import {Text} from 'native-base';
 import MapView, {Marker} from 'react-native-maps';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -16,6 +16,8 @@ import {GetRide} from '../components/GetRide';
 import {present} from '../assets/animations';
 import RedeemDealModal from '../components/RedeemDealModal';
 import {sendAnalytic} from '../services/Firebase/sendAnalytic';
+import {getUser} from '../state/Selectors/getUserState';
+import {Once, PerDay} from '../models/exclusiveDrinkUseTypes';
 
 class Detailview extends Component {
   constructor(props) {
@@ -29,6 +31,9 @@ class Detailview extends Component {
     const {docId} = this.props.route.params;
     const drink = this.getSelectedDrink(docId);
     if (drink.Exclusive) {
+      if (drink.Exclusive.Uses === Once && this.props.user.RedeemedDrinks[drink.docId]) {
+        return;
+      }
       this.animation.play();
     }
     sendAnalytic({
@@ -57,6 +62,69 @@ class Detailview extends Component {
     }
   };
 
+  handleExclusiveDealPress = (drink, user) => {
+    const redeemedInLast24Hours = user.RedeemedDrinks
+      ? Date.now() <= user.RedeemedDrinks[drink.docId] + 86400 * 1000
+      : false;
+
+    if (drink.Exclusive.Uses === PerDay) {
+      redeemedInLast24Hours
+        ? Alert.alert('Must Wait 24 Hours Between Redeeming This Deal.')
+        : this.props.showModal();
+    } else {
+      this.props.showModal();
+    }
+  };
+
+  exclusiveDealView = (drink, rating) => {
+    const {user} = this.props;
+
+    const redeemedInLast24Hours = user.RedeemedDrinks
+      ? Date.now() <= user.RedeemedDrinks[drink.docId] + 86400 * 1000
+      : false;
+    const secondsSinceRedemption = user.RedeemedDrinks
+      ? (Date.now() - user.RedeemedDrinks[drink.docId]) / 1000
+      : 86400;
+    const hoursLeft = 24 - Math.floor(secondsSinceRedemption / 3600);
+
+    return drink.Exclusive.Uses === Once && user.RedeemedDrinks[drink.docId] ? (
+      this.ratingView(drink, rating)
+    ) : (
+      <>
+        <TouchableOpacity
+          onPress={() => this.handleExclusiveDealPress(drink, user)}
+          style={styles.center}
+        >
+          <LottieView
+            source={present}
+            loop={false}
+            style={{width: 200, height: 200}}
+            ref={(animation) => {
+              this.animation = animation;
+            }}
+          />
+          {drink.Exclusive.Uses === PerDay && redeemedInLast24Hours ? (
+            <Text style={styles.waitText}>{hoursLeft + ' Hours Remaining'}</Text>
+          ) : (
+            <Text style={styles.reviewText}>Redeem Deal</Text>
+          )}
+        </TouchableOpacity>
+        <RedeemDealModal drink={drink} />
+      </>
+    );
+  };
+
+  ratingView = (drink, rating) => (
+    <>
+      <Rating imageSize={30} readonly startingValue={rating} />
+      <TouchableOpacity onPress={() => this.props.showModal()}>
+        <Text style={styles.reviewText}>Add Review</Text>
+      </TouchableOpacity>
+      <GetRide />
+      <ReviewModal docID={drink.docId} currentRating={drink.Rating} />
+    </>
+  );
+
   render() {
     const {docId} = this.props.route.params;
     const drink = this.getSelectedDrink(docId);
@@ -72,7 +140,8 @@ class Detailview extends Component {
             longitude: drink.Location._longitude,
             latitudeDelta: 0.005,
             longitudeDelta: 0.005,
-          }}>
+          }}
+        >
           <Marker
             coordinate={{
               latitude: drink.Location._latitude,
@@ -83,31 +152,7 @@ class Detailview extends Component {
           />
         </MapView>
         <View style={drink.Exclusive ? styles.exclusiveDealContainer : styles.reviewsContainer}>
-          {drink.Exclusive ? (
-            <>
-              <TouchableOpacity onPress={() => this.props.showModal()} style={styles.center}>
-                <LottieView
-                  source={present}
-                  loop={false}
-                  style={{width: 200, height: 200}}
-                  ref={(animation) => {
-                    this.animation = animation;
-                  }}
-                />
-                <Text style={styles.reviewText}>Redeem Deal</Text>
-              </TouchableOpacity>
-              <RedeemDealModal drink={drink} />
-            </>
-          ) : (
-            <>
-              <Rating imageSize={30} readonly startingValue={rating} />
-              <TouchableOpacity onPress={() => this.props.showModal()}>
-                <Text style={styles.reviewText}>Add Review</Text>
-              </TouchableOpacity>
-              <GetRide />
-              <ReviewModal docID={drink.docId} currentRating={drink.Rating} />
-            </>
-          )}
+          {drink.Exclusive ? this.exclusiveDealView(drink, rating) : this.ratingView(drink, rating)}
         </View>
       </ScrollView>
     );
@@ -155,11 +200,16 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 15,
   },
+  waitText: {
+    textAlign: 'center',
+    color: COLORS.mediumGrey,
+  },
 });
 
 const mapStateToProps = (state) => {
   return {
     drinks: state.drinks.allDrinks,
+    user: getUser(state),
   };
 };
 

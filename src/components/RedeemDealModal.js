@@ -4,6 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {Button, Text, H2, H3} from 'native-base';
 import {closeModal} from '../state/Actions/modal';
+import {redeemDrink} from '../state/Actions/redeemDrink';
 import COLORS from '../assets/colors';
 import {useDescriptions} from '../language/locales/exclusiveDrinks/useDescriptions';
 
@@ -20,7 +21,7 @@ export default RedeemDealModal = (props) => {
 
   const redeemNow = () => {
     dispatch(closeModal());
-    // dispatch(redeemDrink());
+    dispatch(redeemDrink(drink));
     navigation.navigate('RedeemedDrink', {drink: drink});
   };
 
