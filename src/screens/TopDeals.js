@@ -1,6 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {StyleSheet, FlatList, TouchableOpacity, View, ScrollView, Alert} from 'react-native';
+import {
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  View,
+  ScrollView,
+  RefreshControl,
+  Alert,
+} from 'react-native';
 import {Header, Button, Segment, Text} from 'native-base';
 import Geolocation from 'react-native-geolocation-service';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
@@ -107,7 +115,8 @@ class TopDeals extends Component {
         onPress={() => {
           this.props.navigation.navigate('DetailView', {docId: drink.docId});
         }}
-        style={{backgroundColor: COLORS.backgroundWhite}}>
+        style={{backgroundColor: COLORS.backgroundWhite}}
+      >
         <DrinkCard drink={drink} onHeartPress={this.onHeartPress} />
       </TouchableOpacity>
     );
@@ -213,13 +222,19 @@ class TopDeals extends Component {
         style={[styles.segmentButton, selected && styles.activeSegmentButton]}
         onPress={() => this.onSegmentButtonPress(tab)}
         first={first}
-        last={last}>
+        last={last}
+      >
         <Text style={[styles.segmentButtonText, selected && styles.activeSegmentButtonText]}>
           {buttonName}
         </Text>
       </Button>
     );
   }
+
+  pullToRefresh = () => {
+    this.setState({dataInitialized: false});
+    this.props.getAllDrinks();
+  };
 
   render() {
     const {dataInitialized} = this.state;
@@ -232,14 +247,22 @@ class TopDeals extends Component {
             width: '100%',
             borderBottomColor: 'black',
             borderBottomWidth: 2,
-          }}>
+          }}
+        >
           <Segment style={styles.segment}>
             {this.segmentButton('Specialty', 0, true, false)}
             {this.segmentButton('Top Deals', 1, false, false)}
             {this.segmentButton('Local Craft', 2, false, true)}
           </Segment>
         </Header>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={!this.state.dataInitialized}
+              onRefresh={this.pullToRefresh}
+            />
+          }
+        >
           <Filters filterDrinks={this.filterDrinks} />
           <View>
             <FlatList
