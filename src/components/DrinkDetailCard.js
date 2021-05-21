@@ -62,7 +62,7 @@ export default DrinkDetailCard = (props) => {
       <ListItem icon>
         <Left>
           <Button style={{backgroundColor: 'green'}}>
-            <Icon type="FontAwesome" name="dollar" />
+            <Icon type="Foundation" name="dollar" style={{fontSize: 26}} />
           </Button>
         </Left>
         <Body>
