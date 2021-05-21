@@ -98,7 +98,7 @@ export default DrinkDetailCard = (props) => {
         </Body>
         <Right>
           <Text
-            style={{color: COLORS.blue, fontSize: 14}}
+            style={{color: COLORS.blue, fontSize: 15}}
             onPress={() => setHoursShown(!hoursShown)}>
             {hoursShown ? 'Hide Hours' : 'Show Hours'}
           </Text>

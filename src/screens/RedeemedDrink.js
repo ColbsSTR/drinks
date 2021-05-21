@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 5,
+    paddingBottom: 15,
   },
   backButton: {
     flex: 1,
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
   },
   animation: {
     width: 400,
-    height: 400,
+    height: deviceHeight * 0.5,
   },
 });
 

@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     height: 75,
   },
   tabsContainer: {
-    flex: 10,
+    flex: 3,
   },
 });
 

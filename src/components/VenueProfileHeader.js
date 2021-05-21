@@ -90,7 +90,8 @@ export const VenueProfileHeader = (props) => {
               success
               onPress={() =>
                 handleCheckIn(selectedVenue, Location, currentLocation, user, dispatch)
-              }>
+              }
+            >
               {checkInWaiting ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
@@ -106,8 +107,8 @@ export const VenueProfileHeader = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 4,
-    paddingBottom: 20,
+    flex: 1,
+    paddingBottom: deviceHeight < 700 ? 80 : 25,
   },
   imageContainer: {
     justifyContent: 'center',
@@ -135,8 +136,8 @@ const styles = StyleSheet.create({
     height: 75,
   },
   checkInContainer: {
+    flex: 1,
     paddingTop: 10,
-    paddingBottom: 20,
   },
   checkInButton: {
     width: '70%',
