@@ -68,7 +68,7 @@ class Feedback extends Component {
           <View style={styles.submitButton}>
             <Button
               style={{flex: 1, alignSelf: 'center'}}
-              onPress={() => this.props.onSubmitFeedbackPress(Message, Rating, Type)}
+              onPress={() => this.onSubmitFeedbackPress(Message, Rating, Type)}
             >
               <Text>Submit Feedback</Text>
             </Button>
