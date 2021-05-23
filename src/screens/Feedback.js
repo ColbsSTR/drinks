@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ScrollView, StyleSheet} from 'react-native';
+import {View, ScrollView, StyleSheet, Alert} from 'react-native';
 import {connect} from 'react-redux';
 import {Picker, Icon, Text, Button, Textarea, Card, CardItem} from 'native-base';
 import {AirbnbRating} from 'react-native-elements';
@@ -17,6 +17,14 @@ class Feedback extends Component {
     super(props);
     this.state = initialState;
   }
+
+  onSubmitFeedbackPress = (Message, Rating, Type) => {
+    if (!Rating) {
+      Alert.alert('Please Provide a Rating.');
+    } else {
+      this.props.getFeedbackUser({Message, Rating, Type});
+    }
+  };
 
   render() {
     const {Message, Rating, Type} = this.state;
@@ -43,7 +51,8 @@ class Feedback extends Component {
               selectedValue={this.state.Type}
               onValueChange={(type) => {
                 this.setState({Type: type});
-              }}>
+              }}
+            >
               <Picker.Item label="Suggest a drink" value="suggestDrink" />
               <Picker.Item label="Suggest a feature" value="suggestFeature" />
               <Picker.Item label="Report a bug" value="reportBug" />
@@ -59,7 +68,8 @@ class Feedback extends Component {
           <View style={styles.submitButton}>
             <Button
               style={{flex: 1, alignSelf: 'center'}}
-              onPress={() => this.props.getFeedbackUser({Message, Rating, Type})}>
+              onPress={() => this.props.onSubmitFeedbackPress(Message, Rating, Type)}
+            >
               <Text>Submit Feedback</Text>
             </Button>
           </View>

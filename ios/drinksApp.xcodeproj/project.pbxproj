@@ -770,7 +770,7 @@
 				CODE_SIGN_ENTITLEMENTS = drinksApp/drinksApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 2NV732GU44;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
@@ -877,7 +877,7 @@
 				CODE_SIGN_ENTITLEMENTS = drinksApp/drinksApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 2NV732GU44;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
