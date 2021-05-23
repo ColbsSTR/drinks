@@ -10,9 +10,11 @@ export default requestUserPermission = async () => {
     console.log('Message handled in the background!', remoteMessage);
   });
 
+  const topic = 'main'; // main for prod
+
   messaging()
-    .subscribeToTopic('main')
-    .then(() => console.log('Subscribed to topic!'));
+    .subscribeToTopic(topic)
+    .then(() => console.log('Subscribed to topic', topic));
 
   return enabled;
 };

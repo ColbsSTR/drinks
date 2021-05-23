@@ -56,14 +56,14 @@ class Feedback extends Component {
             style={styles.textArea}
             onChangeText={(message) => this.setState({Message: message})}
           />
+          <View style={styles.submitButton}>
+            <Button
+              style={{flex: 1, alignSelf: 'center'}}
+              onPress={() => this.props.getFeedbackUser({Message, Rating, Type})}>
+              <Text>Submit Feedback</Text>
+            </Button>
+          </View>
         </Card>
-        <View style={styles.submitButton}>
-          <Button
-            style={{flex: 1, alignSelf: 'center'}}
-            onPress={() => this.props.getFeedbackUser({Message, Rating, Type})}>
-            <Text>Submit Feedback</Text>
-          </Button>
-        </View>
       </ScrollView>
     );
   }
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   submitButton: {
     flex: 1,
     marginTop: 20,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   textStyle: {
     textAlign: 'center',
