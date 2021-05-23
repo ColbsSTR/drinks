@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Modal, StyleSheet, View} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -7,6 +7,7 @@ import {closeModal} from '../state/Actions/modal';
 import {redeemDrink} from '../state/Actions/redeemDrink';
 import COLORS from '../assets/colors';
 import {useDescriptions} from '../language/locales/exclusiveDrinks/useDescriptions';
+import {sendAnalytic} from '../services/Firebase/sendAnalytic';
 
 export const getDescription = (use) => {
   return useDescriptions[use];
@@ -23,6 +24,7 @@ export default RedeemDealModal = (props) => {
     dispatch(closeModal());
     dispatch(redeemDrink(drink));
     navigation.navigate('RedeemedDrink', {drink: drink});
+    sendAnalytic('redeemed_drink', {drink: drink});
   };
 
   return (
@@ -42,13 +44,15 @@ export default RedeemDealModal = (props) => {
               <Button
                 bordered
                 onPress={() => dispatch(closeModal())}
-                style={{margin: 5, borderColor: 'white'}}>
+                style={{margin: 5, borderColor: 'white'}}
+              >
                 <Text style={{color: 'white'}}>Save For Later</Text>
               </Button>
               <Button
                 bordered
                 onPress={() => redeemNow()}
-                style={{margin: 5, borderColor: 'white'}}>
+                style={{margin: 5, borderColor: 'white'}}
+              >
                 <Text style={{color: 'white'}}>Redeem Now</Text>
               </Button>
             </View>
