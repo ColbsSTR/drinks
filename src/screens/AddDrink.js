@@ -28,16 +28,7 @@ class AddDrink extends Component {
   }
 
   handleAddDrink = () => {
-    const {
-      Name,
-      Price,
-      Type,
-      Category,
-      Description,
-      Address,
-      Venue,
-      Availability,
-    } = this.state;
+    const {Name, Price, Type, Category, Description, Address, Venue, Availability} = this.state;
     this.props.addDrink({
       Name,
       Price: Number(Price),
@@ -151,10 +142,7 @@ class AddDrink extends Component {
         <Form style={{paddingBottom: 30}}>
           <Item floatingLabel>
             <Label>Name</Label>
-            <Input
-              value={this.state.Name}
-              onChangeText={(name) => this.setState({Name: name})}
-            />
+            <Input value={this.state.Name} onChangeText={(name) => this.setState({Name: name})} />
           </Item>
           <Item floatingLabel>
             <Label>Price</Label>
@@ -200,7 +188,8 @@ class AddDrink extends Component {
             selectedValue={this.state.Venue}
             onValueChange={(Venue) => {
               this.setState({Venue});
-            }}>
+            }}
+          >
             {this.props.venues.map((venue) => {
               const val = {VenueName: venue.Name, VenueId: venue.venueId};
               return <Picker.Item label={venue.Name} value={val} />;
@@ -217,7 +206,8 @@ class AddDrink extends Component {
             selectedValue={this.state.Type}
             onValueChange={(type) => {
               this.setState({Type: type});
-            }}>
+            }}
+          >
             <Picker.Item label="Beer" value="Beer" />
             <Picker.Item label="Wine" value="Wine" />
             <Picker.Item label="Cocktail" value="Cocktail" />
@@ -233,7 +223,8 @@ class AddDrink extends Component {
             placeholder="Drink Category"
             placeholderIconColor="#007aff"
             selectedValue={this.state.Category}
-            onValueChange={(category) => this.setState({Category: category})}>
+            onValueChange={(category) => this.setState({Category: category})}
+          >
             <Picker.Item label="Top Deal" value="TopDeal" />
             <Picker.Item label="Specialty" value="Specialty" />
             <Picker.Item label="Local" value="Local" />

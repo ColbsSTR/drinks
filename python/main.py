@@ -43,7 +43,7 @@ for i in range(len(df)):
         if not pd.isna(df[day + ' Start'][i]) and not pd.isna(df[day + ' End'][i]):
             availability.append({
                 'Day': day,
-                'Times': [str(df[day + ' Start'][i]), str(df[day + ' End'][i])]
+                'Times': [df[day + ' Start'][i], df[day + ' End'][i]]
             })
     drinks_ref.add({
         'Name': df['Name'][i],

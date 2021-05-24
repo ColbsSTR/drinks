@@ -23,6 +23,7 @@ class Feedback extends Component {
       Alert.alert('Please Provide a Rating.');
     } else {
       this.props.getFeedbackUser({Message, Rating, Type});
+      this.setState({Message: null, Rating: null, Type: null});
     }
   };
 
@@ -61,9 +62,10 @@ class Feedback extends Component {
           </CardItem>
           <Textarea
             rowSpan={3}
-            placeholder="Let us know what you think...."
+            placeholder="Let us know what you think..."
             style={styles.textArea}
             onChangeText={(message) => this.setState({Message: message})}
+            value={this.state.Message}
           />
           <View style={styles.submitButton}>
             <Button
