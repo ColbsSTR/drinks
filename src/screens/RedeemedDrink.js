@@ -27,7 +27,7 @@ class RedeemedDrink extends Component {
           <Icon name="arrow-back-sharp" type="Ionicons" style={styles.backButtonIcon} />
         </TouchableOpacity>
         <View style={styles.mainContentContainer}>
-          <H3 style={styles.descriptionText}>{name + ' redeemed a'}</H3>
+          <H3 style={[styles.descriptionText, {padding: 10}]}>{name + ' redeemed a'}</H3>
           <H3 style={styles.bigText}>{'$' + drink.Price + ' ' + drink.Name}</H3>
           <H3 style={styles.descriptionText}>at</H3>
           <H3 style={styles.bigText}>{drink.Venue}</H3>
@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 5,
     paddingBottom: 15,
-    paddingTop: 0,
   },
   backButton: {
     flex: 1,
@@ -84,7 +83,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: 'center',
     color: COLORS.backgroundWhite,
-    padding: 10,
   },
   instructionText: {
     fontWeight: '200',
