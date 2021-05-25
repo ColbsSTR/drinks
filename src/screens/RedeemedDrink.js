@@ -27,16 +27,10 @@ class RedeemedDrink extends Component {
           <Icon name="arrow-back-sharp" type="Ionicons" style={styles.backButtonIcon} />
         </TouchableOpacity>
         <View style={styles.mainContentContainer}>
-          <H3 style={styles.bigText}>Woo Hoo!!</H3>
-          <H3 style={styles.descriptionText}>
-            {name +
-              ', You Have Recieved a $' +
-              drink.Price +
-              ' ' +
-              drink.Name +
-              ' at ' +
-              drink.Venue}
-          </H3>
+          <H3 style={styles.descriptionText}>{name + ' redeemed a'}</H3>
+          <H3 style={styles.bigText}>{'$' + drink.Price + ' ' + drink.Name}</H3>
+          <H3 style={styles.descriptionText}>at</H3>
+          <H3 style={styles.bigText}>{drink.Venue}</H3>
           <LottieView
             source={presentOpening}
             loop={true}
@@ -45,7 +39,7 @@ class RedeemedDrink extends Component {
               this.animation = animation;
             }}
           />
-          <H2 style={styles.instructionText}>Please Show This Screen To The BarTender To Redeem</H2>
+          <H2 style={styles.instructionText}>Please Show This Screen To The Bartender</H2>
         </View>
       </View>
     );
@@ -69,6 +63,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 5,
     paddingBottom: 15,
+    paddingTop: 0,
   },
   backButton: {
     flex: 1,
@@ -80,14 +75,16 @@ const styles = StyleSheet.create({
   },
   bigText: {
     fontWeight: '500',
-    fontSize: 25,
+    fontSize: 30,
     color: COLORS.backgroundWhite,
+    padding: 10,
   },
   descriptionText: {
     fontWeight: '300',
     fontSize: 22,
     textAlign: 'center',
     color: COLORS.backgroundWhite,
+    padding: 10,
   },
   instructionText: {
     fontWeight: '200',
