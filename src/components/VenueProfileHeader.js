@@ -28,7 +28,7 @@ export const handleCheckIn = (selectedVenue, venueLocation, currentLocation, use
       {latitude: _latitude, longitude: _longitude},
     );
 
-    if (distanceFromVenue <= 30) {
+    if (distanceFromVenue <= 60) {
       if (!lastUserCheckIn || millisecSinceLastCheckIn >= 14400000) {
         dispatch(checkIn({venueId: selectedVenue.venueId, checkIns: selectedVenue.CheckInCount}));
       } else {

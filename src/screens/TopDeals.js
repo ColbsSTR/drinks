@@ -104,10 +104,9 @@ class TopDeals extends Component {
   updateDrinksState() {
     const {selectedTab} = this.state;
     const currentSelectedDrinks = this.getSelectedCategoryOfDrinks(selectedTab);
-    const drinksSortedByAvailability = sortDrinksByAvailability(currentSelectedDrinks);
     const drinksSortedByPrice = sortDrinksByPriceAscending(currentSelectedDrinks);
-    console.tron.log('drinks', drinksSortedByPrice);
-    this.setState({drinks: drinksSortedByAvailability, dataInitialized: true});
+    const drinksSortedByPriceAndAvailability = sortDrinksByAvailability(drinksSortedByPrice);
+    this.setState({drinks: drinksSortedByPriceAndAvailability, dataInitialized: true});
     this.reApplyFilters(currentSelectedDrinks);
   }
 
@@ -138,7 +137,8 @@ class TopDeals extends Component {
       ? selectedCategory
       : this.getSelectedCategoryOfDrinks(selectedTab);
     let filteredDrinks = [];
-    let drinksSortedByAvailability;
+    let drinksSortedByPriceAndAvailability;
+    let drinksSortedByPrice;
 
     switch (filterObject.type) {
       case 'Type':
@@ -147,10 +147,11 @@ class TopDeals extends Component {
           drinkPrice: filterByPrice,
           drinkRating: filterByRating,
         });
-        drinksSortedByAvailability = sortDrinksByAvailability(filteredDrinks);
+        drinksSortedByPrice = sortDrinksByPriceAscending(filteredDrinks);
+        drinksSortedByPriceAndAvailability = sortDrinksByAvailability(drinksSortedByPrice);
         this.setState({
           filterByType: filterObject.value,
-          drinks: drinksSortedByAvailability,
+          drinks: drinksSortedByPriceAndAvailability,
         });
         break;
       case 'Price':
@@ -159,10 +160,11 @@ class TopDeals extends Component {
           drinkPrice: filterObject.value,
           drinkRating: filterByRating,
         });
-        drinksSortedByAvailability = sortDrinksByAvailability(filteredDrinks);
+        drinksSortedByPrice = sortDrinksByPriceAscending(filteredDrinks);
+        drinksSortedByPriceAndAvailability = sortDrinksByAvailability(drinksSortedByPrice);
         this.setState({
           filterByPrice: filterObject.value,
-          drinks: drinksSortedByAvailability,
+          drinks: drinksSortedByPriceAndAvailability,
         });
         break;
       case 'Distance':
@@ -176,10 +178,11 @@ class TopDeals extends Component {
           },
           currentLocation,
         );
-        drinksSortedByAvailability = sortDrinksByAvailability(filteredDrinks);
+        drinksSortedByPrice = sortDrinksByPriceAscending(filteredDrinks);
+        drinksSortedByPriceAndAvailability = sortDrinksByAvailability(drinksSortedByPrice);
         this.setState({
           filterByDistance: filterObject.value,
-          drinks: drinksSortedByAvailability,
+          drinks: drinksSortedByPriceAndAvailability,
         });
         break;
       default:
@@ -212,8 +215,9 @@ class TopDeals extends Component {
   onSegmentButtonPress(tab) {
     sendAnalytic('header_tab_press', {tabName: tab});
     const drinkCategory = this.getSelectedCategoryOfDrinks(tab);
-    const drinksSortedByAvailability = sortDrinksByAvailability(drinkCategory);
-    this.setState({selectedTab: tab, drinks: drinksSortedByAvailability});
+    const drinksSortedByPrice = sortDrinksByPriceAscending(drinkCategory);
+    const drinksSortedByPriceAndAvailability = sortDrinksByAvailability(drinksSortedByPrice);
+    this.setState({selectedTab: tab, drinks: drinksSortedByPriceAndAvailability});
     this.reApplyFilters(drinkCategory);
   }
 
