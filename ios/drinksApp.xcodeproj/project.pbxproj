@@ -22,6 +22,7 @@
 		79F7994B258A329B0072BC4B /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79F7994A258A329B0072BC4B /* File.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		88EAD4DD8B8B36EB3651C772 /* libPods-drinksApp-drinksAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8B55453A52505562A9FCB7 /* libPods-drinksApp-drinksAppTests.a */; };
+		F31AD3DA26599A63000A788D /* glass_clink.wav in Resources */ = {isa = PBXBuildFile; fileRef = F31AD3D926599A63000A788D /* glass_clink.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		DC55BC4F7591808E7D6691EF /* Pods-drinksApp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-drinksApp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-drinksApp-tvOS/Pods-drinksApp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		F31AD3D926599A63000A788D /* glass_clink.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = glass_clink.wav; sourceTree = "<group>"; };
 		F9D4DABE1FE76BEC761CCDF2 /* Pods-drinksApp-drinksAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-drinksApp-drinksAppTests.release.xcconfig"; path = "Target Support Files/Pods-drinksApp-drinksAppTests/Pods-drinksApp-drinksAppTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -189,6 +191,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				F31AD3D926599A63000A788D /* glass_clink.wav */,
 				79A9C699252129F600E941F5 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* drinksApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -225,7 +228,6 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				7CB45E7B39C37610A1F99EE0 /* [CP] Copy Pods Resources */,
-				2AFE9F387AF3A89CA6FB80F1 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -249,7 +251,6 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				5089594C39944BA3713A6B7B /* [CP] Copy Pods Resources */,
 				B509E5AAAE7246B1CCDE891E /* [CP-User] [RNFB] Core Configuration */,
-				9180F32EEB3AD943652855D9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -361,6 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				F31AD3DA26599A63000A788D /* glass_clink.wav in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				79A9C69A252129F600E941F5 /* GoogleService-Info.plist in Resources */,
 			);
@@ -418,24 +420,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2AFE9F387AF3A89CA6FB80F1 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-drinksApp-drinksAppTests/Pods-drinksApp-drinksAppTests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-drinksApp-drinksAppTests/Pods-drinksApp-drinksAppTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
@@ -628,24 +612,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9180F32EEB3AD943652855D9 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-drinksApp/Pods-drinksApp-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-drinksApp/Pods-drinksApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B509E5AAAE7246B1CCDE891E /* [CP-User] [RNFB] Core Configuration */ = {
