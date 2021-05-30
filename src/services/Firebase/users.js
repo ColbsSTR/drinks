@@ -12,8 +12,7 @@ export const createNewUser = async (user) => {
 };
 
 export const isNewUser = async (user) => {
-  const userData = await getUserData(user);
-
+  const userData = await getFirestoreUserData(user);
   if (!userData) {
     return true;
   }
