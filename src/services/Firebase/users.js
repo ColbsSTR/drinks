@@ -24,11 +24,14 @@ export const updateDisplayName = async ({name}) => {
   await auth().currentUser.updateProfile({
     displayName: name,
   });
-  const updatedUser = await auth().currentUser;
-  return updatedUser;
 };
 
-export const getUserData = async (user) => {
+export const getFirestoreUserData = async (user) => {
   const userDoc = await firestore().collection('Users').doc(user.uid).get();
   return userDoc.data();
+};
+
+export const getAuthData = async () => {
+  const authData = await auth().currentUser;
+  return authData;
 };
