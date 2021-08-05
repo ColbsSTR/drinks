@@ -12,6 +12,7 @@ import {
 import {Header, Button, Segment, Text} from 'native-base';
 import Geolocation from 'react-native-geolocation-service';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
+import _ from 'lodash';
 import requestUserPermission from '../services/Firebase/notifications';
 import isLocationAvailable from '../services/isLocationAvailable';
 import {getAllDrinks} from '../state/Actions/drinks';
@@ -26,12 +27,14 @@ import filter from '../utilities/filter';
 import {sortDrinksByAvailability, sortDrinksByPriceAscending} from '../utilities/sortDrinks';
 import COLORS from '../assets/colors';
 import {sendAnalytic} from '../services/Firebase/sendAnalytic';
+import SearchBar from '../components/SearchBar';
 
 class TopDeals extends Component {
   constructor(props) {
     super(props);
     this.onHeartPress = this.onHeartPress.bind(this);
     this.filterDrinks = this.filterDrinks.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
 
     this.state = {
       drinks: [{}, {}, {}], //Empty objects for placeholders map
@@ -124,6 +127,7 @@ class TopDeals extends Component {
   }
 
   reApplyFilters(drinkCategory) {
+    console.tron.log(drinkCategory);
     const {filterByType, filterByPrice, filterByDistance} = this.state;
     filterByType && this.filterDrinks({type: 'Type', value: filterByType}, drinkCategory);
     filterByPrice && this.filterDrinks({type: 'Price', value: filterByPrice}, drinkCategory);
@@ -242,19 +246,30 @@ class TopDeals extends Component {
     this.props.getAllDrinks();
   };
 
+  handleSearch = (text) => {
+    const selectedDrinks = this.getSelectedCategoryOfDrinks(this.state.selectedTab);
+    if (text === '') {
+      this.setState({drinks: selectedDrinks});
+      this.reApplyFilters(selectedDrinks);
+    } else {
+      const filteredDrinks = [];
+      _.forEach(selectedDrinks, (drink) => {
+        let sanitizedName = drink.Name.toLowerCase();
+        let sanitizedText = text.toLowerCase();
+        if (sanitizedName.includes(sanitizedText)) {
+          filteredDrinks.push(drink);
+        }
+      });
+      this.setState({drinks: filteredDrinks});
+      this.reApplyFilters(filteredDrinks);
+    }
+  };
+
   render() {
     const {dataInitialized} = this.state;
     return (
       <View style={styles.container}>
-        <Header
-          hasSegment
-          style={{
-            backgroundColor: COLORS.orange,
-            width: '100%',
-            borderBottomColor: 'black',
-            borderBottomWidth: 2,
-          }}
-        >
+        <Header hasSegment style={styles.header}>
           <Segment style={styles.segment}>
             {this.segmentButton('Specialty', 0, true, false)}
             {this.segmentButton('Top Deals', 1, false, false)}
@@ -269,6 +284,7 @@ class TopDeals extends Component {
             />
           }
         >
+          <SearchBar handleSearch={this.handleSearch} />
           <Filters filterDrinks={this.filterDrinks} />
           <View>
             <FlatList
@@ -312,6 +328,12 @@ const styles = StyleSheet.create({
   },
   activeSegmentButton: {
     backgroundColor: COLORS.white,
+  },
+  header: {
+    backgroundColor: COLORS.orange,
+    width: '100%',
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
   },
 });
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Platform, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import MapView, {Marker} from 'react-native-maps';
@@ -18,16 +18,12 @@ class DrinkMap extends Component {
         latitudeDelta: 0.02,
         longitudeDelta: 0.02,
       },
-      filteredDrinks: [],
       venues: [],
       selectedVenueDrinks: null,
     };
   }
 
   componentDidMount() {
-    this.setState({
-      filteredDrinks: this.props.topDeals,
-    });
     this.props.currentLocation &&
       this.setState({
         region: {
@@ -48,9 +44,7 @@ class DrinkMap extends Component {
         const drinkVenue = venues.find(({name}) => name === drink.Venue);
         if (drinkVenue) {
           const {name, drinks} = drinkVenue;
-          const venueIndex = venues.findIndex(
-            (venue) => venue.name === drink.Venue,
-          );
+          const venueIndex = venues.findIndex((venue) => venue.name === drink.Venue);
           const updatedDrinkVenue = {name, drinks: [...drinks, drink]};
           venues.splice(venueIndex, 1, updatedDrinkVenue);
         } else {
@@ -82,12 +76,7 @@ class DrinkMap extends Component {
     const {latitude, longitude} = this.props.currentLocation.coords;
     return (
       <Marker coordinate={{latitude, longitude}}>
-        <Icon
-          name="location-arrow"
-          type="FontAwesome"
-          style={{color: COLORS.blue}}
-          size={100}
-        />
+        <Icon name="location-arrow" type="FontAwesome" style={{color: COLORS.blue}} size={100} />
       </Marker>
     );
   };
@@ -112,7 +101,8 @@ class DrinkMap extends Component {
             this.props.navigation.navigate('DetailView', {
               docId: drinks[0].docId,
             });
-          }}>
+          }}
+        >
           <Icon
             name={this.getMarkerImage(drinks[0].Type)}
             type="FontAwesome5"
@@ -131,7 +121,8 @@ class DrinkMap extends Component {
           title={drinks[0].Venue}
           description={drinks.length + ' Drinks Available'}
           onCalloutPress={() => this.setState({selectedVenueDrinks: drinks})}
-          trackViewChanges={false}>
+          trackViewChanges={false}
+        >
           <View style={styles.circle}>
             <Text style={{color: COLORS.white}}>{drinks.length}</Text>
           </View>
@@ -145,15 +136,14 @@ class DrinkMap extends Component {
       <View style={styles.container}>
         <MapView style={styles.mapView} initialRegion={this.state.region}>
           {this.props.currentLocation && this.currentLocationMarker()}
-          {this.state.venues.map(({drinks}, index) =>
-            this.renderDrinkMarkers(drinks, index),
-          )}
+          {this.state.venues.map(({drinks}, index) => this.renderDrinkMarkers(drinks, index))}
         </MapView>
         {this.state.selectedVenueDrinks && (
           <ScrollView
             style={styles.scrollContainer}
             horizontal
-            showsHorizontalScrollIndicator={false}>
+            showsHorizontalScrollIndicator={false}
+          >
             <View style={styles.cardContainer}>
               {_.map(this.state.selectedVenueDrinks, (drink) => (
                 <TouchableOpacity
@@ -162,7 +152,8 @@ class DrinkMap extends Component {
                     this.props.navigation.navigate('DetailView', {
                       docId: drink.docId,
                     })
-                  }>
+                  }
+                >
                   <DrinkSnippetCard drink={drink} />
                 </TouchableOpacity>
               ))}
