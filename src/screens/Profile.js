@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import {View, KeyboardAvoidingView, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import {Avatar, Icon} from 'react-native-elements';
 import {H2, H3} from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
@@ -27,10 +27,12 @@ class Profile extends Component {
       <View style={styles.container}>
         <LinearGradient
           colors={[COLORS.orange, COLORS.lightOrange]}
-          style={{flex: 4, paddingBottom: 20}}>
+          style={{flex: 4, paddingBottom: 20}}
+        >
           <TouchableOpacity
             style={styles.gearIcon}
-            onPress={() => this.props.navigation.navigate('Settings')}>
+            onPress={() => this.props.navigation.navigate('Settings')}
+          >
             <Icon
               name="cog"
               type="font-awesome-5"
@@ -57,9 +59,12 @@ class Profile extends Component {
             </View>
           </View>
         </LinearGradient>
-        <View style={{flex: 10}}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{flex: 10}}
+        >
           <ProfileTabs />
-        </View>
+        </KeyboardAvoidingView>
       </View>
     );
   }
