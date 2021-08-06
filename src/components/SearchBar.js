@@ -4,19 +4,21 @@ import {Icon} from 'native-base';
 import {TextInput} from 'react-native-gesture-handler';
 import COLORS from '../assets/colors';
 
-export default SearchBar = ({handleSearch}) => {
+const SearchBar = ({handleSearch}) => {
   return (
     <View style={styles.searchContainer}>
       <TextInput
-        placeholder="Search By Drink Name"
+        placeholder="Search By Drink Name Or Venue Name"
         placeholderTextColor="gray"
-        style={{flex: 1, padding: 0}}
+        style={styles.textInput}
         onChangeText={handleSearch}
       />
-      <Icon name="search" style={{fontSize: 22, color: COLORS.mediumGrey}} />
+      <Icon name="search" style={styles.searchIcon} />
     </View>
   );
 };
+
+export default SearchBar;
 
 const styles = StyleSheet.create({
   searchContainer: {
@@ -32,5 +34,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowOffset: {width: 0, height: 1},
     elevation: 10,
+  },
+  searchIcon: {
+    fontSize: 22,
+    color: COLORS.mediumGrey,
+  },
+  textInput: {
+    flex: 1,
+    padding: 0,
   },
 });
