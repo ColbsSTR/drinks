@@ -3,6 +3,7 @@ import {Card, CardItem, Left, Body, Icon} from 'native-base';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import {getDrinkIcon} from './DrinkCard';
 import COLORS from '../assets/colors';
+import {currentAvailability} from '../utilities/drinkAvailability';
 
 // eslint-disable-next-line no-undef
 export default DrinkSnippetCard = (props) => {
@@ -12,18 +13,11 @@ export default DrinkSnippetCard = (props) => {
       <Card style={props.large ? styles.largeCard : styles.card}>
         <CardItem bordered style={styles.cardItem}>
           <Left>
-            <Icon
-              name={getDrinkIcon(drink.Type)}
-              type="FontAwesome5"
-              style={styles.icon}
-            />
+            <Icon name={getDrinkIcon(drink.Type)} type="FontAwesome5" style={styles.icon} />
             <Body>
               <Text style={styles.header}>{drink.Name}</Text>
-              <Text>
-                {typeof drink.Price === 'number'
-                  ? '$' + drink.Price
-                  : drink.Price}
-              </Text>
+              <Text>{typeof drink.Price === 'number' ? '$' + drink.Price : drink.Price}</Text>
+              {currentAvailability(drink) && <Text style={styles.availableText}>Available</Text>}
             </Body>
           </Left>
         </CardItem>
@@ -61,5 +55,9 @@ export const styles = StyleSheet.create({
   },
   icon: {
     color: COLORS.orange,
+  },
+  availableText: {
+    color: 'green',
+    fontSize: 12,
   },
 });

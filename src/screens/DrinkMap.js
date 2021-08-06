@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Platform, ScrollView} from 'react-native';
+import {View, StyleSheet, Platform, ScrollView, Switch} from 'react-native';
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import MapView, {Marker} from 'react-native-maps';
 import {Icon, Text} from 'native-base';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import COLORS from '../assets/colors';
 import DrinkSnippetCard from '../components/DrinkSnippetCard';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {currentAvailability} from '../utilities/drinkAvailability';
 
 class DrinkMap extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class DrinkMap extends Component {
       filteredDrinks: [],
       venues: [],
       selectedVenueDrinks: null,
+      onlyShowAvailable: true,
     };
   }
 
@@ -48,9 +50,7 @@ class DrinkMap extends Component {
         const drinkVenue = venues.find(({name}) => name === drink.Venue);
         if (drinkVenue) {
           const {name, drinks} = drinkVenue;
-          const venueIndex = venues.findIndex(
-            (venue) => venue.name === drink.Venue,
-          );
+          const venueIndex = venues.findIndex((venue) => venue.name === drink.Venue);
           const updatedDrinkVenue = {name, drinks: [...drinks, drink]};
           venues.splice(venueIndex, 1, updatedDrinkVenue);
         } else {
@@ -82,17 +82,13 @@ class DrinkMap extends Component {
     const {latitude, longitude} = this.props.currentLocation.coords;
     return (
       <Marker coordinate={{latitude, longitude}}>
-        <Icon
-          name="location-arrow"
-          type="FontAwesome"
-          style={{color: COLORS.blue}}
-          size={100}
-        />
+        <Icon name="location-arrow" type="FontAwesome" style={{color: COLORS.blue}} size={100} />
       </Marker>
     );
   };
 
   renderDrinkMarkers = (drinks, index) => {
+    console.tron.log(drinks);
     if (drinks.length === 1) {
       return (
         <Marker
@@ -112,7 +108,8 @@ class DrinkMap extends Component {
             this.props.navigation.navigate('DetailView', {
               docId: drinks[0].docId,
             });
-          }}>
+          }}
+        >
           <Icon
             name={this.getMarkerImage(drinks[0].Type)}
             type="FontAwesome5"
@@ -131,7 +128,8 @@ class DrinkMap extends Component {
           title={drinks[0].Venue}
           description={drinks.length + ' Drinks Available'}
           onCalloutPress={() => this.setState({selectedVenueDrinks: drinks})}
-          trackViewChanges={false}>
+          trackViewChanges={false}
+        >
           <View style={styles.circle}>
             <Text style={{color: COLORS.white}}>{drinks.length}</Text>
           </View>
@@ -140,20 +138,47 @@ class DrinkMap extends Component {
     }
   };
 
+  determineAvailability = (drinks, index) => {
+    if (!this.state.onlyShowAvailable) {
+      return this.renderDrinkMarkers(drinks, index);
+    }
+
+    let availableDrinks = [];
+    _.forEach(drinks, (drink) => {
+      if (currentAvailability(drink)) {
+        availableDrinks.push(drink);
+      }
+    });
+    availableDrinks.length !== 0 && console.tron.log(availableDrinks);
+    if (availableDrinks.length === 0) {
+      return;
+    }
+    return this.renderDrinkMarkers(availableDrinks, index);
+  };
+
+  toggleSwitch = () => this.setState({onlyShowAvailable: !this.state.onlyShowAvailable});
+
   render() {
     return (
       <View style={styles.container}>
         <MapView style={styles.mapView} initialRegion={this.state.region}>
           {this.props.currentLocation && this.currentLocationMarker()}
-          {this.state.venues.map(({drinks}, index) =>
-            this.renderDrinkMarkers(drinks, index),
-          )}
+          {this.state.venues.map(({drinks}, index) => this.determineAvailability(drinks, index))}
+          <Switch
+            trackColor={{false: '#767577', true: '#81b0ff'}}
+            // thumbColor={this.state.onlyShowAvailable ? '#f5dd4b' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() => this.toggleSwitch()}
+            value={this.state.onlyShowAvailable}
+            style={{marginTop: 40, marginRight: 20, alignSelf: 'flex-end'}}
+          />
         </MapView>
         {this.state.selectedVenueDrinks && (
           <ScrollView
             style={styles.scrollContainer}
             horizontal
-            showsHorizontalScrollIndicator={false}>
+            showsHorizontalScrollIndicator={false}
+          >
             <View style={styles.cardContainer}>
               {_.map(this.state.selectedVenueDrinks, (drink) => (
                 <TouchableOpacity
@@ -162,7 +187,8 @@ class DrinkMap extends Component {
                     this.props.navigation.navigate('DetailView', {
                       docId: drink.docId,
                     })
-                  }>
+                  }
+                >
                   <DrinkSnippetCard drink={drink} />
                 </TouchableOpacity>
               ))}
