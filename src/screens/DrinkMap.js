@@ -9,6 +9,8 @@ import COLORS from '../assets/colors';
 import DrinkSnippetCard from '../components/DrinkSnippetCard';
 import {currentAvailability} from '../utilities/drinkAvailability';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 class DrinkMap extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +24,7 @@ class DrinkMap extends Component {
       filteredDrinks: [],
       venues: [],
       selectedVenueDrinks: null,
-      onlyShowAvailable: true,
+      onlyShowAvailable: false,
     };
   }
 
@@ -39,8 +41,20 @@ class DrinkMap extends Component {
           longitudeDelta: 0.04,
         },
       });
+    this.getToggleFromAsync();
     this.createVenueArray();
   }
+
+  getToggleFromAsync = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@onlyShowAvailableDrinksToggle');
+      if (value !== null) {
+        this.setState({onlyShowAvailable: value === 'true'});
+      }
+    } catch (e) {
+      console.tron.log('error getting toggle');
+    }
+  };
 
   createVenueArray = () => {
     const {topDeals} = this.props;
@@ -88,7 +102,6 @@ class DrinkMap extends Component {
   };
 
   renderDrinkMarkers = (drinks, index) => {
-    console.tron.log(drinks);
     if (drinks.length === 1) {
       return (
         <Marker
@@ -149,14 +162,24 @@ class DrinkMap extends Component {
         availableDrinks.push(drink);
       }
     });
-    availableDrinks.length !== 0 && console.tron.log(availableDrinks);
     if (availableDrinks.length === 0) {
       return;
     }
     return this.renderDrinkMarkers(availableDrinks, index);
   };
 
-  toggleSwitch = () => this.setState({onlyShowAvailable: !this.state.onlyShowAvailable});
+  toggleSwitch = () => {
+    this.storeToggle(!this.state.onlyShowAvailable);
+    this.setState({onlyShowAvailable: !this.state.onlyShowAvailable});
+  };
+
+  storeToggle = async (value) => {
+    try {
+      await AsyncStorage.setItem('@onlyShowAvailableDrinksToggle', value.toString());
+    } catch (e) {
+      console.tron.log('error storing toggle');
+    }
+  };
 
   render() {
     return (
