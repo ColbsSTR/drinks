@@ -195,7 +195,7 @@ class TopDeals extends Component {
   }
 
   onHeartPress(drink, lottieRef) {
-    sendAnalytic('heart_press', {drink: drink.Name, venue: drink.Venue});
+    sendAnalytic({eventName: 'heart_press', payload: {drink: drink.Name, venue: drink.Venue}});
     const {docId} = drink;
     const liked = this.props.likedDrinks.includes(docId);
     if (liked) {
@@ -217,7 +217,7 @@ class TopDeals extends Component {
   }
 
   onSegmentButtonPress(tab) {
-    sendAnalytic('header_tab_press', {tabName: tab});
+    sendAnalytic({eventName: 'header_tab_press', payload: {tabName: tab}});
     const drinkCategory = this.getSelectedCategoryOfDrinks(tab);
     const sortedDrinks = this.sortDrinks(drinkCategory);
     this.setState({selectedTab: tab, drinks: sortedDrinks});

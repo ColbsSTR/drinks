@@ -24,7 +24,7 @@ export default RedeemDealModal = (props) => {
     dispatch(closeModal());
     dispatch(redeemDrink(drink));
     navigation.navigate('RedeemedDrink', {drink: drink});
-    sendAnalytic('redeemed_drink', {drink: drink});
+    sendAnalytic({eventName: 'redeemed_drink', payload: {drink: drink}});
   };
 
   return (

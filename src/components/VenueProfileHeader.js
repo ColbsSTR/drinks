@@ -15,7 +15,10 @@ import {getUser} from '../state/Selectors/getUserState';
 import {sendAnalytic} from '../services/Firebase/sendAnalytic';
 
 export const handleCheckIn = (selectedVenue, venueLocation, currentLocation, user, dispatch) => {
-  sendAnalytic('venue_check_in', {venueName: selectedVenue.Name, time: Date.UTC()});
+  sendAnalytic({
+    eventName: 'venue_check_in',
+    payload: {venueName: selectedVenue.Name, time: Date.UTC()},
+  });
 
   if (currentLocation) {
     const lastUserCheckIn = getLastUserCheckIn(user, selectedVenue);
