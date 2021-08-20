@@ -3,7 +3,7 @@ import {View, StyleSheet, ScrollView, Switch} from 'react-native';
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import MapView, {Marker} from 'react-native-maps';
-import {Icon, Text} from 'native-base';
+import {Icon, Text, Button} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import COLORS from '../assets/colors';
 import DrinkSnippetCard from '../components/DrinkSnippetCard';
@@ -40,17 +40,6 @@ class DrinkMap extends Component {
     this.getToggleFromAsync();
     this.createVenueArray();
   }
-
-  getToggleFromAsync = async () => {
-    try {
-      const value = await AsyncStorage.getItem('@onlyShowAvailableDrinksToggle');
-      if (value !== null) {
-        this.setState({onlyShowAvailable: value === 'true'});
-      }
-    } catch (e) {
-      console.tron.log('error getting toggle');
-    }
-  };
 
   createVenueArray = () => {
     const {topDeals} = this.props;
@@ -169,6 +158,17 @@ class DrinkMap extends Component {
     this.setState({onlyShowAvailable: !this.state.onlyShowAvailable});
   };
 
+  getToggleFromAsync = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@onlyShowAvailableDrinksToggle');
+      if (value !== null) {
+        this.setState({onlyShowAvailable: value === 'true'});
+      }
+    } catch (e) {
+      console.tron.log('error getting toggle');
+    }
+  };
+
   storeToggle = async (value) => {
     try {
       await AsyncStorage.setItem('@onlyShowAvailableDrinksToggle', value.toString());
@@ -183,14 +183,20 @@ class DrinkMap extends Component {
         <MapView style={styles.mapView} initialRegion={this.state.region}>
           {this.props.currentLocation && this.currentLocationMarker()}
           {this.state.venues.map(({drinks}, index) => this.determineAvailability(drinks, index))}
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            // thumbColor={this.state.onlyShowAvailable ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={() => this.toggleSwitch()}
-            value={this.state.onlyShowAvailable}
-            style={{marginTop: 40, marginRight: 20, alignSelf: 'flex-end'}}
-          />
+          {/* add question mark button to explain toggle */}
+          <View style={styles.toggleContainer}>
+            <Button transparent style={styles.infoButton}>
+              <Icon name="information-circle-outline" />
+            </Button>
+            <Switch
+              trackColor={{false: COLORS.lightGrey, true: COLORS.orange}}
+              // thumbColor={this.state.onlyShowAvailable ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={() => this.toggleSwitch()}
+              value={this.state.onlyShowAvailable}
+              style={styles.toggle}
+            />
+          </View>
         </MapView>
         {this.state.selectedVenueDrinks && (
           <ScrollView
@@ -252,6 +258,35 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
     marginHorizontal: 10,
+  },
+  toggle: {
+    justifyContent: 'flex-end',
+    alignSelf: 'center',
+    // marginTop: 40,
+  },
+  infoButton: {
+    // marginTop: 34,
+    marginRight: -15, // to get button and toggle to overlap
+    // justifyContent: 'center',
+    // flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'green',
+  },
+  infoIcon: {
+    // marginRight: 5,
+    // justifyContent: 'flex-end',
+    // flex: 1,
+    // width: 20,
+    // alignItems: 'flex-end',
+  },
+  toggleContainer: {
+    marginTop: 40,
+    marginRight: 20,
+    // alignContent: 'flex-end',
+    justifyContent: 'flex-end',
+    // flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'red',
   },
 });
 
