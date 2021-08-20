@@ -24,13 +24,13 @@ export function* loginWorker(action) {
         yield call(createNewUser, user.user);
       }
       yield put(loginSucceeded(user.user));
-      sendAnalytic('login_succeeded');
+      sendAnalytic({eventName: 'login_succeeded'});
     } else {
       yield put(loginCancelled());
     }
   } catch (err) {
     yield put(loginFail(err));
-    sendAnalytic('login_failed');
+    sendAnalytic({eventName: 'login_failed'});
     //***TODO*** modal
     if (err.code.toString() === emailInUse) {
       Alert.alert(errors.emailInUseHeader, errors.emailInUseDescription);

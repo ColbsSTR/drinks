@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Platform, ScrollView, Switch} from 'react-native';
+import {View, StyleSheet, ScrollView, Switch} from 'react-native';
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import MapView, {Marker} from 'react-native-maps';
@@ -21,7 +21,6 @@ class DrinkMap extends Component {
         latitudeDelta: 0.02,
         longitudeDelta: 0.02,
       },
-      filteredDrinks: [],
       venues: [],
       selectedVenueDrinks: null,
       onlyShowAvailable: false,
@@ -29,9 +28,6 @@ class DrinkMap extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      filteredDrinks: this.props.topDeals,
-    });
     this.props.currentLocation &&
       this.setState({
         region: {

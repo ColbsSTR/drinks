@@ -38,7 +38,7 @@ export default DrinkDetailCard = (props) => {
   }, [isFocused]);
 
   const navToVenueProfile = () => {
-    sendAnalytic('nav_to_venue_profile', {venueName: drink.Venue});
+    sendAnalytic({eventName: 'nav_to_venue_profile', payload: {venueName: drink.Venue}});
     navigation.navigate('VenueProfile', {drink: drink});
   };
 

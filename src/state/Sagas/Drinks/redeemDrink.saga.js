@@ -15,6 +15,6 @@ export function* redeemDrinkWorker(action) {
     yield call(redeemDrink, action.payload, user);
     yield put(getUserData());
   } catch (err) {
-    sendAnalytic('redeem_drink_fail', {error: err});
+    sendAnalytic({eventName: 'redeem_drink_fail', payload: {error: err}});
   }
 }

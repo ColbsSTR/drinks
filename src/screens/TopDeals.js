@@ -12,6 +12,7 @@ import {
 import {Header, Button, Segment, Text} from 'native-base';
 import Geolocation from 'react-native-geolocation-service';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
+import _ from 'lodash';
 import requestUserPermission from '../services/Firebase/notifications';
 import isLocationAvailable from '../services/isLocationAvailable';
 import {getAllDrinks} from '../state/Actions/drinks';
@@ -26,12 +27,14 @@ import filter from '../utilities/filter';
 import {sortDrinksByAvailability, sortDrinksByPriceAscending} from '../utilities/sortDrinks';
 import COLORS from '../assets/colors';
 import {sendAnalytic} from '../services/Firebase/sendAnalytic';
+import SearchBar from '../components/SearchBar';
 
 class TopDeals extends Component {
   constructor(props) {
     super(props);
     this.onHeartPress = this.onHeartPress.bind(this);
     this.filterDrinks = this.filterDrinks.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
 
     this.state = {
       drinks: [{}, {}, {}], //Empty objects for placeholders map
@@ -104,9 +107,8 @@ class TopDeals extends Component {
   updateDrinksState() {
     const {selectedTab} = this.state;
     const currentSelectedDrinks = this.getSelectedCategoryOfDrinks(selectedTab);
-    const drinksSortedByPrice = sortDrinksByPriceAscending(currentSelectedDrinks);
-    const drinksSortedByPriceAndAvailability = sortDrinksByAvailability(drinksSortedByPrice);
-    this.setState({drinks: drinksSortedByPriceAndAvailability, dataInitialized: true});
+    const sortedDrinks = this.sortDrinks(currentSelectedDrinks);
+    this.setState({drinks: sortedDrinks, dataInitialized: true});
     this.reApplyFilters(currentSelectedDrinks);
   }
 
@@ -131,14 +133,19 @@ class TopDeals extends Component {
       this.filterDrinks({type: 'Distance', value: filterByDistance}, drinkCategory);
   }
 
+  sortDrinks = (drinks) => {
+    const drinksSortedByPrice = sortDrinksByPriceAscending(drinks);
+    const drinksSortedByPriceAndAvailability = sortDrinksByAvailability(drinksSortedByPrice);
+    return drinksSortedByPriceAndAvailability;
+  };
+
   filterDrinks(filterObject, selectedCategory) {
     const {filterByPrice, filterByType, filterByRating, selectedTab} = this.state;
     const selectedDrinkCategory = selectedCategory
       ? selectedCategory
       : this.getSelectedCategoryOfDrinks(selectedTab);
     let filteredDrinks = [];
-    let drinksSortedByPriceAndAvailability;
-    let drinksSortedByPrice;
+    let sortedDrinks = [];
 
     switch (filterObject.type) {
       case 'Type':
@@ -147,11 +154,10 @@ class TopDeals extends Component {
           drinkPrice: filterByPrice,
           drinkRating: filterByRating,
         });
-        drinksSortedByPrice = sortDrinksByPriceAscending(filteredDrinks);
-        drinksSortedByPriceAndAvailability = sortDrinksByAvailability(drinksSortedByPrice);
+        sortedDrinks = this.sortDrinks(filteredDrinks);
         this.setState({
           filterByType: filterObject.value,
-          drinks: drinksSortedByPriceAndAvailability,
+          drinks: sortedDrinks,
         });
         break;
       case 'Price':
@@ -160,11 +166,10 @@ class TopDeals extends Component {
           drinkPrice: filterObject.value,
           drinkRating: filterByRating,
         });
-        drinksSortedByPrice = sortDrinksByPriceAscending(filteredDrinks);
-        drinksSortedByPriceAndAvailability = sortDrinksByAvailability(drinksSortedByPrice);
+        sortedDrinks = this.sortDrinks(filteredDrinks);
         this.setState({
           filterByPrice: filterObject.value,
-          drinks: drinksSortedByPriceAndAvailability,
+          drinks: sortedDrinks,
         });
         break;
       case 'Distance':
@@ -178,11 +183,10 @@ class TopDeals extends Component {
           },
           currentLocation,
         );
-        drinksSortedByPrice = sortDrinksByPriceAscending(filteredDrinks);
-        drinksSortedByPriceAndAvailability = sortDrinksByAvailability(drinksSortedByPrice);
+        sortedDrinks = this.sortDrinks(filteredDrinks);
         this.setState({
           filterByDistance: filterObject.value,
-          drinks: drinksSortedByPriceAndAvailability,
+          drinks: sortedDrinks,
         });
         break;
       default:
@@ -191,7 +195,7 @@ class TopDeals extends Component {
   }
 
   onHeartPress(drink, lottieRef) {
-    sendAnalytic('heart_press', {drink: drink.Name, venue: drink.Venue});
+    sendAnalytic({eventName: 'heart_press', payload: {drink: drink.Name, venue: drink.Venue}});
     const {docId} = drink;
     const liked = this.props.likedDrinks.includes(docId);
     if (liked) {
@@ -213,11 +217,10 @@ class TopDeals extends Component {
   }
 
   onSegmentButtonPress(tab) {
-    sendAnalytic('header_tab_press', {tabName: tab});
+    sendAnalytic({eventName: 'header_tab_press', payload: {tabName: tab}});
     const drinkCategory = this.getSelectedCategoryOfDrinks(tab);
-    const drinksSortedByPrice = sortDrinksByPriceAscending(drinkCategory);
-    const drinksSortedByPriceAndAvailability = sortDrinksByAvailability(drinksSortedByPrice);
-    this.setState({selectedTab: tab, drinks: drinksSortedByPriceAndAvailability});
+    const sortedDrinks = this.sortDrinks(drinkCategory);
+    this.setState({selectedTab: tab, drinks: sortedDrinks});
     this.reApplyFilters(drinkCategory);
   }
 
@@ -242,19 +245,37 @@ class TopDeals extends Component {
     this.props.getAllDrinks();
   };
 
+  handleSearch = (text) => {
+    const drinksFromSelectedCategory = this.getSelectedCategoryOfDrinks(this.state.selectedTab);
+    let sortedDrinks = [];
+    if (text === '') {
+      sortedDrinks = this.sortDrinks(drinksFromSelectedCategory);
+      this.setState({drinks: sortedDrinks});
+      this.reApplyFilters(drinksFromSelectedCategory);
+    } else {
+      const filteredDrinks = [];
+      _.forEach(drinksFromSelectedCategory, (drink) => {
+        let sanitizedDrinkName = drink.Name.toLowerCase();
+        let sanitizedVenueName = drink.Venue.toLowerCase();
+        let sanitizedText = text.toLowerCase();
+        if (
+          sanitizedDrinkName.includes(sanitizedText) ||
+          sanitizedVenueName.includes(sanitizedText)
+        ) {
+          filteredDrinks.push(drink);
+        }
+      });
+      sortedDrinks = this.sortDrinks(filteredDrinks);
+      this.setState({drinks: sortedDrinks});
+      this.reApplyFilters(filteredDrinks);
+    }
+  };
+
   render() {
     const {dataInitialized} = this.state;
     return (
       <View style={styles.container}>
-        <Header
-          hasSegment
-          style={{
-            backgroundColor: COLORS.orange,
-            width: '100%',
-            borderBottomColor: 'black',
-            borderBottomWidth: 2,
-          }}
-        >
+        <Header hasSegment style={styles.header}>
           <Segment style={styles.segment}>
             {this.segmentButton('Specialty', 0, true, false)}
             {this.segmentButton('Top Deals', 1, false, false)}
@@ -269,6 +290,7 @@ class TopDeals extends Component {
             />
           }
         >
+          <SearchBar handleSearch={this.handleSearch} />
           <Filters filterDrinks={this.filterDrinks} />
           <View>
             <FlatList
@@ -312,6 +334,12 @@ const styles = StyleSheet.create({
   },
   activeSegmentButton: {
     backgroundColor: COLORS.white,
+  },
+  header: {
+    backgroundColor: COLORS.orange,
+    width: '100%',
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
   },
 });
 
