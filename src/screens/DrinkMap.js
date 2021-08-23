@@ -3,6 +3,7 @@ import {View, StyleSheet, ScrollView, Switch} from 'react-native';
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import MapView, {Marker} from 'react-native-maps';
+import Modal from 'react-native-modal';
 import {Icon, Text, Button} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import COLORS from '../assets/colors';
@@ -24,6 +25,7 @@ class DrinkMap extends Component {
       venues: [],
       selectedVenueDrinks: null,
       onlyShowAvailable: false,
+      infoModalVisable: false,
     };
   }
 
@@ -177,27 +179,43 @@ class DrinkMap extends Component {
     }
   };
 
+  handleInfoPress = () => {
+    this.setState({infoModalVisable: !this.state.infoModalVisable});
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <MapView style={styles.mapView} initialRegion={this.state.region}>
           {this.props.currentLocation && this.currentLocationMarker()}
           {this.state.venues.map(({drinks}, index) => this.determineAvailability(drinks, index))}
-          {/* add question mark button to explain toggle */}
-          <View style={styles.toggleContainer}>
-            <Button transparent style={styles.infoButton}>
-              <Icon name="information-circle-outline" />
-            </Button>
-            <Switch
-              trackColor={{false: COLORS.lightGrey, true: COLORS.orange}}
-              // thumbColor={this.state.onlyShowAvailable ? '#f5dd4b' : '#f4f3f4'}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={() => this.toggleSwitch()}
-              value={this.state.onlyShowAvailable}
-              style={styles.toggle}
-            />
-          </View>
         </MapView>
+        <View style={styles.toggleContainer}>
+          <Button transparent style={styles.infoButton} onPress={this.handleInfoPress}>
+            <Icon style={{color: 'grey'}} name="information-circle-outline" />
+          </Button>
+          <Modal
+            isVisible={this.state.infoModalVisable}
+            onBackdropPress={() => this.setState({infoModalVisable: false})}
+            backdropOpacity={0.3}
+            animationIn="slideInDown"
+            animationOut="slideOutUp"
+            style={{justifyContent: 'flex-start'}}
+          >
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                When enabled, the map will only show available drink deals.
+              </Text>
+            </View>
+          </Modal>
+          <Switch
+            trackColor={{false: COLORS.lightGrey, true: COLORS.orange}}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() => this.toggleSwitch()}
+            value={this.state.onlyShowAvailable}
+            style={styles.toggle}
+          />
+        </View>
         {this.state.selectedVenueDrinks && (
           <ScrollView
             style={styles.scrollContainer}
@@ -262,31 +280,43 @@ const styles = StyleSheet.create({
   toggle: {
     justifyContent: 'flex-end',
     alignSelf: 'center',
-    // marginTop: 40,
   },
   infoButton: {
-    // marginTop: 34,
-    marginRight: -15, // to get button and toggle to overlap
-    // justifyContent: 'center',
-    // flex: 1,
+    marginRight: -10, // to get button and toggle to overlap
     alignItems: 'center',
-    backgroundColor: 'green',
-  },
-  infoIcon: {
-    // marginRight: 5,
-    // justifyContent: 'flex-end',
-    // flex: 1,
-    // width: 20,
-    // alignItems: 'flex-end',
   },
   toggleContainer: {
-    marginTop: 40,
-    marginRight: 20,
-    // alignContent: 'flex-end',
+    position: 'absolute',
+    zIndex: 2,
+    top: 35,
+    right: 18,
     justifyContent: 'flex-end',
-    // flex: 1,
+    alignSelf: 'flex-end',
     flexDirection: 'row',
-    backgroundColor: 'red',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 10,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 15,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    marginTop: 35,
+  },
+  modalText: {
+    textAlign: 'center',
   },
 });
 
