@@ -12,6 +12,7 @@ import {buildShareLinkWatcher} from './buildShareLink.saga';
 import {feedbackWatcher} from './feedback.saga';
 import likedDrinks from './LikedDrinks';
 import {redeemDrinkWatcher} from './Drinks/redeemDrink.saga';
+import {asyncStorageWatcher} from './async.saga';
 
 //***TODO*****//
 // RESEARCH BEST WAY TO SET THIS UP
@@ -31,5 +32,6 @@ export function* rootSaga() {
     call(buildShareLinkWatcher),
     call(feedbackWatcher),
     call(redeemDrinkWatcher),
+    call(asyncStorageWatcher),
   ]);
 }

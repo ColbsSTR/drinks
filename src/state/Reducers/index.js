@@ -9,6 +9,7 @@ import reviews from './reviews.reducer';
 import likedDrinks from './LikedDrinks';
 import location from './location.reducer';
 import updateDisplayName from './User/updateDisplayName.reducer';
+import async from './async.reducer';
 import {rootSaga} from '../Sagas/index';
 
 const AppReducers = combineReducers({
@@ -21,6 +22,7 @@ const AppReducers = combineReducers({
   likedDrinks,
   location,
   updateDisplayName,
+  async,
 });
 
 let sagaMiddleware = createSagaMiddleware();

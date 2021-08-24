@@ -10,8 +10,6 @@ import COLORS from '../assets/colors';
 import DrinkSnippetCard from '../components/DrinkSnippetCard';
 import {currentAvailability} from '../utilities/drinkAvailability';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 class DrinkMap extends Component {
   constructor(props) {
     super(props);
@@ -155,28 +153,9 @@ class DrinkMap extends Component {
     return this.renderDrinkMarkers(availableDrinks, index);
   };
 
-  toggleSwitch = () => {
+  toggleSwitch = () => { // COLBY FIX
     this.storeToggle(!this.state.onlyShowAvailable);
     this.setState({onlyShowAvailable: !this.state.onlyShowAvailable});
-  };
-
-  getToggleFromAsync = async () => {
-    try {
-      const value = await AsyncStorage.getItem('@onlyShowAvailableDrinksToggle');
-      if (value !== null) {
-        this.setState({onlyShowAvailable: value === 'true'});
-      }
-    } catch (e) {
-      console.tron.log('error getting toggle');
-    }
-  };
-
-  storeToggle = async (value) => {
-    try {
-      await AsyncStorage.setItem('@onlyShowAvailableDrinksToggle', value.toString());
-    } catch (e) {
-      console.tron.log('error storing toggle');
-    }
   };
 
   handleInfoPress = () => {

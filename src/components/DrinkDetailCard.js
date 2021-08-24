@@ -94,7 +94,7 @@ export default DrinkDetailCard = (props) => {
           </Button>
         </Left>
         <Body>
-          <Text>{isDrinkLive ? 'Available Currently' : 'Not Available Currently'}</Text>
+          <Text>{isDrinkLive ? 'Available Not' : 'Not Currently Available'}</Text>
         </Body>
         <Right>
           <Text

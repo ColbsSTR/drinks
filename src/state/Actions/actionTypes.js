@@ -95,3 +95,8 @@ export const GET_FEEDBACK_USER = 'GET_FEEDBACK_USER';
 
 //Redeem Drink
 export const REDEEM_DRINK = 'REDEEM_DRINK';
+
+//Async
+export const GET_VALUE_FROM_ASYNC = 'GET_VALUE_FROM_ASYNC';
+export const SET_ASYNC_VALUE = 'SET_ASYNC_VALUE';
+export const MAP_ASYNC_VALUE_TO_STATE = 'MAP_ASYNC_VALUE_TO_STATE';

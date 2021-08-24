@@ -41,7 +41,7 @@ export default DrinkCard = (props) => {
                 </Text>
               </View>
               <Text style={styles.venueName}>{drink.Venue}</Text>
-              {drinkAvailable && <Text style={styles.availableText}>Available</Text>}
+              {drinkAvailable && <Text style={styles.availableText}>Available Now</Text>}
             </Body>
           </Left>
           {drink.Exclusive ? (
@@ -57,7 +57,8 @@ export default DrinkCard = (props) => {
               <TouchableOpacity
                 onPress={() => {
                   onHeartPress(drink, LottieRef);
-                }}>
+                }}
+              >
                 <LottieView
                   source={heart}
                   loop={false}
