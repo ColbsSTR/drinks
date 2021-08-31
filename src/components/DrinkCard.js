@@ -69,7 +69,7 @@ export default DrinkCard = (props) => {
             )
           )}
         </CardItem>
-        <CardItem style={styles.cardItem}>
+        <CardItem style={{borderRadius: 6}}>
           <Body>
             <Text numberOfLines={3} style={styles.body}>
               {drink.Description}
@@ -102,7 +102,7 @@ export const styles = StyleSheet.create({
   },
   cardItem: {
     borderRadius: 6,
-    height: 80,
+    height: 70,
   },
   header: {
     color: COLORS.darkGrey,
